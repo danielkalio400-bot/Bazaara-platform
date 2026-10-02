@@ -1,0 +1,389 @@
+.pageHeader {
+  margin: 4px 0 24px;
+}
+
+.eyebrow,
+.step,
+.summaryEyebrow {
+  display: block;
+  color: #58B47E;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.title {
+  margin: 8px 0 8px;
+  color: #F4FBF7;
+  font-size: clamp(2rem, 4vw, 3.65rem);
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+
+.subtitle {
+  max-width: 680px;
+  margin: 0;
+  color: #AEBBD0;
+  font-size: .87rem;
+  line-height: 1.55;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: start;
+}
+
+.panel,
+.summary,
+.empty {
+  border: 1px solid rgba(148, 163, 184, .17);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(47, 143, 98, .08), transparent 30%),
+    linear-gradient(150deg, #10243D, #0D1D33);
+  color: #F4FBF7;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+}
+
+.panel {
+  padding: 22px;
+}
+
+.panelIntro {
+  padding-bottom: 19px;
+  border-bottom: 1px solid rgba(148, 163, 184, .14);
+}
+
+.panelIntro h2,
+.summary h2,
+.empty h2,
+.payment h3 {
+  margin: 7px 0 7px;
+  color: #F4FBF7;
+}
+
+.panelIntro p,
+.empty p {
+  margin: 0;
+  color: #AEBBD0;
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+.formStack {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  color: #D2D5D2;
+  font-size: .78rem;
+  font-weight: 760;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 9px;
+  padding: 10px 12px;
+  background: #0A192C;
+  color: #F4FBF7;
+  -webkit-text-fill-color: #F4FBF7;
+  font: inherit;
+}
+
+.field input {
+  min-height: 44px;
+}
+
+.field textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: #2F8F62;
+  box-shadow: 0 0 0 4px rgba(47, 143, 98, .13);
+}
+
+.primaryButton {
+  width: 100%;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 9px;
+  padding: 0 18px;
+  background: linear-gradient(90deg, #2F8F62, #3FA46F);
+  color: #FFFFFF;
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(47, 143, 98, .2);
+}
+
+.primaryButton:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.primaryButton:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.summary {
+  position: sticky;
+  top: 82px;
+  padding: 20px;
+}
+
+.summary h2 {
+  margin-bottom: 18px;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, .13);
+  color: #AEBBD0;
+  font-size: .8rem;
+}
+
+.summaryRow strong {
+  color: #F4FBF7;
+  text-align: right;
+}
+
+.summaryTotal {
+  margin-top: 2px;
+  padding-top: 15px;
+  color: #F4FBF7;
+  font-weight: 800;
+}
+
+.summaryTotal strong {
+  color: #F97316;
+  font-size: 1rem;
+}
+
+.summaryNote {
+  margin: 14px 0 0;
+  color: #7E90A8;
+  font-size: .68rem;
+  line-height: 1.5;
+}
+
+.sellers {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.seller {
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, .16);
+  border-radius: 10px;
+  background: #0A192C;
+}
+
+.sellerHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, .15);
+  background: rgba(47, 143, 98, .08);
+  color: #F4FBF7;
+  font-size: .82rem;
+}
+
+.sellerHead span {
+  color: #F97316;
+  font-weight: 850;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, .1);
+  color: #D7E0EC;
+  font-size: .78rem;
+}
+
+.line:last-child {
+  border-bottom: 0;
+}
+
+.line > span {
+  min-width: 0;
+}
+
+.line small {
+  display: block;
+  margin-top: 4px;
+  color: #7E90A8;
+  font-size: .68rem;
+}
+
+.line strong {
+  flex: 0 0 auto;
+  color: #F4FBF7;
+}
+
+.payment {
+  margin-top: 24px;
+}
+
+.paymentOption {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 11px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, .18);
+  border-radius: 10px;
+  background: #0A192C;
+  color: #F4FBF7;
+}
+
+.paymentOption input {
+  margin-top: 3px;
+  accent-color: #2F8F62;
+}
+
+.paymentOption strong,
+.paymentOption small {
+  display: block;
+}
+
+.paymentOption strong {
+  color: #F4FBF7;
+  font-size: .78rem;
+}
+
+.paymentOption small {
+  margin-top: 3px;
+  color: #7E90A8;
+  font-size: .68rem;
+  line-height: 1.45;
+}
+
+.paymentDisabled {
+  opacity: .52;
+}
+
+.empty {
+  min-height: 250px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.empty .primaryButton {
+  width: auto;
+  min-width: 190px;
+  margin-top: 4px;
+}
+
+.muted {
+  max-width: 650px;
+  color: #7E90A8 !important;
+  font-size: .72rem !important;
+}
+
+.error {
+  margin-top: 16px;
+  border: 1px solid rgba(239, 68, 68, .3);
+  border-radius: 9px;
+  padding: 11px 13px;
+  background: rgba(239, 68, 68, .09);
+  color: #FDA4AF;
+  font-size: .76rem;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summary {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .pageHeader {
+    margin-bottom: 18px;
+  }
+
+  .title {
+    font-size: 2.35rem;
+  }
+
+  .panel,
+  .summary {
+    padding: 16px;
+    border-radius: 11px;
+  }
+
+  .two {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryRow,
+  .line,
+  .sellerHead {
+    gap: 10px;
+  }
+}
+
+.paymentMethods {
+  display: grid;
+  gap: .55rem;
+  margin: 1rem 0;
+}
+.paymentMethod {
+  display: grid;
+  gap: .2rem;
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(148,163,184,.28);
+  background: rgba(15,23,42,.55);
+  color: #F4FBF7;
+  border-radius: .85rem;
+  padding: .8rem .9rem;
+  cursor: pointer;
+}
+.paymentMethod small { color: #A0A49F; line-height: 1.35; }
+.paymentMethodActive { border-color: #7569ff; box-shadow: 0 0 0 1px rgba(47,143,98,.35) inset; background: rgba(47,143,98,.10); }
+.paymentMethod:disabled { opacity: .45; cursor: not-allowed; }

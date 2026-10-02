@@ -1,0 +1,55 @@
+{
+  "ecosystem": 1,
+  "name": "Commerce & Everyday Life",
+  "status": "ACTIVE_BUILD",
+  "products": [
+    {
+      "name": "Shopping",
+      "workspaces": ["apps/shopping-web", "apps/shopping-mobile"]
+    },
+    {
+      "name": "Food",
+      "workspaces": ["apps/food-web", "apps/food-mobile"]
+    },
+    {
+      "name": "Grocery",
+      "workspaces": ["apps/grocery-web", "apps/grocery-mobile"]
+    },
+    {
+      "name": "Drive",
+      "workspaces": [
+        "apps/drive-web",
+        "apps/drive-rider-mobile",
+        "apps/drive-driver-mobile"
+      ]
+    },
+    {
+      "name": "Logistics",
+      "workspaces": [
+        "apps/logistics-web",
+        "apps/logistics-mobile",
+        "apps/logistics-courier-mobile"
+      ]
+    },
+    {
+      "name": "Wallet",
+      "technicalCompatibilityNames": ["pay-web", "pay-mobile"],
+      "workspaces": ["apps/pay-web", "apps/pay-mobile"],
+      "note": "Customer-facing name is Wallet. Technical package/folder names remain pay-* until a dedicated safe rename migration."
+    },
+    {
+      "name": "Business",
+      "workspaces": ["apps/business-web", "apps/business-mobile"]
+    },
+    {
+      "name": "Pharmacy",
+      "workspaces": ["apps/pharmacy-web", "apps/pharmacy-mobile"]
+    },
+    {
+      "name": "Bazasport",
+      "workspaces": ["apps/bazasport-web", "apps/bazasport-mobile"]
+    }
+  ],
+  "sharedSystems": ["BazID", "GO", "Operations"],
+  "completionGate": "Ecosystem 2 stays blocked until Ecosystem 1 is stable, validated and frozen as a platform foundation."
+}

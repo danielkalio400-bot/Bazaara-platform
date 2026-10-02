@@ -1,0 +1,48 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "http://127.0.0.1:4000",
+        "EXPO_PUBLIC_BAZID_BASE_URL": "http://127.0.0.1:3004",
+        "EXPO_PUBLIC_SHOPPING_WEB_BASE_URL": "http://127.0.0.1:3003",
+        "BAZAARA_ALLOW_CLEARTEXT": "1",
+        "NODE_ENV": "development"
+      }
+    },
+    "internal": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "http://10.137.7.124:4000",
+        "EXPO_PUBLIC_BAZID_BASE_URL": "http://10.137.7.124:3004",
+        "EXPO_PUBLIC_SHOPPING_WEB_BASE_URL": "http://10.137.7.124:3003",
+        "BAZAARA_ALLOW_CLEARTEXT": "1",
+        "NODE_ENV": "production"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "BAZAARA_ALLOW_CLEARTEXT": "0",
+        "NODE_ENV": "production",
+        "EXPO_PUBLIC_API_BASE_URL": "https://api.bazaara.com",
+        "EXPO_PUBLIC_BAZID_BASE_URL": "https://id.bazaara.com",
+        "EXPO_PUBLIC_SHOPPING_WEB_BASE_URL": "https://shopping.bazaara.com"
+      }
+    }
+  }
+}

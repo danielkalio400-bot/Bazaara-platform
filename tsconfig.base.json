@@ -1,0 +1,48 @@
+{
+    "compilerOptions":  {
+                            "target":  "ES2023",
+                            "lib":  [
+                                        "ES2023",
+                                        "DOM",
+                                        "DOM.Iterable"
+                                    ],
+                            "module":  "ESNext",
+                            "moduleResolution":  "Bundler",
+                            "strict":  true,
+                            "noUncheckedIndexedAccess":  true,
+                            "noImplicitOverride":  true,
+                            "useUnknownInCatchVariables":  true,
+                            "skipLibCheck":  true,
+                            "resolveJsonModule":  true,
+                            "esModuleInterop":  true,
+                            "forceConsistentCasingInFileNames":  true,
+                            "baseUrl":  ".",
+                            "paths":  {
+                                          "@bazaara/contracts":  [
+                                                                     "packages/contracts/src/index.ts"
+                                                                 ],
+                                          "@bazaara/design-system":  [
+                                                                         "packages/design-system/src/index.ts"
+                                                                     ],
+                                          "@bazaara/security":  [
+                                                                    "packages/security/src/index.ts"
+                                                                ],
+                                          "@bazaara/db":  [
+                                                              "packages/db/src/index.ts"
+                                                          ],
+                                          "@bazaara/ledger":  [
+                                                                  "packages/ledger/src/index.ts"
+                                                              ],
+                                          "@bazaara/api-client":  [
+                                                                      "packages/api-client/src/index.ts"
+                                                                  ],
+                                          "@bazaara/bazid-client":  [
+                                                                        "packages/bazid-client/src/index.ts"
+                                                                    ],
+                                          "@bazaara/social-ui": ["packages/social-ui/src/index.tsx"],
+                                          "@bazaara/mobile-ui":  [
+                                                                     "packages/mobile-ui/src/index.tsx"
+                                                                 ]
+                                      }
+                        }
+}

@@ -1,0 +1,29 @@
+"use client";
+import Link from "next/link";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import styles from "./bazai-web-assistant.module.css";
+
+type Product={id:string;slug:string;title:string;currency:string;priceMinor:number;image:{url:string;alt:string}|null;brand:{name:string}|null;seller:{name:string}|null;stock:"IN_STOCK"|"OUT_OF_STOCK"};
+type Plan={title:string;disclaimer:string;ingredients:Array<{label:string;quantity:number;note:string|null;products:Product[]}>};
+const QUICK=[{label:"Weekly restock",prompt:"Plan my weekly grocery restock"},{label:"Jollof for six",prompt:"Groceries for jollof rice for six people"},{label:"Breakfast week",prompt:"Breakfast groceries for one week"},{label:"₦30k basket",prompt:"Build a useful grocery basket under ₦30,000"},{label:"Household",prompt:"Household essentials restock"}];
+const API_BASE=(process.env.NEXT_PUBLIC_API_BASE_URL??"http://localhost:4000").replace(/\/$/,"");
+const money=(v:number,c:string)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:c,maximumFractionDigits:0}).format(v/100);
+
+export function BazAiWebAssistant(){
+  const params=useSearchParams();const[prompt,setPrompt]=useState("");const[plan,setPlan]=useState<Plan|null>(null);const[busy,setBusy]=useState(false);const[error,setError]=useState("");
+  const products=useMemo(()=>{if(!plan)return[];const all=plan.ingredients.flatMap(i=>i.products.slice(0,2));return all.filter((p,i)=>all.findIndex(x=>x.id===p.id)===i)},[plan]);
+  async function ask(value=prompt){const input=value.trim();if(!input)return;setPrompt(input);setBusy(true);setError("");setPlan(null);try{const r=await fetch(`${API_BASE}/v1/grocery/planner`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({prompt:input}),cache:"no-store"});const b=await r.json().catch(()=>null) as Plan|{error?:{message?:string}}|null;if(!r.ok||!b||!("ingredients" in b))throw new Error((b as any)?.error?.message??"Grocery planner could not complete that request");setPlan(b)}catch(e){setError(e instanceof Error?e.message:"Grocery planner could not complete that request")}finally{setBusy(false)}}
+  useEffect(()=>{const initial=params.get("prompt");if(initial)void ask(initial);// eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+  function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();void ask()}
+  return <main className={styles.page}><div className={styles.shell}>
+    <header className={styles.top}><Link href="/" className={styles.brand}><span>BAZAARA</span><strong>Grocery AI</strong></Link><div className={styles.topActions}><Link href="/lists">My lists</Link><Link href="/cart">Basket</Link><Link href="/" className={styles.back}>Back to Grocery</Link></div></header>
+    <section className={styles.workspace}>
+      <div className={styles.intro}><span className={styles.eyebrow}>SMART GROCERY PLANNING</span><h1>Build the basket before you shop it.</h1><p>Start from a meal, household restock or budget. Grocery AI turns it into quantities and live Grocery product suggestions.</p><div className={styles.capabilities}><span>Quantities</span><span>Budget-aware</span><span>Live catalogue</span><span>Substitution-ready</span></div></div>
+      <div className={styles.planner}><div className={styles.plannerHead}><div><span>PLAN BUILDER</span><strong>What do you need?</strong></div><b>{busy?"Planning…":"Ready"}</b></div><div className={styles.quick}>{QUICK.map(i=><button key={i.label} type="button" className={styles.chip} onClick={()=>void ask(i.prompt)}>{i.label}</button>)}</div><form className={styles.composer} onSubmit={submit}><textarea className={styles.input} value={prompt} onChange={e=>setPrompt(e.target.value)} placeholder="e.g. Plan groceries for a family of four for one week under ₦50,000" rows={4}/><div className={styles.composerFoot}><small>Grocery AI plans. The branch still confirms stock before checkout.</small><button className={styles.send} disabled={busy||!prompt.trim()}>{busy?"Planning…":"Build plan"}</button></div></form>{error?<div className={styles.status}>{error}</div>:null}</div>
+    </section>
+    {plan?<section className={styles.resultGrid}><article className={styles.plan}><span className={styles.eyebrow}>YOUR PLAN</span><h2>{plan.title}</h2><div className={styles.planRows}>{plan.ingredients.map(i=><div key={i.label}><span><strong>{i.label}</strong>{i.note?<small>{i.note}</small>:null}</span><b>× {i.quantity}</b></div>)}</div><p className={styles.disclaimer}>{plan.disclaimer}</p><div className={styles.planActions}><Link href="/lists">Save as a list</Link><Link href="/search-results?vertical=GROCERY">Browse catalogue</Link></div></article><aside className={styles.planAside}><span>HOW IT WORKS</span><strong>Plan → check stock → basket → checkout</strong><p>Grocery AI does not guess store inventory. Availability is validated against live branch stock when you shop and reserve checkout.</p></aside></section>:null}
+    {products.length?<section className={styles.section}><div className={styles.sectionHead}><div><span>LIVE GROCERY MATCHES</span><h2>Products for this plan</h2></div><Link href="/search-results?vertical=GROCERY">See catalogue →</Link></div><div className={styles.grid}>{products.map(p=><Link key={p.id} href={`/products/${p.slug}`} className={styles.card}>{p.image?<img className={styles.image} src={p.image.url} alt={p.image.alt||p.title}/>:<div className={styles.image}/>}<div className={styles.body}><div className={styles.kicker}>{p.brand?.name??p.seller?.name??"Grocery"}</div><div className={styles.product}>{p.title}</div><div className={styles.price}>{money(p.priceMinor,p.currency)}</div><div className={styles.meta}>{p.stock==="IN_STOCK"?"In stock":"Out of stock"}{p.seller?` · ${p.seller.name}`:""}</div></div></Link>)}</div></section>:null}
+  </div></main>
+}

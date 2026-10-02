@@ -1,0 +1,66 @@
+BAZAARA PLATFORM V10 VALIDATION LOG
+Date: 2026-09-21
+
+
+> bazaara-platform@0.1.0 validate:current-release
+> npm run validate:source-release && npm run validate:grocery-v55 && npm run validate:shopping-current && npm run validate:business-operations-v9 && npm run validate:drive-wallet-operations-v10
+
+
+> bazaara-platform@0.1.0 validate:source-release
+> npm run validate:static && npm run validate:grocery-food-v2 && npm run validate:food-connected-v3 && npm run validate:drive-pharmacy
+
+
+> bazaara-platform@0.1.0 validate:static
+> node scripts/validate-static.mjs
+
+Static validation notes:
+  - Legacy Install-Bazaara-Roadmap79.ps1 is absent as expected in the cleaned permanent platform repo
+Static validation PASS (561 source files; 12 web ports; 11 native clients).
+
+> bazaara-platform@0.1.0 validate:grocery-food-v2
+> node scripts/validate-grocery-food-v2.mjs
+
+Grocery/Food V2 validation PASS (3185 checks)
+
+> bazaara-platform@0.1.0 validate:food-connected-v3
+> node scripts/validate-food-connected-v3.mjs
+
+Food connected V3 validation PASS (commercial rules, canonical order, Business, Go, Operations, delivery pin/location and premium Food UI).
+
+> bazaara-platform@0.1.0 validate:drive-pharmacy
+> node scripts/validate-drive-pharmacy.mjs
+
+Drive/Pharmacy validation PASS (30 checks).
+
+> bazaara-platform@0.1.0 validate:grocery-v55
+> node scripts/validate-grocery-normal-v55.mjs
+
+Grocery Normal V5.5 validation PASS.
+
+> bazaara-platform@0.1.0 validate:shopping-current
+> npm run validate:shopping-responsive && npm run validate:shopping-cart-v27
+
+
+> bazaara-platform@0.1.0 validate:shopping-responsive
+> node scripts/validate-shopping-responsive-v2.4.mjs
+
+Shopping V2.4 responsive audit PASS.
+
+> bazaara-platform@0.1.0 validate:shopping-cart-v27
+> node scripts/validate-shopping-cart-v2.7.mjs
+
+Shopping Cart V2.7 validation PASS.
+
+> bazaara-platform@0.1.0 validate:business-operations-v9
+> node scripts/validate-business-operations-v9.mjs
+
+Business & Operations V9 smart-button/live-support assertions passed (88 checks; 207 buttons audited).
+
+> bazaara-platform@0.1.0 validate:drive-wallet-operations-v10
+> node scripts/validate-drive-wallet-operations-v10.mjs
+
+Drive/Wallet/Operations V10 validation PASS (149 checks).
+
+TypeScript/TSX syntax transpilation PASS (15 changed files).
+CSS brace sanity PASS (3 changed stylesheets).
+Cross-app NEXT_PUBLIC fallback port audit PASS.

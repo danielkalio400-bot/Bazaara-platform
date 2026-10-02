@@ -1,0 +1,11 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/discover/route": "app/api/discover/route.js",
+  "/api/lens/analyze/route": "app/api/lens/analyze/route.js",
+  "/api/region/route": "app/api/region/route.js",
+  "/api/search/route": "app/api/search/route.js",
+  "/connected/page": "app/connected/page.js",
+  "/page": "app/page.js",
+  "/search-data/page": "app/search-data/page.js"
+}

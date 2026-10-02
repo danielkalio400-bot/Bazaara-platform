@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="BAZAARA B">
+<defs><linearGradient id="r" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#da66ff"/><stop offset=".47" stop-color="#824dff"/><stop offset="1" stop-color="#17edff"/></linearGradient><linearGradient id="s" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#3bdcff"/><stop offset=".5" stop-color="#8259ff"/><stop offset="1" stop-color="#f48bff"/></linearGradient></defs>
+<path d="M29 18c0-4 3-7 7-7h38c22 0 37 12 37 30 0 11-6 19-16 24 12 5 19 15 19 27 0 20-16 33-41 33H36c-4 0-7-3-7-7V18Zm20 13v26h22c13 0 19-5 19-13s-7-13-19-13H49Zm0 45v28h24c14 0 20-5 20-14 0-10-7-14-21-14H49Z" fill="url(#r)" opacity=".95"/>
+<path d="M29 18c0-4 3-7 7-7h38c22 0 37 12 37 30 0 11-6 19-16 24-11 6-28 11-46 11v28h24c14 0 20-5 20-14 0-8-5-12-14-14" fill="none" stroke="url(#s)" stroke-width="8" stroke-linecap="round" opacity=".9"/>
+<path d="M48 31v26h23c12 0 19-5 19-13S83 31 71 31H48Z" fill="#07101e" opacity=".76"/>
+</svg>

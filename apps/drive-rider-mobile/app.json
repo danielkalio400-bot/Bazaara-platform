@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Drive",
+    "slug": "bazaara-drive",
+    "scheme": "bazaara-drive",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow BAZAARA Drive to use your location to set a pickup pin. Location is not shared until you book a ride."
+        }
+      ]
+    ],
+    "android": {
+      "package": "com.bazaara.bazaaradrive"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bazaara.bazaaradrive"
+    }
+  }
+}

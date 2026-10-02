@@ -1,0 +1,48 @@
+name: E3 Search Alpha
+on:
+  pull_request:
+    paths:
+      - 'apps/search-web/**'
+      - 'services/search-api/**'
+      - 'scripts/register-ecosystem-3-lockfile.mjs'
+      - 'package-lock.json'
+      - '.github/workflows/e3-search-alpha.yml'
+  push:
+    branches: ['feature/ecosystem-3', 'feature/ecosystem-3/**']
+    paths:
+      - 'apps/search-web/**'
+      - 'services/search-api/**'
+      - '.github/workflows/e3-search-alpha.yml'
+permissions:
+  contents: read
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run test --workspace=@bazaara/search-api
+      - run: npm run validate:current-release
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      SEARCH_API_ORIGIN: http://127.0.0.1:4020
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install only Search Web dependencies (E1/E2 remain untouched)
+        working-directory: apps/search-web
+        run: npm install --workspaces=false --no-audit --no-fund
+      - name: Build Search Web
+        working-directory: apps/search-web
+        run: npm run build --workspaces=false
+      - name: Typecheck Search Web
+        working-directory: apps/search-web
+        run: npm run typecheck --workspaces=false

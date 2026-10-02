@@ -1,0 +1,1899 @@
+/*
+ * Shopping Futuristic / Neon UI V2
+ * Selected concept: Option 4.
+ * Presentation layer only. Existing commerce routes and API contracts remain intact.
+ */
+
+:root {
+  --neon-bg: #030915;
+  --neon-bg-2: #061426;
+  --neon-panel: #07182b;
+  --neon-panel-2: #0a1f37;
+  --neon-line: rgba(76, 220, 255, .15);
+  --neon-line-strong: rgba(85, 226, 255, .42);
+  --neon-cyan: #47e3ff;
+  --neon-blue: #00a8ff;
+  --neon-indigo: #5d5cff;
+  --neon-violet: #a541ff;
+  --neon-pink: #eb4cff;
+  --neon-text: #f3fbff;
+  --neon-muted: #7890aa;
+  --neon-green: #42d88a;
+}
+
+body {
+  background:
+    radial-gradient(circle at 88% -7%, rgba(93, 92, 255, .15), transparent 30rem),
+    radial-gradient(circle at 8% 28%, rgba(0, 168, 255, .09), transparent 29rem),
+    linear-gradient(180deg, #030914, #020711 70%, #030812) !important;
+}
+
+.neon-shop {
+  min-height: 100vh;
+  color: var(--neon-text);
+  background:
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px),
+    radial-gradient(circle at 85% 0%, rgba(165, 65, 255, .10), transparent 32rem),
+    radial-gradient(circle at 5% 18%, rgba(0, 168, 255, .08), transparent 24rem),
+    linear-gradient(180deg, #040b17, #020711);
+  background-size: 48px 48px, 48px 48px, auto, auto, auto;
+}
+
+.neon-shop-main {
+  width: min(1500px, calc(100% - 38px)) !important;
+  padding-top: 18px !important;
+  padding-bottom: 92px !important;
+}
+
+.neon-shop .bz-shop-header {
+  border-bottom-color: rgba(71, 227, 255, .13) !important;
+  background: rgba(3, 10, 20, .93) !important;
+  box-shadow: 0 15px 45px rgba(0,0,0,.3) !important;
+  backdrop-filter: blur(18px);
+}
+
+.neon-shop .bz-shop-search {
+  background: rgba(255,255,255,.025) !important;
+  border-color: rgba(92, 188, 235, .15) !important;
+}
+
+.neon-shop .bz-shop-search:focus-within {
+  border-color: rgba(71, 227, 255, .55) !important;
+  box-shadow: 0 0 0 3px rgba(71, 227, 255, .08), 0 0 34px rgba(0,168,255,.08) !important;
+}
+
+.neon-command-grid {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.neon-category-rail,
+.neon-hero,
+.neon-trust-row,
+.neon-discovery-card,
+.neon-account-strip {
+  border: 1px solid var(--neon-line);
+  box-shadow: inset 0 1px rgba(255,255,255,.02), 0 22px 70px rgba(0,0,0,.18);
+}
+
+.neon-category-rail {
+  min-height: 590px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(0,168,255,.09), transparent 16rem),
+    rgba(5, 17, 31, .88);
+}
+
+.neon-rail-head {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px 10px;
+  border-bottom: 1px solid rgba(75,216,255,.09);
+}
+
+.neon-rail-orb {
+  width: 35px;
+  height: 35px;
+  border-radius: 11px;
+  background:
+    radial-gradient(circle at 35% 28%, #fff, transparent 10%),
+    radial-gradient(circle at 46% 46%, #45e6ff, #006dff 58%, #201264 100%);
+  box-shadow: 0 0 25px rgba(71,227,255,.28);
+}
+
+.neon-rail-head > div {
+  display: grid;
+  gap: 2px;
+}
+
+.neon-rail-head small,
+.neon-rail-tools small,
+.neon-hero-topline span,
+.neon-hero-metric small,
+.neon-trust-row small,
+.neon-section-head > div > span,
+.neon-discovery-card small,
+.neon-account-strip > div > span {
+  color: #5f82a1;
+  font-size: .55rem;
+  font-weight: 950;
+  letter-spacing: .12em;
+}
+
+.neon-rail-head strong {
+  font-size: .76rem;
+}
+
+.neon-category-rail nav {
+  margin-top: 10px;
+  display: grid;
+  gap: 5px;
+}
+
+.neon-rail-item {
+  min-height: 43px;
+  padding: 0 8px;
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: #879bb2;
+  font-size: .67rem;
+  font-weight: 780;
+  transition: border-color 140ms ease, background 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.neon-rail-item:hover,
+.neon-rail-item.is-active {
+  color: #f1fbff;
+  border-color: rgba(71,227,255,.22);
+  background: linear-gradient(90deg, rgba(0,168,255,.11), rgba(93,92,255,.045));
+  transform: translateX(2px);
+}
+
+.neon-rail-icon {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--neon-cyan);
+  background: rgba(0,168,255,.07);
+  font-size: .72rem;
+}
+
+.neon-rail-item b {
+  color: #4f667d;
+  font-size: .9rem;
+}
+
+.neon-rail-tools {
+  margin-top: auto;
+  padding-top: 12px;
+  display: grid;
+  gap: 7px;
+  border-top: 1px solid rgba(75,216,255,.09);
+}
+
+.neon-rail-tools > a {
+  min-height: 55px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 9px;
+  align-items: center;
+  border-radius: 11px;
+  background: rgba(255,255,255,.018);
+}
+
+.neon-rail-tools > a:hover {
+  background: rgba(0,168,255,.055);
+}
+
+.neon-rail-tools > a > span {
+  width: 33px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(71,227,255,.18);
+  border-radius: 9px;
+  color: var(--neon-cyan);
+  background: rgba(0,168,255,.06);
+  font-size: .6rem;
+  font-weight: 950;
+}
+
+.neon-rail-tools > a > div {
+  display: grid;
+  gap: 2px;
+}
+
+.neon-rail-tools strong {
+  font-size: .68rem;
+}
+
+.neon-hero {
+  position: relative;
+  min-height: 590px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(460px, 1.1fr);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 83% 10%, rgba(165,65,255,.13), transparent 26rem),
+    radial-gradient(circle at 60% 80%, rgba(0,168,255,.10), transparent 28rem),
+    linear-gradient(125deg, #06162a, #071128 45%, #060d1b);
+}
+
+.neon-hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: .4;
+  background:
+    linear-gradient(rgba(71,227,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(71,227,255,.045) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: linear-gradient(90deg, transparent 1%, #000 48%, #000);
+}
+
+.neon-hero-beam {
+  position: absolute;
+  width: 440px;
+  height: 2px;
+  filter: blur(.2px);
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-violet), transparent);
+  box-shadow: 0 0 20px rgba(71,227,255,.28);
+}
+
+.neon-hero-beam-one {
+  top: 36%;
+  right: 1%;
+  transform: rotate(-27deg);
+}
+
+.neon-hero-beam-two {
+  bottom: 27%;
+  right: 9%;
+  transform: rotate(24deg);
+}
+
+.neon-hero-copy {
+  position: relative;
+  z-index: 4;
+  padding: clamp(34px, 5vw, 68px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.neon-hero-topline {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.neon-hero-topline i {
+  padding: 5px 7px;
+  border: 1px solid rgba(66,216,138,.26);
+  border-radius: 999px;
+  color: #7de4aa;
+  background: rgba(66,216,138,.055);
+  font-size: .5rem;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .09em;
+}
+
+.neon-hero-copy h1 {
+  margin: 22px 0 20px;
+  color: #fff;
+  font-size: clamp(3.7rem, 6.8vw, 7.4rem);
+  line-height: .83;
+  letter-spacing: -.074em;
+}
+
+.neon-hero-copy h1 span {
+  color: transparent;
+  background: linear-gradient(105deg, #63e9ff 4%, #1db5ff 42%, #7b61ff 72%, #eb4cff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 19px rgba(71,227,255,.09));
+}
+
+.neon-hero-copy > p {
+  max-width: 620px;
+  margin: 0;
+  color: #8fa4bb;
+  font-size: .93rem;
+  line-height: 1.72;
+}
+
+.neon-hero-actions {
+  margin-top: 27px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.neon-primary-cta,
+.neon-secondary-cta {
+  min-height: 49px;
+  padding: 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  border-radius: 12px;
+  font-size: .74rem;
+  font-weight: 900;
+}
+
+.neon-primary-cta {
+  color: #03121d;
+  background: linear-gradient(120deg, #65e8ff, #00a8ff 56%, #665cff);
+  box-shadow: 0 14px 34px rgba(0,168,255,.20), 0 0 32px rgba(71,227,255,.08);
+}
+
+.neon-secondary-cta {
+  color: #d6efff;
+  border: 1px solid rgba(71,227,255,.26);
+  background: rgba(5,14,29,.46);
+}
+
+.neon-primary-cta:hover,
+.neon-secondary-cta:hover {
+  filter: brightness(1.08);
+}
+
+.neon-hero-proof {
+  margin-top: 23px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #6e859d;
+  font-size: .62rem;
+  font-weight: 760;
+}
+
+.neon-hero-proof span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.neon-hero-proof b {
+  color: var(--neon-green);
+}
+
+.neon-hero-stage {
+  position: relative;
+  min-height: 590px;
+}
+
+.neon-hero-core {
+  position: absolute;
+  z-index: 1;
+  width: 250px;
+  height: 250px;
+  left: 46%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,168,255,.18), rgba(93,92,255,.035) 58%, transparent 62%);
+}
+
+.neon-core-ring {
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(71,227,255,.22);
+  border-radius: 50%;
+  box-shadow: 0 0 45px rgba(71,227,255,.05);
+}
+
+.neon-core-ring-two {
+  inset: 54px;
+  border-color: rgba(165,65,255,.25);
+}
+
+.neon-core-center {
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(71,227,255,.35);
+  border-radius: 24px;
+  color: #c4f8ff;
+  background: linear-gradient(145deg, rgba(0,168,255,.17), rgba(165,65,255,.12));
+  box-shadow: 0 0 45px rgba(0,168,255,.12);
+  font-size: 1.3rem;
+  font-weight: 950;
+}
+
+.neon-floating-product {
+  position: absolute;
+  z-index: 4;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  border: 1px solid rgba(71,227,255,.20);
+  border-radius: 18px;
+  background: rgba(4,14,27,.82);
+  box-shadow: 0 22px 55px rgba(0,0,0,.31), 0 0 28px rgba(0,168,255,.04);
+  backdrop-filter: blur(12px);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.neon-floating-product:hover {
+  z-index: 9;
+  transform: translateY(-5px) rotate(0deg);
+  border-color: rgba(71,227,255,.65);
+}
+
+.neon-floating-product img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.neon-floating-product span {
+  padding: 8px 10px;
+  overflow: hidden;
+  color: #bfd2e5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .58rem;
+  font-weight: 760;
+}
+
+.neon-floating-product-1 {
+  width: 33%;
+  height: 42%;
+  left: 8%;
+  top: 11%;
+  transform: rotate(-5deg);
+}
+
+.neon-floating-product-2 {
+  width: 30%;
+  height: 39%;
+  right: 9%;
+  top: 19%;
+  transform: rotate(5deg);
+}
+
+.neon-floating-product-3 {
+  width: 28%;
+  height: 34%;
+  left: 35%;
+  bottom: 11%;
+  transform: rotate(2deg);
+}
+
+.neon-hero-metric {
+  position: absolute;
+  z-index: 10;
+  right: 18px;
+  bottom: 18px;
+  min-width: 210px;
+  padding: 12px 14px;
+  display: grid;
+  gap: 3px;
+  border: 1px solid rgba(71,227,255,.18);
+  border-radius: 13px;
+  background: rgba(3,11,22,.82);
+  backdrop-filter: blur(16px);
+}
+
+.neon-hero-metric strong {
+  font-size: .7rem;
+}
+
+.neon-hero-metric span {
+  color: #6d839b;
+  font-size: .57rem;
+}
+
+.neon-trust-row {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  border-radius: 17px;
+  overflow: hidden;
+  background: rgba(5,17,31,.78);
+}
+
+.neon-trust-row article {
+  min-height: 84px;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.neon-trust-row article + article {
+  border-left: 1px solid rgba(71,227,255,.09);
+}
+
+.neon-trust-row article > span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--neon-cyan);
+  background: rgba(0,168,255,.07);
+  font-size: .65rem;
+  font-weight: 950;
+}
+
+.neon-trust-row article > div {
+  display: grid;
+  gap: 3px;
+}
+
+.neon-trust-row strong {
+  color: #dcebf7;
+  font-size: .69rem;
+}
+
+.neon-section {
+  padding-top: 58px;
+}
+
+.neon-section-head {
+  margin-bottom: 19px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.neon-section-head h2 {
+  margin: 6px 0 5px;
+  color: #f0f9ff;
+  font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+  letter-spacing: -.042em;
+}
+
+.neon-section-head p {
+  margin: 0;
+  color: #70879f;
+  font-size: .78rem;
+}
+
+.neon-section-head > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #87dcf3;
+  font-size: .68rem;
+  font-weight: 850;
+}
+
+.neon-product-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 11px !important;
+}
+
+.neon-shop .shop-product-card {
+  overflow: hidden;
+  border-color: rgba(71,227,255,.12) !important;
+  border-radius: 17px !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(93,92,255,.055), transparent 12rem),
+    linear-gradient(180deg, #09192a, #071321) !important;
+  box-shadow: none !important;
+}
+
+.neon-shop .shop-product-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(71,227,255,.38) !important;
+  box-shadow: 0 18px 42px rgba(0,0,0,.23), 0 0 25px rgba(0,168,255,.045) !important;
+}
+
+.neon-shop .product-card-body {
+  padding: 13px !important;
+}
+
+.neon-shop .product-kicker {
+  color: #68dffc !important;
+}
+
+.neon-shop .product-title {
+  color: #edf8ff !important;
+}
+
+.neon-shop .product-price-row strong {
+  color: #74e8ff !important;
+}
+
+.neon-shop .product-meta {
+  color: #647c94 !important;
+}
+
+.neon-shop .product-meta a {
+  color: #8fa4b8 !important;
+}
+
+.neon-shop .discount-badge {
+  background: linear-gradient(120deg, #ef4dce, #8d48ff) !important;
+}
+
+.neon-shop .add-to-cart-button,
+.neon-shop .product-add-button,
+.neon-shop .primary-shop-button {
+  border-color: rgba(71,227,255,.35) !important;
+  background: linear-gradient(120deg, #136cff, #00a8ff 55%, #5d5cff) !important;
+  color: #fff !important;
+  box-shadow: 0 9px 22px rgba(0,168,255,.16) !important;
+}
+
+.neon-discovery-grid {
+  margin-top: 58px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.neon-discovery-card {
+  min-height: 180px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 45px 1fr auto;
+  gap: 12px;
+  align-items: start;
+  border-radius: 18px;
+  background: rgba(6,19,34,.82);
+}
+
+.neon-discovery-card:hover {
+  border-color: rgba(71,227,255,.34);
+}
+
+.neon-lens-card {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(0,168,255,.09), transparent 13rem),
+    rgba(6,19,34,.82);
+}
+
+.neon-ai-card {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(165,65,255,.10), transparent 13rem),
+    rgba(6,19,34,.82);
+}
+
+.neon-wishlist-card {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(235,76,255,.07), transparent 13rem),
+    rgba(6,19,34,.82);
+}
+
+.neon-discovery-icon {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(71,227,255,.20);
+  border-radius: 13px;
+  color: var(--neon-cyan);
+  background: rgba(0,168,255,.065);
+  font-size: .66rem;
+  font-weight: 950;
+}
+
+.neon-discovery-card h3 {
+  margin: 5px 0;
+  color: #ecf8ff;
+  font-size: .96rem;
+  letter-spacing: -.02em;
+}
+
+.neon-discovery-card p {
+  margin: 0;
+  color: #6f859d;
+  font-size: .64rem;
+  line-height: 1.45;
+}
+
+.neon-discovery-card > b {
+  color: #51687f;
+}
+
+.neon-account-strip {
+  margin-top: 58px;
+  padding: 25px 27px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 25px;
+  align-items: center;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(0,168,255,.08), transparent 19rem),
+    radial-gradient(circle at 100% 0%, rgba(165,65,255,.07), transparent 19rem),
+    rgba(5,17,31,.82);
+}
+
+.neon-account-strip h2 {
+  margin: 6px 0 4px;
+  color: #eff9ff;
+  font-size: 1.45rem;
+  letter-spacing: -.035em;
+}
+
+.neon-account-strip p {
+  margin: 0;
+  color: #6e839b;
+  font-size: .72rem;
+}
+
+.neon-account-strip nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+
+.neon-account-strip nav a {
+  min-width: 92px;
+  min-height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(71,227,255,.12);
+  border-radius: 10px;
+  color: #9fb1c4;
+  background: rgba(255,255,255,.016);
+  font-size: .62rem;
+  font-weight: 850;
+}
+
+.neon-account-strip nav a:hover {
+  color: #e9f9ff;
+  border-color: rgba(71,227,255,.34);
+}
+
+.neon-empty {
+  min-height: 230px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  border: 1px dashed rgba(71,227,255,.18);
+  border-radius: 18px;
+  background: rgba(5,17,31,.58);
+}
+
+.neon-empty > span {
+  color: var(--neon-cyan);
+  font-size: .55rem;
+  font-weight: 950;
+  letter-spacing: .12em;
+}
+
+.neon-empty h2 {
+  margin: 7px 0 4px;
+}
+
+.neon-empty p {
+  margin: 0;
+  color: #6f859d;
+}
+
+@media (max-width: 1180px) {
+  .neon-command-grid {
+    grid-template-columns: 190px minmax(0,1fr);
+  }
+
+  .neon-hero {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .neon-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .neon-account-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 930px) {
+  .neon-command-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .neon-category-rail {
+    min-height: 0;
+  }
+
+  .neon-category-rail nav {
+    grid-template-columns: repeat(4, minmax(0,1fr));
+  }
+
+  .neon-rail-item {
+    grid-template-columns: 26px minmax(0,1fr);
+  }
+
+  .neon-rail-item b {
+    display: none;
+  }
+
+  .neon-rail-tools {
+    margin-top: 10px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .neon-hero {
+    min-height: 540px;
+  }
+
+  .neon-trust-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .neon-trust-row article:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid rgba(71,227,255,.09);
+  }
+
+  .neon-trust-row article:nth-child(4) {
+    border-top: 1px solid rgba(71,227,255,.09);
+  }
+
+  .neon-discovery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .neon-shop-main {
+    width: calc(100% - 20px) !important;
+  }
+
+  .neon-category-rail {
+    display: none;
+  }
+
+  .neon-hero {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    border-radius: 19px;
+  }
+
+  .neon-hero-copy {
+    padding: 30px 21px 18px;
+  }
+
+  .neon-hero-copy h1 {
+    font-size: clamp(3rem, 15vw, 4.9rem);
+  }
+
+  .neon-hero-stage {
+    min-height: 325px;
+  }
+
+  .neon-floating-product-1 {
+    width: 39%;
+    height: 46%;
+    left: 8%;
+  }
+
+  .neon-floating-product-2 {
+    width: 35%;
+    height: 43%;
+    right: 8%;
+  }
+
+  .neon-floating-product-3 {
+    width: 29%;
+    height: 34%;
+    left: 35%;
+  }
+
+  .neon-hero-core {
+    width: 190px;
+    height: 190px;
+  }
+
+  .neon-hero-metric {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .neon-section {
+    padding-top: 44px;
+  }
+
+  .neon-section-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .neon-product-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .neon-discovery-grid {
+    margin-top: 44px;
+  }
+
+  .neon-account-strip {
+    margin-top: 44px;
+    padding: 20px;
+  }
+
+  .neon-account-strip nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .neon-account-strip nav a {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 470px) {
+  .neon-shop-main {
+    width: calc(100% - 14px) !important;
+  }
+
+  .neon-hero-copy {
+    padding: 26px 17px 14px;
+  }
+
+  .neon-hero-copy h1 {
+    font-size: 2.85rem;
+  }
+
+  .neon-hero-actions {
+    display: grid;
+  }
+
+  .neon-primary-cta,
+  .neon-secondary-cta {
+    width: 100%;
+  }
+
+  .neon-hero-proof {
+    display: grid;
+    gap: 7px;
+  }
+
+  .neon-trust-row article {
+    min-height: 74px;
+    padding: 10px;
+    grid-template-columns: 30px 1fr;
+  }
+
+  .neon-trust-row article > span {
+    width: 30px;
+    height: 30px;
+  }
+
+  .neon-trust-row strong {
+    font-size: .62rem;
+  }
+
+  .neon-trust-row small {
+    font-size: .48rem;
+  }
+
+  .neon-shop .product-card-body {
+    padding: 9px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-rail-item,
+  .neon-floating-product,
+  .neon-shop .shop-product-card {
+    transition: none !important;
+  }
+
+  .neon-rail-item:hover,
+  .neon-floating-product:hover,
+  .neon-shop .shop-product-card:hover {
+    transform: none !important;
+  }
+}
+
+
+/* ========================================================================
+   V2.1 — HEADER / SEARCH COMMAND BAR
+   User-selected refinement:
+   - no hard outline around the search field
+   - no divider line before Baz Lens
+   - upgraded Categories / Wishlist / Account / Cart controls
+   ======================================================================== */
+
+.neon-shop .bz-shop-header {
+  background:
+    radial-gradient(circle at 70% -80%, rgba(0,168,255,.12), transparent 22rem),
+    rgba(3, 9, 20, .93) !important;
+  border-bottom: 0 !important;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, .34) !important;
+  backdrop-filter: blur(22px) saturate(135%);
+}
+
+.neon-shop .bz-shop-header-inner {
+  min-height: 82px !important;
+  gap: clamp(12px, 1.35vw, 22px) !important;
+}
+
+/* Clean search surface: NO stroke / outline / divider line. */
+.neon-shop .bz-shop-search {
+  height: 54px !important;
+  padding: 0 8px 0 18px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 92% 0%, rgba(93,92,255,.095), transparent 11rem),
+    linear-gradient(135deg, rgba(13,34,56,.96), rgba(7,24,43,.96)) !important;
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.22),
+    0 0 34px rgba(0,168,255,.035) !important;
+  overflow: visible !important;
+}
+
+.neon-shop .bz-shop-search:focus-within {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.27),
+    0 0 38px rgba(0,168,255,.12) !important;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(165,65,255,.11), transparent 11rem),
+    linear-gradient(135deg, rgba(14,38,63,.99), rgba(7,27,48,.99)) !important;
+}
+
+.neon-shop .bz-shop-search::before,
+.neon-shop .bz-shop-search::after,
+.neon-shop .bz-shop-search-actions::before,
+.neon-shop .bz-shop-search-actions::after {
+  display: none !important;
+  content: none !important;
+}
+
+.neon-shop .bz-shop-search *,
+.neon-shop .bz-shop-search-actions,
+.neon-shop .bz-shop-search-action {
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 0 !important;
+  box-shadow: none;
+}
+
+.neon-shop .bz-search-icon {
+  color: #6c8da8 !important;
+  margin-right: 9px !important;
+  transition: color 140ms ease, transform 140ms ease;
+}
+
+.neon-shop .bz-shop-search:focus-within .bz-search-icon {
+  color: var(--neon-cyan) !important;
+  transform: scale(1.04);
+}
+
+.neon-shop .bz-shop-search input {
+  color: #edf9ff !important;
+  font-size: .94rem !important;
+  letter-spacing: -.005em;
+}
+
+.neon-shop .bz-shop-search input::placeholder {
+  color: #627b94 !important;
+  opacity: 1 !important;
+}
+
+.neon-shop .bz-shop-search-actions {
+  padding: 0 !important;
+  gap: 5px !important;
+}
+
+.neon-shop .bz-shop-search-action {
+  width: 40px !important;
+  height: 40px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  color: #7feaff !important;
+  background:
+    radial-gradient(circle at 70% 15%, rgba(165,65,255,.16), transparent 70%),
+    rgba(0,168,255,.085) !important;
+  box-shadow: 0 8px 19px rgba(0,0,0,.13) !important;
+  transition: transform 140ms ease, background 140ms ease, color 140ms ease;
+}
+
+.neon-shop .bz-shop-search-action:hover,
+.neon-shop .bz-shop-search-action:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  color: #fff !important;
+  background:
+    linear-gradient(135deg, rgba(0,168,255,.25), rgba(93,92,255,.20)) !important;
+  box-shadow: 0 0 22px rgba(0,168,255,.12) !important;
+  transform: translateY(-1px);
+}
+
+.neon-shop .bz-lens-icon {
+  width: 21px !important;
+  height: 21px !important;
+}
+
+/* Search suggestions now belong visually to the command bar. */
+.neon-shop .bz-search-suggestions {
+  top: calc(100% + 9px) !important;
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: rgba(5, 18, 34, .98) !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,.42), 0 0 28px rgba(0,168,255,.06) !important;
+  backdrop-filter: blur(18px);
+}
+
+.neon-shop .bz-search-suggestions a {
+  color: #dcebf7 !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(71,227,255,.055) !important;
+  background: transparent !important;
+}
+
+.neon-shop .bz-search-suggestions a:last-child {
+  border-bottom: 0 !important;
+}
+
+.neon-shop .bz-search-suggestions a:hover {
+  color: #fff !important;
+  background: linear-gradient(90deg, rgba(0,168,255,.10), rgba(93,92,255,.045)) !important;
+}
+
+.neon-shop .bz-search-suggestions small {
+  color: #5f7a94 !important;
+}
+
+/* Top action cluster: softer glass buttons, no hard rectangles. */
+.neon-shop .bz-shop-nav {
+  gap: 8px !important;
+}
+
+.neon-shop .bz-categories-trigger,
+.neon-shop .bz-icon-link,
+.neon-shop .bz-shop-cart a {
+  border: 0 !important;
+  outline: 0 !important;
+  color: #d7e7f4 !important;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(0,168,255,.08), transparent 70%),
+    rgba(11, 29, 49, .84) !important;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.18),
+    inset 0 1px rgba(255,255,255,.025) !important;
+  transition:
+    transform 140ms ease,
+    color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease !important;
+}
+
+.neon-shop .bz-categories-trigger {
+  min-height: 46px !important;
+  padding: 0 15px !important;
+  gap: 8px !important;
+  border-radius: 14px !important;
+}
+
+.neon-shop .bz-categories-trigger .bz-category-icon {
+  color: #62e7ff !important;
+}
+
+.neon-shop .bz-nav-chevron {
+  color: #56718c !important;
+  margin-left: 2px;
+}
+
+.neon-shop .bz-icon-link,
+.neon-shop .bz-shop-cart a {
+  width: 46px !important;
+  min-width: 46px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  border-radius: 14px !important;
+}
+
+.neon-shop .bz-icon-link svg,
+.neon-shop .bz-shop-cart a svg {
+  width: 21px !important;
+  height: 21px !important;
+}
+
+.neon-shop .bz-categories-trigger:hover,
+.neon-shop .bz-categories-trigger:focus-visible,
+.neon-shop .bz-categories-trigger[aria-expanded="true"],
+.neon-shop .bz-icon-link:hover,
+.neon-shop .bz-icon-link:focus-visible,
+.neon-shop .bz-account-trigger[aria-expanded="true"],
+.neon-shop .bz-shop-cart a:hover,
+.neon-shop .bz-shop-cart a:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  color: #fff !important;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(165,65,255,.15), transparent 75%),
+    linear-gradient(135deg, rgba(0,168,255,.16), rgba(17,37,61,.96)) !important;
+  box-shadow:
+    0 13px 29px rgba(0,0,0,.22),
+    0 0 24px rgba(0,168,255,.09) !important;
+  transform: translateY(-2px);
+}
+
+.neon-shop .bz-shop-cart {
+  position: relative;
+}
+
+.neon-shop .bz-shop-cart a {
+  position: relative;
+}
+
+.neon-shop .bz-shop-cart a span {
+  position: absolute !important;
+  top: -4px !important;
+  right: -4px !important;
+  min-width: 19px !important;
+  height: 19px !important;
+  padding: 0 5px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #7b61ff, #e84cff) !important;
+  box-shadow: 0 0 18px rgba(232,76,255,.30) !important;
+  font-size: .57rem !important;
+  font-weight: 950 !important;
+}
+
+/* Account popover: dark futuristic surface to match the upgraded controls. */
+.neon-shop .bz-account-popover {
+  width: 184px !important;
+  padding: 8px !important;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: rgba(5,18,34,.985) !important;
+  box-shadow: 0 24px 58px rgba(0,0,0,.44), 0 0 26px rgba(0,168,255,.05) !important;
+  backdrop-filter: blur(18px);
+}
+
+.neon-shop .bz-account-popover::before {
+  background: #07182b !important;
+  border: 0 !important;
+}
+
+.neon-shop .bz-account-popover a {
+  color: #a9bed1 !important;
+  border-radius: 10px !important;
+}
+
+.neon-shop .bz-account-popover a:hover {
+  color: #fff !important;
+  background: linear-gradient(90deg, rgba(0,168,255,.10), rgba(93,92,255,.05)) !important;
+}
+
+/* Category mega menu also follows the dark system. */
+.neon-shop .bz-mega {
+  border: 0 !important;
+  background: rgba(4,15,29,.985) !important;
+  box-shadow: 0 30px 75px rgba(0,0,0,.48), 0 0 30px rgba(0,168,255,.04) !important;
+}
+
+.neon-shop .bz-mega-rail {
+  border-right-color: rgba(71,227,255,.07) !important;
+  background: #061426 !important;
+}
+
+.neon-shop .bz-mega-rail button {
+  color: #8097ad !important;
+}
+
+.neon-shop .bz-mega-rail button:hover,
+.neon-shop .bz-mega-rail button.is-active {
+  color: #fff !important;
+  background: linear-gradient(90deg, rgba(0,168,255,.11), rgba(93,92,255,.04)) !important;
+}
+
+.neon-shop .bz-mega-panel {
+  color: #a9bed0 !important;
+  background: #07172a !important;
+}
+
+.neon-shop .bz-mega-heading {
+  color: #ddecf8 !important;
+  border-bottom-color: rgba(71,227,255,.08) !important;
+}
+
+.neon-shop .bz-mega-links a {
+  color: #748ba1 !important;
+}
+
+.neon-shop .bz-mega-links a:hover {
+  color: var(--neon-cyan) !important;
+}
+
+@media (max-width: 980px) {
+  .neon-shop .bz-shop-header-inner {
+    min-height: auto !important;
+  }
+
+  .neon-shop .bz-mobile-categories {
+    min-height: 42px !important;
+    padding: 0 13px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    color: #b9cada !important;
+    background: rgba(11,29,49,.84) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .neon-shop .bz-shop-header-inner {
+    gap: 9px !important;
+  }
+
+  .neon-shop .bz-shop-search {
+    height: 50px !important;
+    border-radius: 15px !important;
+  }
+
+  .neon-shop .bz-shop-nav {
+    gap: 7px !important;
+    padding-bottom: 2px;
+  }
+
+  .neon-shop .bz-icon-link,
+  .neon-shop .bz-shop-cart a {
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    border-radius: 12px !important;
+  }
+}
+
+
+/* ========================================================================
+   V2.2 POLISH — NO SEARCH LINES + CONTROL / CARD / AI REFINEMENT
+   ======================================================================== */
+
+/* ------------------------------------------------------------------------
+   Search command bar: completely remove line/ring treatment.
+   Contrast now comes from surface tone, not a cyan stroke.
+   ------------------------------------------------------------------------ */
+.neon-shop .bz-shop-search,
+.neon-shop .bz-shop-search:hover,
+.neon-shop .bz-shop-search:focus,
+.neon-shop .bz-shop-search:focus-within {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18) !important;
+  background:
+    radial-gradient(circle at 94% -30%, rgba(97,77,220,.10), transparent 12rem),
+    linear-gradient(135deg, #0b1e33, #08192b) !important;
+}
+
+.neon-shop .bz-shop-search input,
+.neon-shop .bz-shop-search input:hover,
+.neon-shop .bz-shop-search input:focus,
+.neon-shop .bz-shop-search input:focus-visible,
+.neon-shop .bz-shop-search input:active {
+  border: 0 !important;
+  border-color: transparent !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.neon-shop .bz-shop-search input::-moz-focus-inner {
+  border: 0 !important;
+}
+
+.neon-shop .bz-shop-search-action,
+.neon-shop .bz-shop-search-action:hover,
+.neon-shop .bz-shop-search-action:focus,
+.neon-shop .bz-shop-search-action:focus-visible,
+.neon-shop .bz-shop-search-action:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.neon-shop .bz-shop-search-action {
+  width: 38px !important;
+  height: 38px !important;
+  color: #70dff7 !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+.neon-shop .bz-shop-search-action:hover,
+.neon-shop .bz-shop-search-action:focus-visible {
+  color: #fff !important;
+  background: rgba(71,227,255,.09) !important;
+  transform: scale(1.04);
+}
+
+.neon-shop .bz-shop-search-actions {
+  position: relative;
+  padding-left: 4px !important;
+}
+
+.neon-shop .bz-shop-search-actions::before,
+.neon-shop .bz-shop-search-actions::after {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  content: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Top controls: one consistent clickable system.
+   No cyan outlines; filled glass surfaces with press feedback.
+   ------------------------------------------------------------------------ */
+.neon-shop .bz-categories-trigger,
+.neon-shop .bz-icon-link,
+.neon-shop .bz-account-trigger,
+.neon-shop .bz-shop-cart a {
+  border: 0 !important;
+  outline: 0 !important;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(72,205,255,.055), transparent 75%),
+    #0a1b2e !important;
+  box-shadow: 0 9px 22px rgba(0,0,0,.16) !important;
+}
+
+.neon-shop .bz-categories-trigger {
+  min-height: 44px !important;
+  border-radius: 13px !important;
+  padding: 0 14px !important;
+  color: #c9d9e7 !important;
+}
+
+.neon-shop .bz-icon-link,
+.neon-shop .bz-account-trigger,
+.neon-shop .bz-shop-cart a {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  border-radius: 13px !important;
+  color: #bdd0df !important;
+}
+
+.neon-shop .bz-categories-trigger:hover,
+.neon-shop .bz-categories-trigger:focus-visible,
+.neon-shop .bz-categories-trigger[aria-expanded="true"],
+.neon-shop .bz-icon-link:hover,
+.neon-shop .bz-icon-link:focus-visible,
+.neon-shop .bz-account-trigger:hover,
+.neon-shop .bz-account-trigger:focus-visible,
+.neon-shop .bz-account-trigger[aria-expanded="true"],
+.neon-shop .bz-shop-cart a:hover,
+.neon-shop .bz-shop-cart a:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  color: #fff !important;
+  background: #102840 !important;
+  box-shadow:
+    0 11px 26px rgba(0,0,0,.20),
+    0 8px 24px rgba(0,168,255,.045) !important;
+  transform: translateY(-1px);
+}
+
+.neon-shop .bz-categories-trigger:active,
+.neon-shop .bz-icon-link:active,
+.neon-shop .bz-account-trigger:active,
+.neon-shop .bz-shop-cart a:active,
+.neon-shop .bz-shop-search-action:active {
+  transform: scale(.96) !important;
+}
+
+/* Keep the cart counter neatly attached to the button rather than floating. */
+.neon-shop .bz-shop-cart a span {
+  top: -3px !important;
+  right: -3px !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  padding: 0 5px !important;
+  background: linear-gradient(135deg, #6d5dfc, #d949e8) !important;
+  box-shadow: 0 5px 15px rgba(150,69,227,.26) !important;
+}
+
+/* ------------------------------------------------------------------------
+   Product cards.
+   ------------------------------------------------------------------------ */
+.neon-shop .shop-product-card.neon-product-card {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(85,72,205,.07), transparent 13rem),
+    linear-gradient(180deg, #0a1b2d, #071421) !important;
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.17),
+    inset 0 1px rgba(255,255,255,.025) !important;
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease !important;
+}
+
+.neon-shop .shop-product-card.neon-product-card:hover {
+  transform: translateY(-4px) !important;
+  border: 0 !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(61,97,204,.10), transparent 13rem),
+    linear-gradient(180deg, #0b1f34, #081625) !important;
+  box-shadow:
+    0 20px 44px rgba(0,0,0,.25),
+    0 14px 34px rgba(0,168,255,.025) !important;
+}
+
+.neon-shop .neon-product-card .product-card-media {
+  position: relative;
+  overflow: hidden;
+  background: #0b1828;
+}
+
+.neon-shop .neon-product-card .product-image-wrap {
+  aspect-ratio: 1 / .92;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,255,255,.045), transparent 55%),
+    #0b1828 !important;
+}
+
+.neon-shop .neon-product-card .product-image {
+  object-fit: cover;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.neon-shop .neon-product-card:hover .product-image {
+  transform: scale(1.025);
+}
+
+.neon-shop .neon-product-card .product-image-empty {
+  display: grid;
+  place-items: center;
+  color: #466078;
+  font-size: .62rem;
+  font-weight: 850;
+  letter-spacing: .09em;
+}
+
+.neon-shop .neon-product-card .neon-product-badges {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 6;
+  display: flex;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.neon-shop .neon-product-card .discount-badge,
+.neon-shop .neon-product-card .neon-featured-badge {
+  position: static !important;
+  min-height: 23px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  border: 0 !important;
+  border-radius: 999px;
+  font-size: .53rem;
+  font-weight: 950;
+  backdrop-filter: blur(10px);
+}
+
+.neon-shop .neon-product-card .discount-badge {
+  color: #fff !important;
+  background: linear-gradient(125deg, #e34fce, #755df5) !important;
+  box-shadow: 0 7px 18px rgba(155,68,218,.23);
+}
+
+.neon-shop .neon-product-card .neon-featured-badge {
+  color: #9eeeff;
+  background: rgba(5,26,43,.82);
+}
+
+.neon-shop .neon-product-card .product-card-body {
+  flex: 1;
+  padding: 13px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.neon-shop .neon-product-card .neon-product-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+}
+
+.neon-shop .neon-product-card .product-kicker {
+  min-width: 0;
+  overflow: hidden;
+  color: #64dff7 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .55rem !important;
+  font-weight: 900 !important;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+}
+
+.neon-shop .neon-stock {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #6f8399;
+  font-size: .52rem;
+  font-weight: 800;
+}
+
+.neon-shop .neon-stock::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.neon-shop .neon-stock.is-live {
+  color: #74dca0;
+}
+
+.neon-shop .neon-stock.is-live::before {
+  background: #42d88a;
+  box-shadow: 0 0 9px rgba(66,216,138,.45);
+}
+
+.neon-shop .neon-product-card .product-title {
+  min-height: 2.6em;
+  margin-top: 8px;
+  color: #eef8ff !important;
+  font-size: .82rem !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+}
+
+.neon-shop .neon-product-card .neon-product-description {
+  margin: 6px 0 0;
+  min-height: 2.5em;
+  overflow: hidden;
+  display: -webkit-box;
+  color: #6d8299;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: .61rem;
+  line-height: 1.35;
+}
+
+.neon-shop .neon-product-card .product-price-row {
+  margin-top: 10px;
+}
+
+.neon-shop .neon-product-card .product-price-row strong {
+  color: #77e9ff !important;
+  font-size: 1rem !important;
+}
+
+.neon-shop .neon-product-card .product-price-row s {
+  color: #5d7187 !important;
+  font-size: .63rem !important;
+}
+
+.neon-shop .neon-product-card .neon-product-meta {
+  margin-top: 9px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.neon-shop .neon-product-card .neon-product-meta span,
+.neon-shop .neon-product-card .neon-product-meta a {
+  min-height: 23px;
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 999px;
+  color: #8096ab !important;
+  background: rgba(255,255,255,.028);
+  font-size: .52rem;
+  font-weight: 750;
+}
+
+.neon-shop .neon-product-card .neon-product-meta .is-verified {
+  color: #79daa2 !important;
+  background: rgba(66,216,138,.055);
+}
+
+/* Compare is injected by ShoppingTools. Make it a compact overlay instead
+   of a full-width extra button that stretches the product card. */
+.neon-shop .shop-product-card > .bazcompare-card-action {
+  position: absolute !important;
+  z-index: 9 !important;
+  top: 10px !important;
+  left: 10px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 28px !important;
+  margin: 0 !important;
+  padding: 0 9px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 999px !important;
+  color: #c1d7e8 !important;
+  background: rgba(4,16,29,.74) !important;
+  box-shadow: 0 7px 18px rgba(0,0,0,.22) !important;
+  backdrop-filter: blur(12px);
+  font-size: .54rem !important;
+  font-weight: 850 !important;
+}
+
+.neon-shop .shop-product-card > .bazcompare-card-action:hover,
+.neon-shop .shop-product-card > .bazcompare-card-action:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  color: #fff !important;
+  background: rgba(22,58,88,.90) !important;
+  transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------------------
+   BazAI suggestion implemented: "BazAI Spark Dock".
+   Desktop = compact pill with text. Mobile = unobtrusive AI orb.
+   ------------------------------------------------------------------------ */
+.neon-shop .bazaara-ai-launcher {
+  right: 18px !important;
+  bottom: 18px !important;
+  width: auto !important;
+  min-width: 44px;
+  height: 44px !important;
+  padding: 5px 11px 5px 5px !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  border: 0 !important;
+  border-radius: 14px !important;
+  color: #c7d9e8;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(0,168,255,.12), transparent 70%),
+    rgba(6,20,35,.90) !important;
+  box-shadow: 0 15px 34px rgba(0,0,0,.30) !important;
+  backdrop-filter: blur(16px);
+}
+
+.neon-shop .bazaara-ai-launcher::after {
+  content: "Ask BazAI";
+  color: #d9edf8;
+  font-size: .63rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.neon-shop .bazaara-ai-mark {
+  width: 34px !important;
+  height: 34px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(145deg, #00a8ff, #5d5cff 70%, #a541ff) !important;
+  box-shadow: 0 7px 17px rgba(0,168,255,.16) !important;
+}
+
+.neon-shop .bazaara-ai-b {
+  font-size: 0 !important;
+  letter-spacing: 0 !important;
+  transform: none !important;
+}
+
+.neon-shop .bazaara-ai-b::after {
+  content: "AI";
+  color: #fff;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 950;
+  letter-spacing: .02em;
+}
+
+.neon-shop .bazaara-ai-spark {
+  top: 3px !important;
+  right: 4px !important;
+  color: #bff7ff !important;
+  font-size: 6px !important;
+}
+
+.neon-shop .bazaara-ai-launcher:hover,
+.neon-shop .bazaara-ai-launcher:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  background: #0b263d !important;
+  box-shadow:
+    0 17px 38px rgba(0,0,0,.34),
+    0 8px 26px rgba(0,168,255,.07) !important;
+  transform: translateY(-2px);
+}
+
+/* ------------------------------------------------------------------------
+   Small screens.
+   ------------------------------------------------------------------------ */
+@media (max-width: 720px) {
+  .neon-shop .bz-shop-search,
+  .neon-shop .bz-shop-search:focus-within {
+    box-shadow: 0 9px 24px rgba(0,0,0,.17) !important;
+  }
+
+  .neon-shop .neon-product-card .neon-product-description {
+    display: none;
+  }
+
+  .neon-shop .neon-product-card .product-card-body {
+    padding: 10px !important;
+  }
+
+  .neon-shop .bazaara-ai-launcher {
+    right: 11px !important;
+    bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    padding: 4px !important;
+    border-radius: 13px !important;
+    justify-content: center;
+  }
+
+  .neon-shop .bazaara-ai-launcher::after {
+    display: none !important;
+  }
+
+  .neon-shop .bazaara-ai-mark {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .neon-shop .neon-product-card .product-title {
+    font-size: .75rem !important;
+  }
+
+  .neon-shop .neon-product-card .product-price-row strong {
+    font-size: .9rem !important;
+  }
+
+  .neon-shop .neon-product-card .neon-product-meta span {
+    font-size: .48rem;
+  }
+
+  .neon-shop .shop-product-card > .bazcompare-card-action {
+    min-height: 26px !important;
+    padding: 0 7px !important;
+    font-size: .5rem !important;
+  }
+}

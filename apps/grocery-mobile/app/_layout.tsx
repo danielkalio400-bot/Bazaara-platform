@@ -1,0 +1,6 @@
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { groceryPalette } from "@/ui/theme";
+
+export default function RootLayout(){return <SafeAreaProvider><StatusBar style="light"/><Stack screenOptions={{headerStyle:{backgroundColor:"#0F110F"},headerTintColor:groceryPalette.text,headerTitleStyle:{fontWeight:"900"},headerShadowVisible:false,contentStyle:{backgroundColor:groceryPalette.background}}}><Stack.Screen name="(tabs)" options={{headerShown:false}}/><Stack.Screen name="cart" options={{title:"Basket"}}/><Stack.Screen name="checkout" options={{title:"Checkout"}}/><Stack.Screen name="product/[slug]" options={{title:"Grocery item"}}/><Stack.Screen name="order/[id]" options={{title:"Order"}}/><Stack.Screen name="planner" options={{title:"Smart planner"}}/><Stack.Screen name="assistant" options={{title:"Grocery AI"}}/><Stack.Screen name="support" options={{title:"Help & support"}}/><Stack.Screen name="wishlist" options={{title:"Saved groceries"}}/><Stack.Screen name="group/[token]" options={{title:"Group basket"}}/><Stack.Screen name="auth/callback" options={{headerShown:false}}/></Stack></SafeAreaProvider>}

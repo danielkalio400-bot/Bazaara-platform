@@ -1,0 +1,69 @@
+
+/* BUSINESS GO + SUPPORT V4 */
+.business-v4-support-main{padding-bottom:72px}
+.business-v4-support-hero,.business-v4-logistics-hero{
+  margin:18px 20px;padding:28px;border:1px solid rgba(124,60,255,.16);border-radius:24px;
+  background:
+    radial-gradient(circle at 85% 5%,rgba(124,60,255,.14),transparent 32%),
+    linear-gradient(135deg,#11131a,#171924);
+  color:#fff;display:flex;justify-content:space-between;gap:24px;align-items:flex-end
+}
+.business-v4-support-hero h1,.business-v4-logistics-hero h1{font-size:clamp(2rem,4vw,4.3rem);line-height:.96;letter-spacing:-.055em;margin:8px 0 12px;max-width:900px}
+.business-v4-support-hero p,.business-v4-logistics-hero p{color:#a5adba;max-width:780px;line-height:1.55}
+.business-v4-support-signal{min-width:270px;padding:16px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.03);display:flex;gap:11px;align-items:center}
+.business-v4-support-signal .dot{width:10px;height:10px;border-radius:50%;background:#65e59a;box-shadow:0 0 0 6px rgba(101,229,154,.09)}
+.business-v4-support-signal div{display:grid;gap:3px}.business-v4-support-signal small{color:#7d8798}
+.business-v4-support-grid{display:grid;grid-template-columns:minmax(300px,.85fr) minmax(300px,.8fr) minmax(360px,1.2fr);gap:16px;padding:0 20px}
+.business-v4-support-form{display:grid;grid-template-columns:1fr 1.6fr;gap:12px}
+.business-v4-support-form label{display:grid;gap:6px;font-size:.72rem;font-weight:800;color:#596173}
+.business-v4-support-form .wide{grid-column:1/-1}
+.business-v4-support-form input,.business-v4-support-form select,.business-v4-support-form textarea,.business-v4-reply textarea{
+  width:100%;border:1px solid #dce2ec;border-radius:12px;background:#fff;padding:12px;color:#172033
+}
+.business-v4-support-form textarea{min-height:150px;resize:vertical}
+.business-v4-case-list{align-self:start}
+.business-v4-case-list>button{width:100%;text-align:left;border:0;border-top:1px solid #edf0f4;background:transparent;padding:14px;display:flex;justify-content:space-between;gap:12px;color:#171b25}
+.business-v4-case-list>button.selected{background:#f4f0ff}
+.business-v4-case-list>button>div{display:grid;gap:4px}.business-v4-case-list span,.business-v4-case-list small{font-size:.65rem;color:#798293}.business-v4-case-list b{font-size:.64rem;color:#6a2ee3}
+.business-v4-case-thread{min-height:560px}
+.business-v4-thread{display:grid;gap:10px;max-height:480px;overflow:auto;padding-right:4px}
+.business-v4-thread article{padding:13px;border:1px solid #e4e8ef;border-radius:14px;background:#fbfcfe}
+.business-v4-thread article.staff{background:#f5f0ff;border-color:#e4d8ff}
+.business-v4-thread header{display:flex;justify-content:space-between;gap:10px;font-size:.62rem;color:#737c8d}.business-v4-thread p{margin:8px 0 0;line-height:1.5}
+.business-v4-reply{margin-top:14px;display:grid;gap:9px}.business-v4-reply textarea{min-height:90px;resize:vertical}
+.business-v4-logistics-hero>div:last-child{min-width:210px;padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,.1);display:grid;gap:4px}.business-v4-logistics-hero .ready{background:rgba(54,205,122,.08);color:#9af1be}.business-v4-logistics-hero .setup{background:rgba(255,184,0,.08);color:#ffd469}
+.business-v4-logistics-grid{padding:0 20px 50px;display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.business-v4-branch-list{display:grid;gap:9px}.business-v4-branch-list article{padding:14px;border:1px solid #e7eaf0;border-radius:15px;display:flex;justify-content:space-between;gap:14px}.business-v4-branch-list article>div:first-child{display:grid;gap:4px}.business-v4-branch-list p{margin:4px 0 0;color:#687184}
+.business-v4-readiness{text-align:right;display:grid;align-content:center;gap:3px}.business-v4-readiness b{font-size:.65rem;color:#6429db}.business-v4-readiness small{max-width:180px;color:#7e8796}
+.business-v4-pay-link{display:grid;gap:10px;padding:14px;border-radius:16px;background:linear-gradient(135deg,#12131a,#1d1d29);color:#fff}.business-v4-pay-link p{color:#9da5b3;line-height:1.5}.business-v4-pay-link a{justify-self:start;padding:9px 12px;border-radius:9px;background:#7c3cff;color:#fff;font-size:.7rem;font-weight:900}
+.business-v4-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0 14px}.business-v4-flow span{padding:9px 11px;border:1px solid #e2e6ed;border-radius:10px;background:#fafbfc;font-size:.7rem;font-weight:850}.business-v4-flow b{color:#7c3cff}
+.business-v4-mini-case{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #eceff4}.business-v4-mini-case>div{display:grid;gap:3px}.business-v4-mini-case small{color:#7d8696}.business-v4-mini-case>span{font-size:.62rem;color:#6b2edd}
+@media(max-width:1200px){.business-v4-support-grid{grid-template-columns:1fr 1fr}.business-v4-case-thread{grid-column:1/-1}.business-v4-logistics-grid{grid-template-columns:1fr}}
+@media(max-width:820px){.business-v4-support-hero,.business-v4-logistics-hero{margin:12px;flex-direction:column;align-items:stretch}.business-v4-support-grid,.business-v4-logistics-grid{padding:0 12px 40px;grid-template-columns:1fr}.business-v4-support-form{grid-template-columns:1fr}.business-v4-support-form .wide{grid-column:auto}}
+
+
+/* BAZAARA ECOSYSTEM 1 BRAND ALIGNMENT V4.3 */
+:root{
+  --bz-e1-navy:#0b1f5b;
+  --bz-e1-navy-deep:#07122f;
+  --bz-e1-orange:#ff6b00;
+  --bz-e1-orange2:#ff8a24;
+}
+.business-v4-support-hero,.business-v4-logistics-hero{
+  border-color:rgba(255,107,0,.18);
+  background:
+    radial-gradient(circle at 85% 5%,rgba(255,107,0,.18),transparent 34%),
+    radial-gradient(circle at 20% 100%,rgba(30,74,170,.14),transparent 34%),
+    linear-gradient(135deg,#08142f,#111827);
+}
+.business-v4-case-list>button.selected{background:#fff3e8}
+.business-v4-case-list b,.business-v4-readiness b,.business-v4-mini-case>span{color:#d95600}
+.business-v4-thread article.staff{background:#fff7ef;border-color:#ffd7b5}
+.business-v4-pay-link{
+  background:
+    radial-gradient(circle at 82% 15%,rgba(255,107,0,.18),transparent 34%),
+    linear-gradient(135deg,#08142f,#111827)
+}
+.business-v4-pay-link a{background:linear-gradient(135deg,var(--bz-e1-orange),var(--bz-e1-orange2));color:#fff}
+.business-v4-flow b{color:var(--bz-e1-orange)}
+

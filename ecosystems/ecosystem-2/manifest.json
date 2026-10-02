@@ -1,0 +1,44 @@
+{
+    "ecosystem":  2,
+    "name":  "Social, Media \u0026 Communication",
+    "status":  "INDEPENDENT_PRODUCT_BETA_1",
+    "products":  [
+                     "BChat",
+                     "ZimZam",
+                     "BTune",
+                     "Bicord",
+                     "BazCut",
+                     "BSend",
+                     "Biflix"
+                 ],
+    "ports":  {
+                  "BChat":  3013,
+                  "ZimZam":  3014,
+                  "BTune":  3015,
+                  "Bicord":  3017,
+                  "BazCut":  3018,
+                  "BSend":  3019,
+                  "Biflix":  3055
+              },
+    "retired":  {
+                    "BazForum":  3016,
+                    "reason":  "Merged into Bicord"
+                },
+    "sharedInfrastructure":  [
+                                 "BazID authentication",
+                                 "platform-api",
+                                 "media-storage",
+                                 "notifications",
+                                 "security-risk"
+                             ],
+    "independenceRule":  "Each product has its own UI, navigation and workflow. Shared infrastructure must not create user-flow dependencies between products.",
+    "currentMilestone":  "INDEPENDENT_PRODUCT_BETA_1",
+    "productionGates":  [
+                            "media-malware-scanning",
+                            "video-audio-transcoding",
+                            "moderation-operations-console",
+                            "multi-instance-realtime-fanout",
+                            "load-and-browser-testing"
+                        ],
+    "researchUpgrade":  "R1 preview installed; runtime and browser validation pending."
+}

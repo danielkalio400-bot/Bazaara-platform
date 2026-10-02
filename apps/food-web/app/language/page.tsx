@@ -1,0 +1,2 @@
+import {FoodHeader} from "../../components/food-header";import {FoodLanguageClient} from "../../components/food-language-client";
+export default function LanguagePage(){return <div className="food-shell"><FoodHeader showSearch={false}/><main className="food-settings-page"><div className="food-settings-title"><span>PROFILE</span><h1>Preferred language</h1><p>Your saved Food preference is kept on this device. For this rollout, Food keeps the selector focused on Nigerian languages. More languages can be added later.</p></div><FoodLanguageClient/></main></div>}

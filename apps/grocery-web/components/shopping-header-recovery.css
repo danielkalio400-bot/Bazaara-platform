@@ -1,0 +1,196 @@
+
+/* BAZAARA Shopping header recovery.
+   Intentionally global CSS: avoids CSS-module parser/runtime regressions. */
+
+.bazaara-shop-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  width: 100%;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.97);
+  backdrop-filter: blur(16px);
+}
+
+.bazaara-shop-header-inner {
+  width: min(100%, 1500px);
+  margin: 0 auto;
+  min-height: 76px;
+  padding: 12px clamp(16px, 2vw, 32px);
+  display: grid;
+  grid-template-columns: auto minmax(280px, 1fr) auto;
+  align-items: center;
+  gap: clamp(14px, 1.5vw, 24px);
+}
+
+.bazaara-shop-brand {
+  color: #F4FBF7;
+  text-decoration: none;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.bazaara-shop-brand span { color: #2F8F62; }
+
+.bazaara-shop-search {
+  min-width: 0;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 0 16px;
+  border: 1px solid rgba(148, 163, 184, 0.30);
+  border-radius: 999px;
+  background: #F4FBF7;
+  overflow: hidden;
+}
+
+.bazaara-shop-search:focus-within {
+  border-color: rgba(47, 143, 98, 0.85);
+  box-shadow: 0 0 0 3px rgba(47, 143, 98, 0.15);
+}
+
+.bazaara-shop-search-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  color: #496459;
+}
+
+.bazaara-shop-search-icon svg,
+.bazaara-shop-tool svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.bazaara-shop-search-icon svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+}
+
+.bazaara-shop-search input {
+  min-width: 0;
+  flex: 1 1 auto;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #0E100E;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.bazaara-shop-search input::placeholder {
+  color: #687F74;
+  opacity: 1;
+}
+
+.bazaara-shop-search-tools {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border: 0 !important;
+}
+
+.bazaara-shop-tool {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0 !important;
+  border-radius: 999px;
+  color: #2F8F62;
+  text-decoration: none;
+  background: transparent;
+}
+
+.bazaara-shop-tool:first-child svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.bazaara-shop-lens svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+.bazaara-shop-tool:hover,
+.bazaara-shop-tool:focus-visible {
+  background: rgba(47, 143, 98, 0.10);
+}
+
+.bazaara-shop-actions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(10px, 1vw, 17px);
+  white-space: nowrap;
+}
+
+.bazaara-shop-actions > a,
+.bazaara-shop-cart a {
+  color: #D9E9E1;
+  text-decoration: none;
+  font-size: clamp(0.82rem, 0.92vw, 0.96rem);
+  line-height: 1;
+  font-weight: 700;
+}
+
+.bazaara-shop-actions > a:hover,
+.bazaara-shop-actions > a:focus-visible,
+.bazaara-shop-cart a:hover,
+.bazaara-shop-cart a:focus-visible {
+  color: #ffffff;
+}
+
+.bazaara-shop-bazai-link { color: #65B98A !important; }
+
+.bazaara-shop-cart {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 1180px) {
+  .bazaara-shop-header-inner {
+    grid-template-columns: auto minmax(260px, 1fr);
+  }
+  .bazaara-shop-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 1px;
+  }
+  .bazaara-shop-actions::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 720px) {
+  .bazaara-shop-header-inner {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .bazaara-shop-brand { display: none; }
+  .bazaara-shop-search { width: 100%; height: 48px; }
+  .bazaara-shop-actions {
+    grid-column: auto;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+}

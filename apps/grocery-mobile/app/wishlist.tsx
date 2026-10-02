@@ -1,0 +1,11 @@
+import {useCallback,useEffect,useState} from "react";
+import {Pressable,Text,View} from "react-native";
+import {EmptyState,Screen} from "@bazaara/mobile-ui";
+import {ApiError,groceryApi,groceryCartRequest} from "@/lib/api";
+import {signInWithBazId} from "@/lib/auth";
+import {type ProductSummary} from "@/lib/grocery";
+import {GroceryProductCard} from "@/ui/product-card";
+import {groceryStyles as s} from "@/ui/theme";
+
+type Wish={products:ProductSummary[]};
+export default function GroceryWishlist(){const[data,setData]=useState<Wish|null>(null);const[needAuth,setNeedAuth]=useState(false);const[error,setError]=useState('');const[busy,setBusy]=useState('');const load=useCallback(async()=>{try{const b=await groceryApi.get<Wish>('/v1/shopping/wishlist',{query:{vertical:'GROCERY'},cache:'no-store'});setData(b);setNeedAuth(false);setError('')}catch(e){if(e instanceof ApiError&&e.status===401)setNeedAuth(true);else setError(e instanceof Error?e.message:'Could not load saved groceries')}},[]);useEffect(()=>{void load()},[load]);async function add(p:ProductSummary){if(!p.defaultVariantId)return;setBusy(p.id);try{await groceryCartRequest('/v1/grocery/cart/items',{method:'POST',body:{variantId:p.defaultVariantId,quantity:1}})}catch(e){setError(e instanceof Error?e.message:'Could not add item')}finally{setBusy('')}}if(needAuth)return <Screen tabBarSafe={false}><Text style={s.h1}>Saved groceries</Text><Text style={s.p}>Sign in with BazID to see your Grocery-only wishlist.</Text><Pressable style={[s.button,{marginTop:14}]} onPress={async()=>{const r=await signInWithBazId('/wishlist');if(r.ok)await load()}}><Text style={s.buttonText}>Continue with BazID</Text></Pressable></Screen>;return <Screen tabBarSafe={false}><View style={s.top}><View><Text style={s.h1}>Saved groceries</Text><Text style={s.p}>Wishlist items from Grocery only</Text></View><Pressable onPress={()=>void load()}><Text style={s.status}>REFRESH</Text></Pressable></View>{error?<Text style={s.error}>{error}</Text>:null}{data&&data.products.length===0?<EmptyState title="No saved groceries" message="Save products you want to revisit and they will appear here."/>:null}{data?.products.length?<View style={[s.wrap,{justifyContent:'space-between'}]}>{data.products.map(p=><GroceryProductCard key={p.id} product={p} onAdd={add} busy={busy===p.id}/>)}</View>:null}</Screen>}

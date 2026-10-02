@@ -1,0 +1,52 @@
+BAZAARA FULL PLATFORM V11 — DRIVE + WALLET + OPERATIONS
+========================================================
+Release date: 2026-09-22
+Base: user-supplied full V10 platform archive, compared against the supplied Drive/Wallet/Operations, Business/Operations and integrated V6 archives.
+
+V11 advancement scope:
+- First-class SupportCase -> DriveRide link
+- First-class SupportCase -> LedgerTransaction link
+- Ownership-safe support resource validation
+- Drive ride -> Wallet -> Support context handoff
+- Wallet transaction -> Support context handoff
+- Operations Support -> Mobility/Finance exact-record navigation
+- Operations Drive exact ride focus
+- Operations Finance ride/ledger focus
+- Rider Mobile Wallet/support ride deep links
+- Wallet Mobile latest-ride trace/support handoff
+- Unified Drive/Wallet/Operations midnight-navy + electric-teal visual system
+- V11 migration, shared contracts, source validator, canonical merge script and Windows verification script
+
+Existing V10 accounting preserved:
+- Wallet fare hold / Drive escrow
+- Secure platform charge
+- Driver earnings liability
+- Double-entry DRIVE_DRIVER_PAYOUT_TO_WALLET journal
+- Idempotent driver payout records
+- Driver ledger/profile reconciliation guard
+- Finance Operations payout/reconciliation controls
+
+Existing Business/Operations V9 preserved:
+- Revenue, analytics, reports, pricing, subscriptions and payments
+- Customers, users/team, settings and vertical workspaces
+- Tickets, feedback, help desk, live support and support tools
+- RBAC/access, audit, risk, reports and command centers
+
+Current Prisma migration chain:
+- 20260921112622_current_schema_baseline
+- 20260921131500_business_operations_complete
+- 20260921143000_smart_actions_restaurant_contact
+- 20260921170000_support_customer_live_chat
+- 20260921193000_drive_wallet_operations_link
+- 20260922103000_drive_wallet_support_context
+
+Packaging validation:
+- npm run validate:current-release — PASS
+- Static — PASS (562 source files; 12 web ports; 11 native clients)
+- Grocery/Food V2 — PASS (3,191 checks)
+- Business/Operations V9 — PASS (88 checks; 209 buttons audited)
+- Drive/Wallet/Operations V10 — PASS (149 checks)
+- Drive/Wallet/Operations V11 — PASS (182 checks)
+- Changed TypeScript/TSX syntax parse — PASS
+
+Dependency install did not complete in the packaging sandbox; no node_modules/cache/build output is included. Run the supplied PowerShell verification script on the normal development machine for Prisma/typecheck/tests/build.

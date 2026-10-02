@@ -1,0 +1,150 @@
+/*
+ * Shopping module identity
+ * --------------------------------
+ * Shopping keeps its existing marketplace layout and interaction model.
+ * This file only owns the Shopping brand accent layer: electric / neon blue.
+ */
+:root {
+  --shopping-neon-blue: #00B8FF;
+  --shopping-neon-cyan: #00E5FF;
+  --shopping-neon-deep: #2563FF;
+  --shopping-neon-soft: rgba(0, 184, 255, .16);
+
+  /* Feed the existing shared Shopping tokens without changing layout. */
+  --bz-shop-indigo: var(--shopping-neon-blue);
+  --bz-shop-indigo-bright: var(--shopping-neon-cyan);
+  --bz-shop-blue: var(--shopping-neon-deep);
+  --shop-indigo: var(--shopping-neon-blue);
+  --shop-purple: #2588ff;
+  --shop-blue: var(--shopping-neon-blue);
+  --shop-cyan: var(--shopping-neon-cyan);
+  --bz-indigo: var(--shopping-neon-blue);
+  --bz-indigo-hover: var(--shopping-neon-cyan);
+  --bz-blue: var(--shopping-neon-deep);
+}
+
+body {
+  background:
+    radial-gradient(circle at 84% -7%, rgba(0,184,255,.15), transparent 31rem),
+    radial-gradient(circle at 5% 20%, rgba(0,229,255,.07), transparent 25rem),
+    #06111f;
+}
+
+.shop-shell {
+  background:
+    radial-gradient(circle at 84% 2%, rgba(0,184,255,.14), transparent 30%),
+    radial-gradient(circle at 7% 24%, rgba(0,229,255,.07), transparent 26%),
+    linear-gradient(180deg, #071426, #06111f) !important;
+}
+
+.shop-shell :focus-visible {
+  outline-color: rgba(0,229,255,.92) !important;
+}
+
+.bz-shop-header {
+  border-bottom-color: rgba(0,184,255,.16) !important;
+  box-shadow: 0 10px 36px rgba(0,100,190,.08) !important;
+}
+
+.bz-shop-brand span {
+  color: var(--shopping-neon-cyan) !important;
+  text-shadow: 0 0 16px rgba(0,229,255,.52);
+}
+
+.bz-shop-search:focus-within {
+  border-color: var(--shopping-neon-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0,184,255,.14), 0 0 24px rgba(0,229,255,.08) !important;
+}
+
+.bz-categories-trigger:hover,
+.bz-categories-trigger[aria-expanded="true"],
+.bz-icon-link:hover,
+.bz-account-trigger[aria-expanded="true"],
+.cart-link:hover {
+  border-color: rgba(0,229,255,.52) !important;
+  color: #fff !important;
+}
+
+.bz-mega-rail button.is-active,
+.bz-mega-rail button:hover {
+  background: rgba(0,184,255,.12) !important;
+  color: #fff !important;
+}
+
+.bz-hero {
+  border-color: rgba(0,229,255,.30) !important;
+  background:
+    radial-gradient(circle at 74% 25%, rgba(0,229,255,.14), transparent 23rem),
+    linear-gradient(108deg, #062c78 0%, #0b56c9 39%, #157ee8 68%, #06375f 100%) !important;
+  box-shadow: 0 24px 68px rgba(0,80,180,.23), inset 0 1px rgba(255,255,255,.04) !important;
+}
+
+.bz-hero-kicker,
+.bz-quality-copy,
+.bz-view-all,
+.bz-section-heading > div > span {
+  color: #83dcff !important;
+}
+
+.bz-orb-one { background: rgba(0,229,255,.25) !important; }
+.bz-orb-two { background: rgba(25,112,255,.25) !important; }
+
+/* The class name is historical. In Shopping this is the primary blue CTA. */
+.bz-orange-button,
+.primary-shop-button,
+.product-add-button,
+.add-to-cart-button {
+  border-color: rgba(0,229,255,.48) !important;
+  background: linear-gradient(120deg, #2563FF, #00B8FF 58%, #00E5FF) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 28px rgba(0,184,255,.22), 0 0 22px rgba(0,229,255,.08) !important;
+}
+
+.bz-orange-button:hover,
+.primary-shop-button:hover,
+.product-add-button:hover,
+.add-to-cart-button:hover {
+  filter: brightness(1.08);
+}
+
+.product-buy-button,
+.secondary-shop-button {
+  border-color: rgba(0,229,255,.42) !important;
+  color: #9be5ff !important;
+}
+
+.product-buy-button:hover,
+.secondary-shop-button:hover {
+  background: rgba(0,184,255,.08) !important;
+}
+
+.bz-category-card:hover,
+.shop-product-card:hover,
+.product-card:hover {
+  border-color: rgba(0,229,255,.58) !important;
+  box-shadow: 0 15px 38px rgba(0,91,190,.18), 0 0 20px rgba(0,229,255,.05) !important;
+}
+
+.bz-category-card.is-featured {
+  border-color: rgba(0,229,255,.58) !important;
+  background: linear-gradient(160deg, #0a397d, #0b56a0) !important;
+}
+
+/* Prices belong to the Shopping identity; discounts keep their semantic sale color. */
+.product-price-row strong,
+.approved-detail-price strong,
+.cart-summary .summary-total strong {
+  color: #62cfff !important;
+}
+
+.shop-profile-trigger:hover,
+.shop-profile-trigger.is-open,
+.shop-cart-icon:hover {
+  border-color: rgba(0,229,255,.60) !important;
+  background: rgba(0,184,255,.11) !important;
+}
+
+.bazaara-mobile-bottom-nav a.is-active,
+.bazaara-mobile-bottom-nav [aria-current="page"] {
+  color: var(--shopping-neon-cyan) !important;
+}

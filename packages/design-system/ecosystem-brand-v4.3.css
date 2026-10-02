@@ -1,0 +1,29 @@
+/* BAZAARA ECOSYSTEM IDENTITY V4.3
+   Canonical visual tokens derived from the approved ecosystem direction.
+   Ecosystem 1: Commerce & Everyday Life — navy / white / orange.
+   Ecosystem 2: Social, Media & Communication — midnight / violet / magenta / cyan.
+   Ecosystem 3: Intelligence, Productivity & Infrastructure — white / navy / cobalt / teal.
+*/
+:root {
+  --bazaara-master-navy: #0b1f5b;
+  --bazaara-master-navy-deep: #07122f;
+  --bazaara-master-orange: #ff6b00;
+  --bazaara-master-orange-bright: #ff8a24;
+  --bazaara-master-white: #ffffff;
+  --bazaara-master-ice: #f6f8fc;
+  --bazaara-master-ink: #111827;
+  --bazaara-master-metal: #aeb8c8;
+
+  --bazaara-eco1-primary: var(--bazaara-master-navy);
+  --bazaara-eco1-accent: var(--bazaara-master-orange);
+
+  --bazaara-eco2-bg: #08071a;
+  --bazaara-eco2-violet: #7047ff;
+  --bazaara-eco2-magenta: #ff2ba6;
+  --bazaara-eco2-cyan: #20d8ff;
+
+  --bazaara-eco3-primary: #10256d;
+  --bazaara-eco3-cobalt: #2563eb;
+  --bazaara-eco3-teal: #0fa99a;
+  --bazaara-eco3-green: #20a36a;
+}

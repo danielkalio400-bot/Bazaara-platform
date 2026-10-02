@@ -1,0 +1,122 @@
+.grocery-ops-v5 {
+  --grocery-ops-accent: #2f8f62;
+  --grocery-ops-surface: #111311;
+  --grocery-ops-surface-2: #171a17;
+  --grocery-ops-line: rgba(255,255,255,.085);
+  --grocery-ops-text: #f5f6f4;
+  --grocery-ops-muted: #a0a49f;
+}
+
+.grocery-ops-v5 .ops-v32-domain-hero,
+.grocery-ops-v5 .ops-v31-panel,
+.grocery-ops-v5 .ops-v31-command-kpis article,
+.grocery-ops-v5 .ops-v32-store-grid article,
+.grocery-ops-v5 .ops-v32-issue-list article {
+  border-color: var(--grocery-ops-line) !important;
+  background: var(--grocery-ops-surface) !important;
+  box-shadow: none !important;
+}
+
+.grocery-ops-v5 .ops-v31-kicker,
+.grocery-ops-v5 .ops-v31-notice {
+  color: #65b98a !important;
+}
+
+.grocery-ops-v5 button:not(.danger) {
+  border-color: transparent !important;
+  color: #fff !important;
+  background: var(--grocery-ops-accent) !important;
+  box-shadow: none !important;
+}
+
+.grocery-ops-v5 .ops-v31-soft-chip {
+  border-color: var(--grocery-ops-line) !important;
+  color: #d8dbd8 !important;
+  background: var(--grocery-ops-surface-2) !important;
+}
+
+.grocery-ops-v5 small,
+.grocery-ops-v5 p,
+.grocery-ops-v5 .ops-v31-muted {
+  color: var(--grocery-ops-muted) !important;
+}
+
+.grocery-v54-ops-policy {
+  border-left: 3px solid var(--grocery-ops-accent) !important;
+}
+
+
+.grocery-ops-v5 .grocery-v55-pricing-control {
+  margin-top: 14px;
+  padding-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 18px;
+  border-top: 1px solid var(--grocery-ops-line);
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-control > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-control strong {
+  color: var(--grocery-ops-text);
+  font-size: 14px;
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-control small {
+  max-width: 680px;
+  line-height: 1.45;
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-input {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-input input {
+  width: 88px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--grocery-ops-line);
+  border-radius: 9px;
+  outline: 0;
+  color: var(--grocery-ops-text);
+  background: #0f110f;
+  font: inherit;
+  font-weight: 800;
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-input input:focus {
+  border-color: rgba(47,143,98,.45);
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-input > span {
+  color: var(--grocery-ops-muted);
+  font-weight: 800;
+}
+
+.grocery-ops-v5 .grocery-v55-pricing-input button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+@media (max-width: 760px) {
+  .grocery-ops-v5 .grocery-v55-pricing-control {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .grocery-ops-v5 .grocery-v55-pricing-input input {
+    flex: 1;
+    width: auto;
+  }
+}

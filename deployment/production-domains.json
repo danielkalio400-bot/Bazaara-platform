@@ -1,0 +1,16 @@
+{
+  "status": "configuration-map-not-live-dns-proof",
+  "portal": "https://bazaara.com",
+  "api": "https://api.bazaara.com",
+  "bazid": "https://id.bazaara.com",
+  "business": "https://business.bazaara.com",
+  "operations": "https://operations.bazaara.com",
+  "shopping": "https://shopping.bazaara.com",
+  "grocery": "https://grocery.bazaara.com",
+  "food": "https://food.bazaara.com",
+  "logistics": "https://logistics.bazaara.com",
+  "drive": "https://drive.bazaara.com",
+  "pay": "https://pay.bazaara.com",
+  "pharmacy": "https://pharmacy.bazaara.com",
+  "bazasport": "https://sport.bazaara.com"
+}

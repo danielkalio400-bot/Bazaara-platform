@@ -1,0 +1,65 @@
+{
+  "platform": "BAZAARA",
+  "rule": "Do not prefix application names with Bazaara unless the canonical product name explicitly includes it.",
+  "ecosystem1": {
+    "products": [
+      "Shopping",
+      "Food",
+      "Grocery",
+      "Drive",
+      "Logistics",
+      "Wallet",
+      "Business",
+      "Pharmacy",
+      "Bazasport"
+    ],
+    "sharedSystems": [
+      "BazID",
+      "GO",
+      "Operations"
+    ]
+  },
+  "technicalCompatibility": {
+    "Wallet": [
+      "apps/pay-web",
+      "apps/pay-mobile",
+      "@bazaara/pay-web",
+      "@bazaara/pay-mobile",
+      "BAZAARA_PAY"
+    ],
+    "PlatformHome": [
+      "apps/bazaara-web",
+      "@bazaara/bazaara-web"
+    ]
+  },
+  "reservedCanonicalNames": [
+    "Bazaara.com",
+    "Bazaara AI",
+    "Bazaara One"
+  ],
+  "identityFoundation": {
+    "product": "BazID",
+    "recommendedMailDomain": "@bmail.com",
+    "mailProduct": "Bmail",
+    "mailBuildPhase": "Ecosystem 3"
+  },
+  "ecosystem2": {
+    "products": [
+      "BChat",
+      "ZimZam",
+      "BTune",
+      "Bicord",
+      "BazCut",
+      "BSend"
+    ],
+    "retired": [
+      "BazForum",
+      "BazCircle",
+      "BazClips",
+      "BazTune",
+      "BazChat",
+      "BazSend"
+    ],
+    "rule": "Public app names use the current six-product naming set; legacy technical workspace and API identifiers may remain temporarily for compatibility."
+  }
+}

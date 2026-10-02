@@ -1,0 +1,1 @@
+import Link from "next/link";export default function NotFound(){return <main className="bf-notFound"><h1>That title isn't in this preview.</h1><p>Ɓiflix only contains original demo entries until licensed content is available.</p><Link className="bf-primary" href="/">Back to Ɓiflix</Link></main>}

@@ -1,0 +1,11 @@
+"use client";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import Link from "next/link";
+import type { Title } from "../lib/catalog";
+export default function LocalPlayer({title}:{title:Title}){
+ const media=useRef<HTMLVideoElement>(null),[src,setSrc]=useState(""),[caption,setCaption]=useState(""),[name,setName]=useState("");
+ useEffect(()=>()=>{if(src)URL.revokeObjectURL(src)},[src]);useEffect(()=>()=>{if(caption)URL.revokeObjectURL(caption)},[caption]);
+ function choose(e:ChangeEvent<HTMLInputElement>){const f=e.target.files?.[0];if(!f)return;if(f.type&&!f.type.startsWith("video/")){alert("Choose a supported video file.");return}setSrc(URL.createObjectURL(f));setName(f.name)}
+ function captions(e:ChangeEvent<HTMLInputElement>){const f=e.target.files?.[0];if(!f)return;if(!(/\.vtt$/i).test(f.name)){alert("Select a WebVTT caption file (.vtt).");return}setCaption(URL.createObjectURL(f))}
+ return <main className="bf-playerPage"><div className="bf-playerTop"><Link href={`/title/${title.slug}`} aria-label="Back to title">← Back</Link><span>Ɓiflix / LOCAL PLAYER DEMO</span></div><div className="bf-playerStage">{src?<video ref={media} controls playsInline autoPlay src={src} aria-label={`Playing local file ${name}`}>{caption&&<track kind="subtitles" srcLang="en" label="Local captions" src={caption} default/>}Your browser does not support video playback.</video>:<div className="bf-playerPlaceholder"><span className="bf-playerMark">Ɓ</span><h1>{title.name}</h1><p>Choose a video you own or have permission to play. This demo does not stream copyrighted titles.</p><label className="bf-primary bf-filePick">Open a local video<input type="file" accept="video/*" onChange={choose}/></label></div>}</div><div className="bf-playerBottom"><div><h2>{src?name:title.name}</h2><p>Local playback only. Your selected file stays in this browser session and is not uploaded.</p></div><div className="bf-playerActions"><label className="bf-secondary bf-filePick">{src?"Change file":"Open video"}<input type="file" accept="video/*" onChange={choose}/></label>{src&&<label className="bf-secondary bf-filePick">Add captions<input type="file" accept=".vtt,text/vtt" onChange={captions}/></label>}</div></div></main>
+}

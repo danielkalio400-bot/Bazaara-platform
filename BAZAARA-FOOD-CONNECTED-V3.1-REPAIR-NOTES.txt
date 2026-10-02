@@ -1,0 +1,20 @@
+FOOD CONNECTED V3.1 - COMPILE REPAIR
+
+Fixes observed from the Windows release gate on 2026-09-17:
+1. apps/pharmacy-mobile/app/index.tsx
+   - Replaces unsupported React Native fontWeight "950" with "900".
+   - This also resolves the StyleSheet.create union-style overload cascade.
+2. apps/pharmacy-web/app/page.tsx
+   - Guards cart[0] currency access under strict/noUncheckedIndexedAccess.
+3. services/platform-api/src/pharmacy/routes.ts
+   - Normalizes Prisma monetary values to bigint before ledger posting.
+   - Uses Organization.displayName, matching the Prisma schema.
+4. services/platform-api/src/shopping/grocery-routes.ts
+   - Imports the existing updateRecurringBasket service used by the PATCH route.
+5. apps/business-web/app/grocery/page.tsx
+   - Uses an `as const` tuple for branch setting keys so strict indexing is valid.
+6. Install-Bazaara-Food-Connected-V3.ps1
+   - Native npm exit codes are now checked explicitly, so the installer cannot print
+     COMPLETE after a failed typecheck or web build.
+
+No schema change and no database reset are part of this repair.

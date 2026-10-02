@@ -1,0 +1,40 @@
+name: Ecosystem 1 CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: bazaara
+          POSTGRES_PASSWORD: bazaara
+          POSTGRES_DB: bazaara
+        ports: ["55433:5432"]
+        options: >-
+          --health-cmd "pg_isready -U bazaara -d bazaara"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://bazaara:bazaara@localhost:55433/bazaara?schema=public
+      WEB_ORIGINS: http://localhost:3001,http://localhost:3002,http://localhost:3003,http://localhost:3004,http://localhost:3005,http://localhost:3006,http://localhost:3007,http://localhost:3008,http://localhost:3009,http://localhost:3010,http://localhost:3011,http://localhost:3012
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:4000
+      NEXT_PUBLIC_BAZID_BASE_URL: http://localhost:3004
+      SPORTS_REAL_MONEY_BETTING_ENABLED: "false"
+      PHARMACY_PRESCRIPTION_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --no-audit
+      - run: npm run db:validate
+      - run: npm run db:generate
+      - run: npm run db:migrate:deploy
+      - run: npm run validate:static
+      - run: npm run typecheck
+      - run: npm run build:api
+      - run: npm test
+      - run: npm run build:web

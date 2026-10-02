@@ -1,0 +1,75 @@
+:root {
+  --bz-indigo: #5B4DFF;
+  --bz-graphite: #111318;
+  --bz-cloud: #F7F8FC;
+  --bz-white: #FFFFFF;
+  --bz-success: #16A66A;
+  --bz-error: #E53945;
+  --bz-warning: #B86B00;
+  --bz-border: #DDE1EA;
+  --bz-muted: #5F6675;
+  --bz-focus: #2E6BFF;
+
+  /* Ecosystem vertical identities — keep these stable across web and native. */
+  --bz-shopping: #00B8FF;
+  --bz-shopping-2: #2563FF;
+  --bz-food: #FF3D24;
+  --bz-food-2: #FF7A00;
+  --bz-grocery: #C026FF;
+  --bz-grocery-2: #FF3BD4;
+  --bz-logistics: #00F5FF;
+  --bz-logistics-2: #00E0B8;
+  --bz-drive: #FFFFFF;
+  --bz-drive-2: #050505;
+  --bz-pay: #FFD600;
+  --bz-pay-2: #FFB800;
+  --bz-business: #7C3CFF;
+  --bz-business-2: #B15CFF;
+  --bz-pharmacy: #FF7A00;
+  --bz-pharmacy-2: #FF9D00;
+  --bz-sport: #39FF14;
+  --bz-sport-2: #00E676;
+
+  --bz-font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bz-text-xs: .75rem;
+  --bz-text-sm: .875rem;
+  --bz-text-md: 1rem;
+  --bz-text-lg: 1.125rem;
+  --bz-text-xl: 1.375rem;
+  --bz-text-2xl: clamp(1.75rem, 4vw, 2.75rem);
+
+  --bz-space-1: .25rem;
+  --bz-space-2: .5rem;
+  --bz-space-3: .75rem;
+  --bz-space-4: 1rem;
+  --bz-space-5: 1.25rem;
+  --bz-space-6: 1.5rem;
+  --bz-space-8: 2rem;
+  --bz-space-10: 2.5rem;
+  --bz-space-12: 3rem;
+
+  --bz-radius-sm: .5rem;
+  --bz-radius-md: .75rem;
+  --bz-radius-lg: 1rem;
+  --bz-radius-pill: 999px;
+  --bz-shadow-1: 0 1px 2px rgba(17, 19, 24, .07), 0 8px 20px rgba(17, 19, 24, .04);
+  --bz-shadow-dialog: 0 24px 80px rgba(17, 19, 24, .18);
+
+  --bz-motion-fast: 120ms;
+  --bz-motion-base: 180ms;
+  --bz-ease-standard: cubic-bezier(.2, .8, .2, 1);
+
+  --bz-z-nav: 20;
+  --bz-z-sheet: 50;
+  --bz-z-dialog: 70;
+  --bz-z-toast: 90;
+}
+
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body { margin: 0; font-family: var(--bz-font-sans); color: var(--bz-graphite); background: var(--bz-cloud); }
+button, input, select, textarea { font: inherit; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--bz-focus) 55%, transparent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}

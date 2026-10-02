@@ -1,0 +1,26 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@bazaara/api-client": [
+        "../../packages/api-client/src/index.ts"
+      ],
+      "@bazaara/bazid-client": [
+        "../../packages/bazid-client/src/index.ts"
+      ],
+      "@bazaara/mobile-ui": [
+        "../../packages/mobile-ui/src/index.tsx"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
+}

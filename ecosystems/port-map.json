@@ -1,0 +1,99 @@
+{
+    "4000":  {
+                 "name":  "Platform API",
+                 "workspace":  "services/platform-api"
+             },
+    "3001":  {
+                 "name":  "Business",
+                 "workspace":  "apps/business-web"
+             },
+    "3002":  {
+                 "name":  "Operations",
+                 "workspace":  "apps/operations-web"
+             },
+    "3003":  {
+                 "name":  "Shopping",
+                 "workspace":  "apps/shopping-web"
+             },
+    "3004":  {
+                 "name":  "BazID",
+                 "workspace":  "apps/bazid-web"
+             },
+    "3005":  {
+                 "name":  "BAZAARA Platform Home",
+                 "workspace":  "apps/bazaara-web",
+                 "decision":  "KEEP_AND_REBRAND"
+             },
+    "3006":  {
+                 "name":  "Grocery",
+                 "workspace":  "apps/grocery-web"
+             },
+    "3007":  {
+                 "name":  "Food",
+                 "workspace":  "apps/food-web"
+             },
+    "3008":  {
+                 "name":  "Logistics / GO",
+                 "workspace":  "apps/logistics-web"
+             },
+    "3009":  {
+                 "name":  "Drive",
+                 "workspace":  "apps/drive-web"
+             },
+    "3010":  {
+                 "name":  "Wallet",
+                 "workspace":  "apps/pay-web",
+                 "technicalCompatibilityName":  "pay-web"
+             },
+    "3011":  {
+                 "name":  "Pharmacy",
+                 "workspace":  "apps/pharmacy-web"
+             },
+    "3012":  {
+                 "name":  "Bazasport",
+                 "workspace":  "apps/bazasport-web"
+             },
+    "3013":  {
+                 "name":  "BChat",
+                 "workspace":  "apps/bazchat-web",
+                 "ecosystem":  2
+             },
+    "3014":  {
+                 "name":  "ZimZam",
+                 "workspace":  "apps/bazclips-web",
+                 "ecosystem":  2
+             },
+    "3015":  {
+                 "name":  "BTune",
+                 "workspace":  "apps/baztune-web",
+                 "ecosystem":  2
+             },
+    "3016":  {
+                 "name":  "Reserved (BazForum retired)",
+                 "workspace":  "apps/bazforum-web",
+                 "ecosystem":  2,
+                 "status":  "RETIRED_NOT_LAUNCHED",
+                 "mergedInto":  "Bicord"
+             },
+    "3017":  {
+                 "name":  "Bicord",
+                 "workspace":  "apps/bazcircle-web",
+                 "ecosystem":  2
+             },
+    "3018":  {
+                 "name":  "BazCut",
+                 "workspace":  "apps/bazcut-web",
+                 "ecosystem":  2
+             },
+    "3019":  {
+                 "name":  "BSend",
+                 "workspace":  "apps/bazsend-web",
+                 "ecosystem":  2
+             },
+    "3055":  {
+                 "name":  "Biflix",
+                 "workspace":  "apps/biflix-web",
+                 "ecosystem":  2,
+                 "status":  "DEMO"
+             }
+}

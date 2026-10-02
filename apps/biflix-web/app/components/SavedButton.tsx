@@ -1,0 +1,4 @@
+"use client";import { useEffect, useState } from "react";
+const key=()=>"biflix-demo-saved-v1:"+(localStorage.getItem("biflix-demo-profile-v1")??"Guest");
+export function readSaved():string[]{try{const r=JSON.parse(localStorage.getItem(key())??"[]") as unknown;return Array.isArray(r)?r.filter((x):x is string=>typeof x==="string"):[]}catch{return []}}
+export function SavedButton({slug}:{slug:string}){const [saved,setSaved]=useState(false);useEffect(()=>{setSaved(readSaved().includes(slug))},[slug]);function toggle(){const v=new Set(readSaved());if(v.has(slug))v.delete(slug);else v.add(slug);localStorage.setItem(key(),JSON.stringify([...v]));setSaved(v.has(slug));window.dispatchEvent(new Event("biflix-saved-changed"))}return <button className="bf-secondary" onClick={toggle} aria-pressed={saved}>{saved?"✓ In Saved":"＋ Add to Saved"}</button>}

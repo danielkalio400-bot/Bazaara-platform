@@ -1,0 +1,6 @@
+{
+  "/api/discover/route": "app/api/discover/route.js",
+  "/api/region/route": "app/api/region/route.js",
+  "/api/search/route": "app/api/search/route.js",
+  "/page": "app/page.js"
+}

@@ -1,0 +1,27 @@
+name: Independent web release artifacts
+on:
+  workflow_dispatch:
+  push:
+    tags: ["ecosystem1-v*"]
+jobs:
+  web:
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [business-web, operations-web, shopping-web, bazid-web, bazaara-web, grocery-web, food-web, logistics-web, drive-web, pay-web, pharmacy-web, bazasport-web]
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_BASE_URL: https://api.bazaara.com
+      NEXT_PUBLIC_BAZID_BASE_URL: https://id.bazaara.com
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --no-audit
+      - run: npm run build --workspace=@bazaara/${{ matrix.app }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}
+          path: apps/${{ matrix.app }}/.next
+          include-hidden-files: true

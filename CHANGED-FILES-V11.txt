@@ -1,0 +1,39 @@
+BAZAARA V11 — FILE DELTA FROM FULL V10 BASE
+============================================
+
+Modified existing files (24):
+- BAZAARA-EXPORT-MANIFEST.txt
+- CURRENT-MIGRATIONS.txt
+- SOURCE-REVIEW.md
+- TEST-RESULTS.md
+- UPGRADE-README.md
+- apps/drive-driver-mobile/app/index.tsx
+- apps/drive-rider-mobile/app/index.tsx
+- apps/drive-web/app/globals.css
+- apps/drive-web/app/page.tsx
+- apps/operations-web/app/drive/page.tsx
+- apps/operations-web/app/globals.css
+- apps/operations-web/app/pay/page.tsx
+- apps/operations-web/app/support/page.tsx
+- apps/pay-mobile/app/index.tsx
+- apps/pay-web/app/globals.css
+- apps/pay-web/app/page.tsx
+- package.json
+- packages/contracts/src/index.ts
+- packages/db/prisma/schema.prisma
+- services/platform-api/src/drive/routes.ts
+- services/platform-api/src/operations/routes.ts
+- services/platform-api/src/pay/service.ts
+- services/platform-api/src/support/routes.ts
+- services/platform-api/src/support/service.ts
+
+New V11 files (7 before this delta manifest):
+- DRIVE-WALLET-OPERATIONS-V11.md
+- RELEASE-V11.md
+- VALIDATION-V11.txt
+- packages/db/prisma/migrations/20260922103000_drive_wallet_support_context/migration.sql
+- scripts/validate-drive-wallet-operations-v11.mjs
+- scripts/verify-drive-wallet-operations-v11.ps1
+- scripts/apply-v11-to-canonical.ps1
+
+No active V10 source files were removed.

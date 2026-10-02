@@ -1,0 +1,161 @@
+.compactWrap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 40;
+  pointer-events: auto;
+}
+
+.detailWrap {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 80;
+  pointer-events: auto;
+}
+
+.heartButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, .28);
+  background: rgba(7, 20, 38, .92);
+  color: #F8FAFC;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .24);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.heartButton:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.03);
+  border-color: rgba(0, 168, 255, .78);
+  color: #B9B4FF;
+}
+
+.heartButton:disabled {
+  opacity: .72;
+  cursor: wait;
+}
+
+.compact {
+  width: 36px;
+  height: 36px;
+}
+
+.detail {
+  width: 44px;
+  height: 44px;
+  background: rgba(9, 24, 42, .96);
+  border-color: rgba(148, 163, 184, .34);
+}
+
+.saved {
+  border-color: rgba(0, 168, 255, .72);
+  background: rgba(0, 168, 255, .18);
+  color: #B9B4FF;
+}
+
+.heartIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  pointer-events: none;
+}
+
+.detail .heartIcon {
+  width: 23px;
+  height: 23px;
+}
+
+.busyDot {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #7DD3FC;
+  box-shadow: 0 0 0 2px #071426;
+}
+
+.detailStatus {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: max-content;
+  max-width: 210px;
+  padding: 7px 9px;
+  border: 1px solid rgba(148, 163, 184, .18);
+  border-radius: 8px;
+  background: #071426;
+  color: #CBD5E1;
+  box-shadow: 0 10px 28px rgba(0,0,0,.28);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.compactStatus {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:global(.approved-buy-panel),
+:global(.product-buy-panel) {
+  position: relative !important;
+}
+
+:global(.approved-buy-panel h1),
+:global(.product-buy-panel h1) {
+  padding-right: 58px;
+}
+
+:global(.product-purchase) {
+  grid-template-columns: minmax(0, 1fr) !important;
+  position: static !important;
+}
+
+:global(.product-purchase .add-cart-control),
+:global(.product-purchase > div:not([class*="wishlist"])) {
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .detailWrap {
+    top: 12px;
+    right: 12px;
+  }
+
+  .detail {
+    width: 42px;
+    height: 42px;
+  }
+
+  :global(.approved-buy-panel h1),
+  :global(.product-buy-panel h1) {
+    padding-right: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heartButton {
+    transition: none;
+  }
+
+  .heartButton:hover:not(:disabled) {
+    transform: none;
+  }
+}

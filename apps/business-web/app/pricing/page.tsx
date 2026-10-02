@@ -1,0 +1,15 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { BusinessHeader } from "../components/BusinessHeader";
+import { businessRequest, useBusinessOrganizations } from "../lib/business";
+
+type Plan = { key: string; name: string; description: string; monthlyMinor: number; annualMinor: number; includedSeats: number; features: string[] };
+const money = (minor: number) => minor === 0 ? "Custom / free" : new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(minor / 100);
+
+export default function PricingPage() {
+  const business = useBusinessOrganizations();
+  const [plans, setPlans] = useState<Plan[]>([]); const [cycle, setCycle] = useState<"MONTHLY" | "ANNUAL">("MONTHLY"); const [error, setError] = useState("");
+  useEffect(() => { businessRequest<{ plans: Plan[] }>("/v1/business/management/plans").then((r) => setPlans(r.plans)).catch((e) => setError(e instanceof Error ? e.message : "Could not load plans")); }, []);
+  return <div className="business-control-shell"><BusinessHeader organization={business.organization} organizations={business.organizations} organizationId={business.organizationId} setOrganizationId={business.setOrganizationId} active="pricing" /><main className="business-control-main biz-mgmt-main"><section className="business-page-heading business-page-heading-v3 biz-mgmt-heading"><div><span className="business-kicker">PRICING</span><h1>Choose the operating tier that fits your business.</h1><p>Transparent feature tiers with organization-wide access, analytics and support capabilities.</p></div><div className="biz-cycle-toggle"><button className={cycle === "MONTHLY" ? "active" : ""} onClick={() => setCycle("MONTHLY")}>Monthly</button><button className={cycle === "ANNUAL" ? "active" : ""} onClick={() => setCycle("ANNUAL")}>Annual</button></div></section>{error ? <div className="business-alert">{error}</div> : null}<section className="biz-pricing-grid">{plans.map((plan) => <article key={plan.key} className={plan.key === "GROWTH" ? "featured" : ""}><div><span>{plan.key}</span><h2>{plan.name}</h2><p>{plan.description}</p></div><div className="biz-plan-price"><strong>{money(cycle === "ANNUAL" ? plan.annualMinor : plan.monthlyMinor)}</strong><small>{plan.key === "ENTERPRISE" ? "contact sales" : cycle === "ANNUAL" ? "per year" : "per month"}</small></div><ul>{plan.features.map((feature) => <li key={feature}>✓ {feature}</li>)}</ul><div className="biz-plan-foot"><span>{plan.includedSeats}+ included seats</span><a href={`/subscriptions?plan=${plan.key}&cycle=${cycle}`}>{plan.key === "ENTERPRISE" ? "Configure enterprise" : "Choose plan"} →</a></div></article>)}</section><section className="business-panel biz-plan-note"><div><span className="business-kicker">BILLING CONTROL</span><h2>Plan changes stay organization-scoped and auditable.</h2><p>Owners and admins control upgrades, seat counts, renewal cycle and scheduled cancellation from Subscriptions.</p></div><a className="business-primary-button" href="/subscriptions">Manage subscription</a></section></main></div>;
+}

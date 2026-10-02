@@ -1,0 +1,444 @@
+/*
+ * Shopping Cart V2.7 — Compact Phone Web
+ * ---------------------------------------
+ * Target: mobile web/cart should look like a compact native-commerce cart,
+ * not a shrunken desktop page.
+ */
+
+body.shopping-cart-open .bazaara-mobile-topbar,
+body.shopping-cart-open .bz-shop-header,
+body.shopping-cart-open .bazaara-ai-launcher {
+  display: none !important;
+}
+
+body.shopping-cart-open {
+  padding-top: 0 !important;
+}
+
+.shop-cart-route > .bz-shop-header {
+  display: none !important;
+}
+
+.cart-mobile-page-heading {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  body.shopping-cart-open {
+    padding-top: 0 !important;
+    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .shop-cart-route {
+    min-height: 100vh;
+  }
+
+  .shop-cart-route .shop-main {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 10px 10px calc(138px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .shop-cart-route .catalogue-heading {
+    display: none !important;
+  }
+
+  .cart-mobile-page-heading {
+    min-height: 52px;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cart-mobile-back {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    border: 0;
+    border-radius: 999px;
+    color: #e8f4fc;
+    background: rgba(255,255,255,.035);
+    font-size: 1.2rem;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .cart-mobile-page-heading h1 {
+    margin: 0;
+    color: #f4f9fd;
+    font-size: 1.42rem;
+    line-height: 1.1;
+    letter-spacing: -.035em;
+  }
+
+  .shop-cart-route .cart-layout {
+    display: block !important;
+    margin-top: 0 !important;
+  }
+
+  .shop-cart-route .cart-items {
+    display: grid !important;
+    gap: 7px !important;
+  }
+
+  .shop-cart-route .cart-item {
+    min-width: 0;
+    position: relative;
+    display: grid !important;
+    grid-template-columns: 76px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    column-gap: 10px !important;
+    row-gap: 5px !important;
+    padding: 10px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(0,168,255,.045), transparent 10rem),
+      #09192b !important;
+    box-shadow: inset 0 1px rgba(255,255,255,.02) !important;
+    align-items: start !important;
+  }
+
+  .shop-cart-route .cart-item img,
+  .shop-cart-route .cart-image-empty {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    width: 76px !important;
+    height: 76px !important;
+    min-width: 76px !important;
+    border-radius: 9px !important;
+    object-fit: cover !important;
+    background: #102236 !important;
+  }
+
+  .shop-cart-route .cart-item-copy {
+    grid-column: 2 !important;
+    min-width: 0;
+    display: grid !important;
+    gap: 2px !important;
+  }
+
+  .shop-cart-route .cart-item-copy > a {
+    min-width: 0;
+    text-decoration: none;
+  }
+
+  .shop-cart-route .cart-item-copy > a > strong {
+    display: -webkit-box;
+    overflow: hidden;
+    color: #f0f7fc !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: .76rem !important;
+    line-height: 1.23 !important;
+    font-weight: 800 !important;
+  }
+
+  .shop-cart-route .cart-item-copy > span {
+    overflow: hidden;
+    color: #90a5b8 !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .62rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .shop-cart-route .cart-item-copy > small {
+    overflow: hidden;
+    color: #70859a !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .56rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .shop-cart-route .quantity-control {
+    width: max-content;
+    margin-top: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .shop-cart-route .quantity-control button {
+    width: 29px !important;
+    min-width: 29px !important;
+    height: 29px !important;
+    min-height: 29px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    color: #d7e9f4 !important;
+    background: #102b45 !important;
+    box-shadow: none !important;
+    font-size: .84rem !important;
+    line-height: 1 !important;
+  }
+
+  .shop-cart-route .quantity-control button:disabled {
+    opacity: .38 !important;
+  }
+
+  .shop-cart-route .quantity-value {
+    min-width: 18px;
+    text-align: center;
+    color: #f6fbff !important;
+    font-size: .72rem !important;
+    font-weight: 850 !important;
+  }
+
+  .shop-cart-route .cart-item-secondary-actions {
+    min-height: 32px;
+    margin-top: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+  }
+
+  .shop-cart-route .cart-item-secondary-actions .remove-link {
+    min-width: 0 !important;
+    min-height: 30px !important;
+    padding: 0 3px !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #fb7185 !important;
+    font-size: .59rem !important;
+    font-weight: 800 !important;
+  }
+
+  /* V2.6 heart-only control remains compact beside Remove. */
+  .shop-cart-route .cart-item-secondary-actions button[aria-label*="wishlist" i] {
+    width: 31px !important;
+    min-width: 31px !important;
+    height: 31px !important;
+    min-height: 31px !important;
+  }
+
+  .shop-cart-route .cart-stock-note {
+    margin-top: 1px !important;
+    color: #778da2 !important;
+    font-size: .53rem !important;
+  }
+
+  /* Put price / discount / stock into a compact line below the product copy. */
+  .shop-cart-route .cart-price-stack {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    min-width: 0 !important;
+    margin-top: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: baseline !important;
+    justify-content: flex-start !important;
+    align-content: flex-start !important;
+    gap: 3px 7px !important;
+    text-align: left !important;
+  }
+
+  .shop-cart-route .cart-price-stack > strong {
+    color: #65ddf6 !important;
+    font-size: .82rem !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+  }
+
+  .shop-cart-route .cart-compare-price {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+  }
+
+  .shop-cart-route .cart-compare-price s {
+    color: #667c91 !important;
+    font-size: .55rem !important;
+  }
+
+  .shop-cart-route .cart-compare-price span {
+    padding: 2px 5px !important;
+    border-radius: 5px !important;
+    color: #d8c3ff !important;
+    background: rgba(123,97,255,.10) !important;
+    font-size: .5rem !important;
+  }
+
+  .shop-cart-route .cart-stock-status {
+    font-size: .53rem !important;
+  }
+
+  .shop-cart-route .cart-line-total {
+    flex-basis: 100%;
+    color: #6d8297 !important;
+    font-size: .51rem !important;
+  }
+
+  /* Compare is a catalogue feature; remove it from compact Cart rows. */
+  .shop-cart-route .cart-item > .bazcompare-card-action {
+    display: none !important;
+  }
+
+  /* Mobile uses the sticky checkout; don't duplicate a full summary card. */
+  .shop-cart-route .cart-summary {
+    display: none !important;
+  }
+
+  /* Compact sticky checkout above the mobile bottom nav. */
+  .shop-cart-route .bazaara-cart-sticky-checkout {
+    left: 0 !important;
+    right: 0 !important;
+    bottom: calc(66px + env(safe-area-inset-bottom)) !important;
+    min-height: 58px !important;
+    grid-template-columns: minmax(74px, .42fr) minmax(0, 1.58fr) !important;
+    gap: 8px !important;
+    padding: 7px 10px !important;
+    border-top: 0 !important;
+    background: rgba(5,17,31,.975) !important;
+    box-shadow: 0 -8px 26px rgba(0,0,0,.27) !important;
+  }
+
+  .shop-cart-route .bazaara-cart-sticky-copy span {
+    font-size: 7px !important;
+  }
+
+  .shop-cart-route .bazaara-cart-sticky-copy strong {
+    margin-top: 1px !important;
+    font-size: 11px !important;
+  }
+
+  .shop-cart-route .bazaara-cart-sticky-button {
+    min-height: 43px !important;
+    padding: 0 10px !important;
+    border-radius: 10px !important;
+    font-size: .72rem !important;
+    box-shadow: 0 8px 20px rgba(0,130,240,.17) !important;
+  }
+
+  .shop-cart-route .bazaara-cart-sticky-button span {
+    font-size: .68rem !important;
+  }
+
+  /* V2.5 discovery becomes a horizontal product rail like the phone reference. */
+  .bazaara-cart-aftercare {
+    width: 100% !important;
+    margin: 24px 0 0 !important;
+    padding: 0 0 4px !important;
+    gap: 30px !important;
+  }
+
+  .bazaara-cart-discovery-section {
+    min-width: 0;
+  }
+
+  .bazaara-cart-discovery-heading {
+    padding: 0 3px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .bazaara-cart-discovery-heading h2 {
+    font-size: 1.05rem !important;
+  }
+
+  .bazaara-cart-discovery-heading > a {
+    font-size: .62rem !important;
+  }
+
+  .bazaara-cart-discovery-grid {
+    width: calc(100vw - 10px);
+    margin-left: -1px;
+    padding: 0 10px 7px 1px;
+    display: flex !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .bazaara-cart-discovery-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bazaara-cart-discovery-grid > .shop-product-card {
+    flex: 0 0 142px !important;
+    width: 142px !important;
+    min-width: 142px !important;
+    scroll-snap-align: start;
+  }
+
+  .bazaara-cart-aftercare .shop-product-card .product-image-wrap {
+    aspect-ratio: 1 / .92 !important;
+  }
+
+  .bazaara-cart-aftercare .shop-product-card .product-card-body {
+    padding: 8px !important;
+  }
+
+  .bazaara-cart-aftercare .shop-product-card .product-title {
+    min-height: 2.45em !important;
+    font-size: .66rem !important;
+  }
+
+  .bazaara-cart-aftercare .shop-product-card .product-price-row strong {
+    font-size: .75rem !important;
+  }
+
+  .bazaara-cart-aftercare .shop-product-card .addButton {
+    min-height: 34px !important;
+    border-radius: 8px !important;
+    font-size: .62rem !important;
+  }
+
+  /* Removal recommendation is compact on phones. */
+  .cart-remove-wishlist-suggestion {
+    margin: 7px 0 10px !important;
+    min-height: 48px !important;
+    padding: 7px 9px !important;
+    border-radius: 10px !important;
+  }
+
+  .cart-remove-wishlist-suggestion-icon {
+    width: 29px !important;
+    height: 29px !important;
+  }
+
+  .cart-remove-wishlist-suggestion-copy strong {
+    font-size: .64rem !important;
+  }
+
+  .cart-remove-wishlist-suggestion-copy span {
+    font-size: .54rem !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .shop-cart-route .shop-main {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .shop-cart-route .cart-item {
+    grid-template-columns: 70px minmax(0, 1fr) !important;
+    padding: 9px !important;
+    column-gap: 9px !important;
+  }
+
+  .shop-cart-route .cart-item img,
+  .shop-cart-route .cart-image-empty {
+    width: 70px !important;
+    height: 70px !important;
+    min-width: 70px !important;
+  }
+
+  .shop-cart-route .cart-item-copy > a > strong {
+    font-size: .72rem !important;
+  }
+
+  .bazaara-cart-discovery-grid > .shop-product-card {
+    flex-basis: 136px !important;
+    width: 136px !important;
+    min-width: 136px !important;
+  }
+}

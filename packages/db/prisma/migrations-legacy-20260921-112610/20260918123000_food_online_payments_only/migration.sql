@@ -1,0 +1,1 @@
+ALTER TABLE "FoodOrder" ALTER COLUMN "paymentMethod" SET DEFAULT 'BAZAARA_PAY';

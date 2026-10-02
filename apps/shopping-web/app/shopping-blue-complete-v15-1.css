@@ -1,0 +1,100 @@
+/* BAZAARA Shopping V15.1 -- complete dark-charcoal/electric-blue restoration.
+   Load after shopping-retail-v14.css AND shopping-restored-v15.css.
+   Corrects V14's globally-scoped orange header on non-home Shopping pages,
+   unthemed cart/product/order/account surfaces and the mobile web navigation.
+   Food and Grocery have separate UIs; no selectors from their apps are changed.
+*/
+.shop-shell,
+.v13-radar,
+.bz-search-results {
+  --v14-orange:#00B8FF;
+  --v14-dark:#F4FAFF;
+  --v14-surface:#121F31;
+  --v14-bg:#030915;
+  --v14-line:#294666;
+  --v14-muted:#A4BAD1;
+  --bz-indigo:#00B8FF;
+  --bz-cloud:#030915;
+  --bz-graphite:#F1F8FF;
+  --bz-border:#294566;
+  --bz-muted:#AABBD2;
+  --v12-bg:#030915;
+  --v12-panel:#121F31;
+  --v12-ink:#F3FBFF;
+  --v12-subtle:#A7B8D0;
+  --v12-line:#294666;
+  --v12-cyan:#00B8FF;
+  background-color:#030915!important;
+  color:#F3FBFF!important;
+}
+body:has(.shop-shell),body:has(.v13-radar),body:has(.bz-search-results) { background:#030915!important;color:#F3FBFF!important; }
+/* Header was orange on product details/cart/checkout/orders even after V15 because
+   the old selector targeted only body:has(.v14-retail). The header is Shopping-only. */
+body .bz-shop-header,
+body:has(.bazaara-account-page) .bz-shop-header,
+body:has(.bazaara-settings-page) .bz-shop-header {background:rgba(8,18,34,.97)!important;border-bottom:1px solid #2A4B69!important;color:#F3FAFF!important;box-shadow:0 5px 24px #0004!important;}
+body .bz-shop-header .bz-shop-brand {color:#F6FBFF!important;}
+body .bz-shop-header .bz-shop-brand span {color:#00B8FF!important;text-shadow:none!important;}
+body .bz-shop-header .bz-shop-search {background:#111F35!important;border:1px solid #416A8E!important;color:#F4F9FF!important;box-shadow:none!important;}
+body .bz-shop-header .bz-shop-search input {background:transparent!important;color:#F5FAFF!important;}
+body .bz-shop-header .bz-shop-search input::placeholder {color:#ADC4D7!important;}
+body .bz-shop-header .bz-shop-search:focus-within {border-color:#00B8FF!important;box-shadow:0 0 0 3px rgba(0,184,255,.15)!important;}
+body .bz-shop-header :is(.bz-shop-nav a,.bz-shop-nav button) {color:#E9F4FF!important;}
+body .bz-shop-header :is(.bz-shop-nav a,.bz-shop-nav button):hover {color:#5DD6FF!important;}
+body .bz-shop-header :is(.v12-header-bulk,.bz-icon-link,.bz-account-trigger,.bz-categories-trigger) {background:#14243C!important;border-color:#345A7B!important;color:#E7F7FF!important;}
+body .bz-shop-header .v12-header-bulk[href='/deals'] {background:#143A60!important;color:#90E2FF!important;border-color:#337CAF!important;}
+body .bz-shop-header :is(.bz-mega-wrap,.bz-account-popover,.bz-search-suggestions) {background:#12243B!important;color:#F1FAFF!important;border-color:#335678!important;box-shadow:0 12px 32px #0006!important;}
+body .bz-shop-header .bz-search-suggestions a {color:#ECF8FF!important;}
+body .bz-shop-header .bz-search-suggestions a:hover {background:#1A3C62!important;}
+/* Product page, gallery, individual Shopping product tiles across search, cart
+   suggestions and seller listings. Do not style product photography itself. */
+.shop-shell :is(.product-buy-panel,.product-info,.product-gallery,.shop-product-card,.product-card,.catalogue-panel,.catalogue-filters) {background:#121F31!important;color:#F3F9FF!important;border-color:#2C4C6D!important;}
+.shop-shell .product-gallery,.shop-shell .product-image-wrap,.shop-shell .product-image-empty,.shop-shell .product-card-media {background:#172B43!important;}
+.shop-shell :is(.product-buy-panel h1,.product-buy-panel h2,.product-title,.product-price-row strong,.product-info h2,.product-info h3) {color:#F4FAFF!important;}
+.shop-shell :is(.product-kicker,.product-meta,.product-description-short,.product-buy-panel small,.product-info p) {color:#B7C7D9!important;}
+.shop-shell :is(.discount-badge,.product-discount-badge) {color:#BEE9FF!important;background:#173C65!important;}
+.shop-shell :is(.product-save-button,.product-wishlist-button) {background:#183451!important;color:#A6E9FF!important;border-color:#376A90!important;}
+.shop-shell .shop-product-card:hover {border-color:#51BFF6!important;box-shadow:0 10px 30px #0004!important;}
+/* Cart, wishlist, checkout and order-management panels: real forms and status
+   colours remain legible; errors/success/status are NOT recoloured to brand. */
+.shop-shell :is(.cart-item,.cart-summary,.cart-items,.cart-remove-wishlist-suggestion,.shop-empty,.order-card,.order-card-side,.order-list,.bazaara-wishlist-list,.bazaara-wishlist-toolbar,.bazaara-wishlist-list>*,.bazaara-checkout-address-empty,.bazaara-checkout-address-list,.bazaara-checkout-delivery-process,.bazaara-checkout-selected-address,.bazaara-checkout-delivery-review) {background-color:#121F32!important;color:#F3F9FF!important;border-color:#2D4C6B!important;}
+.shop-shell :is(.cart-item h2,.cart-summary h2,.cart-title,.bazaara-wishlist-title,.bazaara-wishlist-price,.order-card strong,.summary-total strong,.bazaara-checkout-delivery-process-head) {color:#F5FBFF!important;}
+.shop-shell :is(.cart-item-copy>span,.cart-item-copy>small,.muted,.muted-copy,.breadcrumbs,.bazaara-wishlist-variant,.bazaara-checkout-address-copy small,.bazaara-checkout-delivery-option-copy small) {color:#AEBFD2!important;}
+.shop-shell :is(.cart-image-empty,.bazaara-wishlist-empty-image) {background:#18304B!important;color:#BCD7EA!important;}
+.shop-shell :is(.quantity-control,.bazaara-checkout-delivery-option,.bazaara-checkout-scheduled-field) {background:#172B42!important;color:#F2F8FF!important;border-color:#376084!important;}
+.shop-shell :is(.quantity-control button,.cart-item-secondary-actions button,.cart-item-secondary-actions a,.bazaara-wishlist-change,.bazaara-wishlist-remove,.order-details-button,.cart-mobile-back) {color:#95DCFF!important;}
+.shop-shell :is(.quantity-value,.cart-line-total,.bazaara-wishlist-state,.bazaara-checkout-selected-address strong) {color:#F6FAFF!important;}
+.shop-shell :is(.primary-shop-button,.bazaara-cart-sticky-button,.product-add-button,.bz-button,.bazaara-account-primary) {background:linear-gradient(105deg,#008DD2,#265FE5)!important;color:#FFF!important;border-color:#2484D8!important;}
+.shop-shell :is(.secondary-shop-button,.cart-remove-wishlist-suggestion-action) {background:#19385B!important;color:#B6E8FF!important;border-color:#386B99!important;}
+.shop-shell :is(input,select,textarea) {background:#101E32;color:#F5F9FF;border-color:#416181;}
+.shop-shell :is(input,select,textarea)::placeholder {color:#A4B5C8;}
+.shop-shell :is(input,select,textarea):focus-visible {outline:3px solid #43BDFF;outline-offset:2px;}
+/* V14's remaining orange selectors inside the home are neutralized by explicit
+   blue tokens, and the complete V15 theme still owns the banner/composition. */
+.v14-retail :is(.v14-category-strip a,.v14-mobile-categories a,.v14-benefits,.v14-benefits a,.v14-budget-shelves a,.v14-section,.v14-smart-section,.v14-hero-aside>a) {border-color:#315273!important;}
+.v14-retail :is(.v14-category-strip a>span,.v14-category-strip small,.v14-mobile-categories span,.v14-benefits .v12-benefit-glyph,.v14-budget-shelves a>span,.v14-budget-shelves a>small) {color:#75D5FF!important;}
+.v14-retail :is(.v14-product-grid .neon-product-card,.v14-product-grid .shop-product-card,.v14-product-grid .product-card-body) {background:#132238!important;color:#F5F9FF!important;border-color:#30506D!important;}
+.v14-retail .v14-product-grid :is(.product-title,.product-price-row strong) {color:#F6FBFF!important;}
+.v14-retail .v14-product-grid .product-add-button {background:#086DB5!important;color:#FFF!important;}
+/* Search, Deal Radar and account receive the same dark palette outside home. */
+.bz-search-results :is(.bz-filter-panel,.bz-results-products,.bz-results-heading,.shop-product-card),.v13-radar :is(.v13-filter-panel,.v13-offer,.v13-hero-stat) {background:#142238!important;color:#F3F9FF!important;border-color:#2C4D70!important;}
+.bz-search-results :is(input,select),.v13-radar :is(input,select) {background:#101F32!important;color:#F5FBFF!important;border-color:#416585!important;}
+.bz-search-results :is(.bz-apply-price,.primary-shop-button),.v13-radar :is(.v13-apply-button,.v13-cta) {background:#087FD0!important;color:#FFF!important;border-color:#2385CD!important;}
+:is(.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page,.bazaara-addresses-page,.bazaara-notifications-page) {background:#030915!important;color:#F6FAFF!important;}
+:is(.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page) :is(.bazaara-account-state-card,.bazaara-account-profile-card,.bazaara-account-section,.bazaara-account-list,.bazaara-account-row,.bazaara-profile-panel,.bazaara-settings-panel,.bazaara-settings-link-row) {background:#14233A!important;border-color:#315475!important;color:#F5FBFF!important;}
+:is(.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page) :is(h1,h2,h3,strong) {color:#F5FBFF!important;}
+:is(.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page) :is(.bazaara-account-primary,.bazaara-settings-primary) {background:#087FD0!important;color:#FFF!important;}
+/* Mobile browser Shopping nav and drawers previously inherited warm/off-white
+   tokens from V14. Keep native Food UI and Grocery's distinct identity intact. */
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-topbar,body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-bottom-nav,body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-category-drawer,body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-account-sheet {background:#0F1D31!important;color:#F1F9FF!important;border-color:#315477!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-topbar :is(a,button,.bazaara-mobile-menu-trigger),body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-bottom-nav :is(a,button) {color:#BDCCDD!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-topbar .bazaara-mobile-search {background:#16283E!important;color:#F4FAFF!important;border-color:#416486!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-topbar .bazaara-mobile-search input {color:#F5FAFF!important;background:transparent!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-topbar .bazaara-mobile-search input::placeholder {color:#A8BACD!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-bottom-nav .is-active,body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-bottom-nav [aria-current='page'],body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-category-list a:focus-visible {color:#6DD7FF!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-bottom-nav .is-active .bazaara-mobile-nav-icon {color:#51C9FF!important;background:#163A5B!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-category-drawer :is(.bazaara-mobile-category-head,.bazaara-mobile-category-list a),body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-account-sheet a {color:#F0F8FF!important;border-color:#2D5070!important;}
+body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-category-list a:active,body:has(:is(.shop-shell,.v13-radar,.bz-search-results,.bazaara-account-page,.bazaara-profile-page,.bazaara-settings-page)) .bazaara-mobile-account-sheet a:active {background:#173A5A!important;}
+/* Named error/warning/success banners retain semantic colour for safety. */
+@media(max-width:620px){.shop-shell .shop-main{padding-bottom:98px!important;}.shop-shell :is(.cart-item,.cart-summary,.bazaara-wishlist-list>*){border-radius:13px!important;}}
+@media(prefers-reduced-motion:reduce){.shop-shell *{transition-duration:0s!important;animation:none!important;}}

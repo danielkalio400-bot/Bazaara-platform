@@ -1,0 +1,29 @@
+﻿BAZAARA SOURCE EXPORT
+=====================
+
+Area: food
+Created: 2026-09-21 11:53:18
+Source: C:\Users\danie\Bazaara\bazaara-platform
+
+Included:
+---------
+ - apps\food-mobile
+ - apps\food-web
+ - package.json
+ - package-lock.json
+ - packages\contracts
+ - packages\db
+ - packages\design-system
+ - packages\ledger
+ - packages\security
+ - scripts
+ - services\platform-api
+ - tsconfig.base.json
+
+Excluded:
+---------
+ - node_modules
+ - build/cache output
+ - .git
+ - environment secret files
+ - existing archives

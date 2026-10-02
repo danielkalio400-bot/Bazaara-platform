@@ -1,0 +1,21 @@
+BAZAARA V11 VALIDATION — 2026-09-22
+====================================
+
+npm run validate:current-release: PASS
+
+Static repository: PASS (562 source files; 12 web ports; 11 native clients)
+Grocery/Food V2: PASS (3,191 checks)
+Food Connected V3: PASS
+Drive/Pharmacy: PASS (30 checks)
+Grocery Normal V5.5: PASS
+Shopping Responsive V2.4: PASS
+Shopping Cart V2.7: PASS
+Business & Operations V9: PASS (88 checks; 209 buttons audited)
+Drive/Wallet/Operations V10: PASS (149 checks)
+Drive/Wallet/Operations V11: PASS (182 checks)
+Changed TS/TSX syntax parse: PASS
+
+Dependency-backed npm/Prisma/build validation:
+- npm ci was attempted but package retrieval stalled in the packaging sandbox.
+- Partial node_modules was removed.
+- Run scripts/verify-drive-wallet-operations-v11.ps1 -Install -ApplyMigrations -Full on the normal Windows environment.

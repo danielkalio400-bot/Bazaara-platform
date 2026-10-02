@@ -1,0 +1,24 @@
+name: Mobile EAS release
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        type: choice
+        required: true
+        options: [shopping-mobile, grocery-mobile, food-mobile, logistics-mobile, logistics-courier-mobile, drive-rider-mobile, drive-driver-mobile, pay-mobile, business-mobile, pharmacy-mobile, bazasport-mobile]
+      platform:
+        type: choice
+        required: true
+        options: [android, ios]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --no-audit
+      - run: npx eas-cli@latest build --non-interactive --profile production --platform "${{ inputs.platform }}"
+        working-directory: apps/${{ inputs.app }}

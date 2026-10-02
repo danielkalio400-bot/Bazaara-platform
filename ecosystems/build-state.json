@@ -1,0 +1,19 @@
+{
+  "platform": "BAZAARA",
+  "repository": "bazaara-platform",
+  "strategy": "one-monorepo-build-by-ecosystem",
+  "buildSequence": [1, 2, 3],
+  "activeEcosystem": 1,
+  "gates": {
+    "ecosystem-1": "ACTIVE",
+    "ecosystem-2": "BLOCKED_UNTIL_ECOSYSTEM_1_STABLE",
+    "ecosystem-3": "BLOCKED_UNTIL_ECOSYSTEM_2_STABLE"
+  },
+  "rules": [
+    "Do not physically duplicate application source under ecosystems/.",
+    "Keep runtime source in apps/, services/ and packages/.",
+    "Finish and stabilize Ecosystem 1 before implementing Ecosystem 2.",
+    "Finish and stabilize Ecosystem 2 before implementing Ecosystem 3.",
+    "Shared foundations must remain reusable across all ecosystems."
+  ]
+}

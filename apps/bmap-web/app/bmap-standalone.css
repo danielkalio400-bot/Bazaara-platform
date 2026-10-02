@@ -1,0 +1,166 @@
+/* BAZAARA BMap V3 — standalone, map-first product; isolated from all other applications.
+   Builds on existing BMap V2 result-card/modal styles without changing its APIs. */
+.bzm.bzm-standalone {
+  --m-ink:#172a42; --m-blue:#1764de; --m-teal:#038994; --m-line:#e1e8f0;
+  position:relative;display:grid;grid-template-columns:76px minmax(0,1fr);
+  width:100%;height:100dvh;min-height:0;overflow:hidden;background:#e7f1eb;
+  font:inherit;color:var(--m-ink);isolation:isolate;
+}
+.bzm-standalone .bzm-rail {
+  position:relative;z-index:45;display:flex;align-items:center;flex-direction:column;gap:9px;
+  height:100dvh;padding:17px 6px 19px;background:#f8fbff;border-right:1px solid #e2e8f0;
+  box-shadow:2px 0 14px #142c4110;
+}
+.bzm-standalone .bzm-rail-brand {
+  display:grid;place-items:center;width:47px;height:47px;border-radius:16px;
+  font-size:23px;color:#037f94;background:linear-gradient(140deg,#e2f9fc,#e8f1ff);margin-bottom:3px;
+}
+.bzm-standalone .bzm-rail-brand span {transform:scaleX(.82) rotate(45deg);font-size:18px;line-height:1;}
+.bzm-standalone .bzm-rail-divider {width:36px;height:1px;background:#e2e8f1;margin:2px 0 5px;}
+.bzm-standalone .bzm-rail-spacer {flex:1;min-height:20px;}
+.bzm-standalone .bzm-rail-action {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  width:62px;min-height:66px;border:0;border-radius:13px;background:transparent;
+  color:#50677d;font-weight:670;font-size:10px;line-height:1.2;letter-spacing:0;
+  transition:background .15s,color .15s;
+}
+.bzm-standalone .bzm-rail-action.active,.bzm-standalone .bzm-rail-action:hover {
+  background:#e5f3fc;color:#0876c4;
+}
+.bzm-standalone .bzm-canvas {position:relative;min-width:0;min-height:0;height:100dvh;overflow:hidden;}
+.bzm-standalone .bzm-map-surface {position:absolute;inset:0;background:#e5f1e8;z-index:0;}
+.bzm-standalone .bzm-map-surface iframe {display:block;width:100%;height:100%;border:0;background:#e6f0e5;}
+.bzm-standalone .bzm-floating-search {
+  position:absolute;z-index:20;left:20px;top:16px;width:min(450px,calc(100% - 160px));
+}
+.bzm-standalone .bzm-search {
+  display:flex;align-items:center;gap:0;max-width:none;margin:0;width:100%;height:62px;
+  padding:7px 7px 7px 4px;background:#fff;border:1px solid #dce5ee;border-radius:19px;
+  box-shadow:0 6px 30px #14324a23,0 1px 3px #12324c0e;
+}
+.bzm-standalone .bzm-search:focus-within {border-color:#65a7ef;box-shadow:0 6px 30px #14324a25,0 0 0 3px #84c7f53e;}
+.bzm-standalone .bzm-search-menu,.bzm-standalone .bzm-clear {
+  display:grid;place-items:center;background:transparent;border:0;color:#566d80;box-shadow:none;
+  flex-shrink:0;width:41px;height:43px;border-radius:11px;
+}
+.bzm-standalone .bzm-search-menu:hover,.bzm-standalone .bzm-clear:hover {background:#eef6fc;color:#1262a2;}
+.bzm-standalone .bzm-search input {
+  flex:1;min-width:0;height:43px!important;padding:0 10px!important;font-size:14px!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+.bzm-standalone .bzm-search input::placeholder {color:#71859a;}
+.bzm-standalone .bzm-search-submit {
+  display:grid;place-items:center;width:47px;height:46px;flex-shrink:0;
+  border:0;border-radius:13px;background:#087e8d;color:white;box-shadow:none;
+}
+.bzm-standalone .bzm-search-submit:hover {background:#066675;}
+.bzm-standalone .bzm-floating-categories {
+  position:absolute;z-index:12;left:485px;top:21px;right:135px;
+  height:51px;display:flex;align-items:center;gap:9px;overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;pointer-events:auto;
+}
+.bzm-standalone .bzm-floating-categories::-webkit-scrollbar {display:none;}
+.bzm-standalone .bzm-floating-categories button {
+  flex:none;min-height:41px;white-space:nowrap;border:1px solid #e0e9f0;border-radius:999px;
+  background:#fff;color:#253c54;font-size:12px;font-weight:720;padding:10px 17px;
+  box-shadow:0 3px 11px #20395022;
+}
+.bzm-standalone .bzm-floating-categories button:hover {color:#095a91;border-color:#a7d6ec;background:#f4fcff;}
+.bzm-standalone .bzm-top-tools {position:absolute;z-index:21;right:20px;top:21px;display:flex;gap:12px;align-items:center;}
+.bzm-standalone .bzm-tool {display:grid;place-items:center;border:0;background:#fff;color:#405c75;width:40px;height:41px;border-radius:12px;box-shadow:0 2px 12px #173b5420;}
+.bzm-standalone .bzm-account {display:grid;place-items:center;width:43px;height:43px;border-radius:50%;font-size:15px;font-weight:900;color:#fff;background:#123450;box-shadow:0 3px 13px #12345030;}
+.bzm-standalone .bzm-overlay-panel {
+  position:absolute;z-index:16;left:20px;top:88px;bottom:19px;overflow:hidden;
+  display:flex;flex-direction:column;width:min(426px,calc(100% - 55px));
+  min-height:0;border:1px solid #e4eaf0;border-radius:19px;background:#fff;
+  box-shadow:0 10px 43px #1c32434a;
+}
+.bzm-standalone .bzm-overlay-panel .bzm-panel-head {padding:21px 21px 15px;}
+.bzm-standalone .bzm-overlay-panel .bzm-panel-head h1 {font-size:22px;}
+.bzm-standalone .bzm-overlay-panel .bzm-results {overscroll-behavior:contain;}
+.bzm-standalone .bzm-overlay-panel .bzm-panel-footer {font-size:10px;}
+.bzm-standalone .bzm-recent-item {display:flex;align-items:center;width:100%;gap:12px;min-height:58px;text-align:left;background:#fff;border:0;border-bottom:1px solid #edf1f6;color:#354c63;padding:11px 12px;font-size:12px;}
+.bzm-standalone .bzm-recent-item>span {flex:1;min-width:0;overflow-wrap:anywhere;}
+.bzm-standalone .bzm-recent-item:hover {background:#f4fbfe;}
+.bzm-standalone .bzm-clear-history,.bzm-standalone .bzm-add-entry {width:100%;padding:13px;display:flex;align-items:center;justify-content:center;gap:9px;background:#f1f8fc;border:1px solid #dcecf5;border-radius:12px;color:#146f98;font-size:12px;font-weight:750;margin-top:12px;}
+.bzm-standalone .bzm-clear-history {background:transparent;color:#697f93;}
+.bzm-standalone .bzm-map-toast {position:absolute;z-index:25;top:93px;left:20px;max-width:410px;display:flex;align-items:flex-start;gap:14px;padding:15px 16px;border:1px solid #e2eaf0;border-radius:13px;background:#fff;box-shadow:0 8px 28px #0d314f36;color:#40546a;font-size:12px;}
+.bzm-standalone .bzm-map-toast button {border:0;background:transparent;color:#61768d;}
+.bzm-standalone .bzm-detail {
+  position:absolute;z-index:18;right:22px;top:92px;bottom:20px;
+  width:min(377px,calc(100% - 112px));max-height:none;border-radius:20px;
+}
+.bzm-standalone .bzm-detail-banner {min-height:156px;}
+.bzm-standalone .bzm-detail-content {padding:20px;}
+.bzm-standalone .bzm-map-controls {position:absolute;z-index:11;right:19px;bottom:90px;display:grid;justify-items:center;gap:2px;padding:5px;border-radius:15px;background:#fff;box-shadow:0 4px 19px #15304e3d;}
+.bzm-standalone .bzm-map-controls>button {width:39px;height:39px;display:grid;place-items:center;background:transparent;border:0;border-radius:10px;color:#2e4a61;}
+.bzm-standalone .bzm-map-controls>button:hover {background:#eff7fc;}
+.bzm-standalone .bzm-map-controls>button>span {font-size:29px;line-height:1;}
+.bzm-standalone .bzm-control-divider {width:25px;height:1px;background:#e1e9f1;}
+.bzm-standalone .bzm-layer-button {position:absolute;z-index:10;left:22px;bottom:32px;display:grid;gap:4px;place-items:center;min-width:72px;padding:10px 12px;border:1px solid #dbe5ed;border-radius:13px;background:#fff;color:#27475d;box-shadow:0 4px 18px #15344a30;font-weight:720;font-size:10px;}
+.bzm-standalone .bzm-layer-button:hover {background:#eff8fe;}
+.bzm-standalone .bzm-attribution {position:absolute;z-index:10;bottom:8px;right:19px;display:flex;align-items:center;gap:7px;color:#637284;font-size:10px;background:#ffffffd9;padding:5px 8px;border-radius:6px;}
+.bzm-standalone .bzm-attribution a {text-decoration:underline;color:#385b71;}
+.bzm-standalone .bzm-attribution button {font-size:10px;border:0;background:none;color:#0f7490;padding:0;}
+.bzm-standalone .bzm-popover {position:absolute;z-index:35;right:24px;top:78px;width:320px;max-width:calc(100% - 24px);padding:17px;border:1px solid #e0e9f1;border-radius:20px;background:#fff;box-shadow:0 16px 52px #122f4860;color:#274257;}
+.bzm-standalone .bzm-popover-title {display:flex;align-items:center;justify-content:space-between;padding:0 0 13px;border-bottom:1px solid #edf1f4;font-size:15px;}
+.bzm-standalone .bzm-popover-title button {background:transparent;border:0;color:#637d90;}
+.bzm-standalone .bzm-app-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 7px;padding-top:17px;}
+.bzm-standalone .bzm-app-grid a {display:grid;place-items:center;gap:8px;text-align:center;font-size:11px;line-height:1.5;color:#45617a;padding:6px;border-radius:12px;}
+.bzm-standalone .bzm-app-grid a:hover {background:#eef8fd;}
+.bzm-standalone .bzm-app-grid a>span {display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:#e8f6f9;color:#078090;}
+.bzm-standalone .bzm-layer-current {display:flex;align-items:center;gap:10px;margin-top:13px;padding:13px;border:1px solid #cdebe1;border-radius:12px;background:#f0faf6;font-size:12px;color:#196f59;font-weight:760;}
+.bzm-standalone .bzm-layers-menu>a {display:flex;justify-content:space-between;gap:7px;margin-top:14px;font-size:12px;color:#076f99;}
+.bzm-standalone .bzm-layers-menu p {font-size:11px;line-height:1.6;color:#758a9d;margin:12px 0 0;}
+.bzm-standalone .bzm-modal-backdrop {z-index:70;}
+/* Tablet: move chips beneath search; keep map usable and panels independent. */
+@media(max-width:1270px){
+  .bzm.bzm-standalone {grid-template-columns:66px minmax(0,1fr);}
+  .bzm-standalone .bzm-rail {padding-left:3px;padding-right:3px;}
+  .bzm-standalone .bzm-rail-action {width:56px;}
+  .bzm-standalone .bzm-floating-search {width:min(510px,calc(100% - 160px));left:17px;top:14px;}
+  .bzm-standalone .bzm-floating-categories {left:18px;right:18px;top:86px;height:50px;}
+  .bzm-standalone .bzm-overlay-panel {top:147px;left:17px;bottom:14px;width:min(390px,calc(100% - 40px));}
+  .bzm-standalone .bzm-detail {top:147px;right:18px;bottom:15px;width:min(365px,calc(100% - 40px));}
+  .bzm-standalone:has(.bzm-detail) .bzm-overlay-panel {display:none;}
+}
+/* Mobile: edge-to-edge map; bottom navigation; slide-up result/detail sheets. */
+@media(max-width:720px){
+  .bzm.bzm-standalone {display:block;width:100vw;height:100dvh;}
+  .bzm-standalone .bzm-canvas {height:calc(100dvh - 60px);}
+  .bzm-standalone .bzm-rail {position:absolute;top:auto;bottom:0;left:0;right:0;z-index:45;width:100%;height:60px;flex-direction:row;justify-content:space-around;gap:0;padding:3px 7px;background:#fff;border-right:0;border-top:1px solid #e0e9ef;box-shadow:0 -4px 18px #152f4a1a;}
+  .bzm-standalone .bzm-rail-brand,.bzm-standalone .bzm-rail-divider,.bzm-standalone .bzm-rail-spacer,.bzm-standalone .bzm-rail-action:nth-of-type(4),.bzm-standalone .bzm-rail-action:nth-of-type(5){display:none;}
+  .bzm-standalone .bzm-rail-action {width:23%;height:55px;min-height:0;gap:3px;font-size:10px;}
+  .bzm-standalone .bzm-rail-action svg {height:20px;width:20px;}
+  .bzm-standalone .bzm-floating-search {left:11px;top:11px;width:calc(100% - 74px);}
+  .bzm-standalone .bzm-search {height:52px;border-radius:15px;padding:4px 4px 4px 0;}
+  .bzm-standalone .bzm-search-menu {width:34px;height:41px;}
+  .bzm-standalone .bzm-search input {font-size:12px!important;height:39px!important;padding:0 5px!important;}
+  .bzm-standalone .bzm-search-submit {width:40px;height:41px;border-radius:11px;}
+  .bzm-standalone .bzm-search-submit svg {width:20px;}
+  .bzm-standalone .bzm-top-tools {right:12px;top:16px;gap:0;}
+  .bzm-standalone .bzm-top-tools .bzm-tool {display:none;}
+  .bzm-standalone .bzm-account {height:40px;width:40px;}
+  .bzm-standalone .bzm-floating-categories {left:10px;right:0;top:73px;height:46px;gap:7px;}
+  .bzm-standalone .bzm-floating-categories button {font-size:11px;min-height:36px;padding:8px 12px;}
+  .bzm-standalone .bzm-overlay-panel {left:0;right:0;top:auto;bottom:0;width:100%;height:min(56dvh,550px);min-height:0;border-radius:22px 22px 0 0;border-left:0;border-right:0;border-bottom:0;box-shadow:0 -13px 44px #132e4740;}
+  .bzm-standalone .bzm-overlay-panel .bzm-panel-head {padding:15px 16px 8px;}
+  .bzm-standalone .bzm-overlay-panel .bzm-panel-head h1 {font-size:19px;}
+  .bzm-standalone .bzm-overlay-panel .bzm-panel-footer {display:none;}
+  .bzm-standalone .bzm-detail {left:0;right:0;top:auto;bottom:0;width:100%;height:min(62dvh,600px);max-height:none;border-radius:21px 21px 0 0;border-bottom:0;}
+  .bzm-standalone .bzm-detail-banner {min-height:120px;}
+  .bzm-standalone .bzm-map-controls {right:12px;bottom:105px;}
+  .bzm-standalone .bzm-map-controls>button {height:36px;width:36px;}
+  .bzm-standalone .bzm-layer-button {bottom:20px;left:11px;min-width:62px;}
+  .bzm-standalone .bzm-layer-button>span {display:none;}
+  .bzm-standalone .bzm-attribution {right:8px;bottom:4px;font-size:9px;}
+  .bzm-standalone .bzm-attribution button {font-size:9px;}
+  .bzm-standalone .bzm-popover {right:8px;top:65px;width:min(320px,calc(100% - 16px));}
+  .bzm-standalone .bzm-map-toast {top:125px;left:10px;right:10px;max-width:none;}
+}
+@media(max-width:390px){
+  .bzm-standalone .bzm-search input {font-size:11px!important;}
+  .bzm-standalone .bzm-floating-search {width:calc(100% - 65px);}
+  .bzm-standalone .bzm-top-tools {right:8px;}
+}
+@media(prefers-reduced-motion:reduce){.bzm-standalone *{transition:none!important;animation:none!important;}}

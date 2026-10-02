@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Drive Driver",
+    "slug": "drive-driver-mobile",
+    "scheme": "bazaara-drive-driver",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Drive Driver to use your location for nearby dispatch, pickup navigation and destination drop-off verification."
+        }
+      ]
+    ],
+    "android": {
+      "package": "com.bazaara.drive.driver"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bazaara.drive.driver"
+    }
+  }
+}

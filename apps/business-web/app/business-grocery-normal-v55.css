@@ -1,0 +1,59 @@
+.grocery-business-v5,
+.grocery-business-catalog-v5 {
+  --grocery-admin-accent: #2f8f62;
+  --grocery-admin-surface: #111311;
+  --grocery-admin-surface-2: #171a17;
+  --grocery-admin-line: rgba(255,255,255,.085);
+  --grocery-admin-text: #f5f6f4;
+  --grocery-admin-muted: #a0a49f;
+}
+
+.grocery-business-v5 .business-operation-subnav,
+.grocery-business-v5 .panel,
+.grocery-business-v5 .kpi,
+.grocery-business-v5 .table-wrap,
+.grocery-business-v5 .store-card,
+.grocery-business-v5 .order-card,
+.grocery-business-catalog-v5 .panel {
+  border-color: var(--grocery-admin-line) !important;
+  background: var(--grocery-admin-surface) !important;
+  box-shadow: none !important;
+}
+
+.grocery-business-v5 .eyebrow,
+.grocery-business-v5 .status,
+.grocery-business-v5 .notice-banner {
+  color: #65b98a !important;
+}
+
+.grocery-business-v5 .button:not(.ghost),
+.grocery-business-v5 button.primary,
+.grocery-business-catalog-v5 .button:not(.ghost) {
+  border-color: transparent !important;
+  color: #fff !important;
+  background: var(--grocery-admin-accent) !important;
+  box-shadow: none !important;
+}
+
+.grocery-business-v5 .button.ghost,
+.grocery-business-v5 button.ghost,
+.grocery-business-v5 input,
+.grocery-business-v5 select,
+.grocery-business-v5 textarea,
+.grocery-business-catalog-v5 input,
+.grocery-business-catalog-v5 select,
+.grocery-business-catalog-v5 textarea {
+  border-color: var(--grocery-admin-line) !important;
+  color: var(--grocery-admin-text) !important;
+  background: var(--grocery-admin-surface-2) !important;
+  box-shadow: none !important;
+}
+
+.grocery-business-v5 .muted,
+.grocery-business-v5 small {
+  color: var(--grocery-admin-muted) !important;
+}
+
+.grocery-v54-business-rule {
+  border-left: 3px solid var(--grocery-admin-accent) !important;
+}

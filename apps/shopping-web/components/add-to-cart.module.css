@@ -1,0 +1,147 @@
+.control {
+  width: 100%;
+  display: grid;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.addButton {
+  width: 100%;
+  min-height: 43px;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  outline: 0;
+  border-radius: 12px;
+  padding: 0 14px;
+  background:
+    radial-gradient(circle at 95% 0%, rgba(116,82,255,.24), transparent 62%),
+    linear-gradient(118deg, #126dff, #00a8ff 58%, #5b5bf4);
+  color: #ffffff;
+  box-shadow: 0 11px 25px rgba(0,130,240,.18);
+  font: inherit;
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .005em;
+  cursor: pointer;
+  transition: transform .14s ease, filter .14s ease, box-shadow .14s ease;
+}
+
+.addButton::before {
+  content: "+";
+  width: 21px;
+  height: 21px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: #dff9ff;
+  background: rgba(255,255,255,.12);
+  font-size: .9rem;
+  font-weight: 900;
+}
+
+.addButton:hover:not(:disabled),
+.addButton:focus-visible:not(:disabled) {
+  outline: 0;
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 29px rgba(0,130,240,.22),
+    0 8px 22px rgba(95,70,235,.10);
+}
+
+.addButton:active:not(:disabled) {
+  transform: scale(.985);
+}
+
+.addButton:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+  filter: saturate(.55);
+  box-shadow: none;
+}
+
+.stepper {
+  width: 100%;
+  min-height: 43px;
+  display: grid;
+  grid-template-columns: 42px minmax(42px,1fr) 42px;
+  align-items: stretch;
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  background: #0b2238;
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+
+.stepButton {
+  min-width: 42px;
+  border: 0;
+  outline: 0;
+  background: rgba(0,168,255,.12);
+  color: #dff9ff;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background .14s ease, transform .14s ease;
+}
+
+.stepButton:hover:not(:disabled),
+.stepButton:focus-visible:not(:disabled) {
+  outline: 0;
+  background: rgba(0,168,255,.20);
+}
+
+.stepButton:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+.stepButton:disabled {
+  opacity: .45;
+  cursor: wait;
+}
+
+.quantity {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: #0c1c2e;
+  color: #f3fbff;
+  font-size: .84rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.status {
+  min-height: 1em;
+  color: #71879d;
+  font-size: .58rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 430px) {
+  .addButton,
+  .stepper {
+    min-height: 40px;
+  }
+
+  .addButton {
+    border-radius: 10px;
+    font-size: .7rem;
+  }
+
+  .stepper {
+    grid-template-columns: 38px minmax(36px,1fr) 38px;
+    border-radius: 10px;
+  }
+
+  .stepButton {
+    min-width: 38px;
+  }
+}

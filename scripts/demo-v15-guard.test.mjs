@@ -1,0 +1,13 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { assertLocalFixtureTarget } from "../packages/db/prisma/demo-v15-guard.ts";
+const safe = { nodeEnv: "development", ack: "LOCAL_TEST_ONLY", databaseUrl: "postgresql://demo:example@localhost:55433/bazaara" };
+test("Allows explicit local PostgreSQL demo database", () => assert.equal(assertLocalFixtureTarget(safe), true));
+test("Allows direct IPv4 loopback", () => assert.equal(assertLocalFixtureTarget({ ...safe, databaseUrl:"postgres://demo:pass@127.0.0.1:5432/demo" }), true));
+test("Rejects production even with acknowledgement", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, nodeEnv: "production" })));
+test("Rejects absent acknowledgement", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, ack: "" })));
+test("Rejects nonlocal database", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, databaseUrl:"postgresql://u:p@db.internal.local/bazaara" })));
+test("Rejects TLS-hosted cloud database", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, databaseUrl:"postgres://u:p@db.neon.tech/demo?sslmode=require" })));
+test("Rejects missing database name", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, databaseUrl:"postgresql://u:p@localhost:5432/" })));
+test("Rejects invalid connection URL", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, databaseUrl:"not-a-url" })));
+test("Rejects HTTPS instead of PostgreSQL", () => assert.throws(() => assertLocalFixtureTarget({ ...safe, databaseUrl:"https://localhost:55433/demo" })));

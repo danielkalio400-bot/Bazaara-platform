@@ -1,0 +1,15 @@
+-- Grocery V5.3: pricing allocation + order-level substitution preference
+ALTER TABLE "ShoppingCheckout"
+  ADD COLUMN IF NOT EXISTS "serviceFeeBps" INTEGER NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "serviceFeeMinor" BIGINT NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "deliveryPlatformShareMinor" BIGINT NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "deliveryGoShareMinor" BIGINT NOT NULL DEFAULT 0;
+
+ALTER TABLE "ShoppingOrder"
+  ADD COLUMN IF NOT EXISTS "serviceFeeBps" INTEGER NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "serviceFeeMinor" BIGINT NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "deliveryPlatformShareMinor" BIGINT NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "deliveryGoShareMinor" BIGINT NOT NULL DEFAULT 0;
+
+ALTER TABLE "GroceryCustomerPreference"
+  ADD COLUMN IF NOT EXISTS "substitutionPolicy" TEXT NOT NULL DEFAULT 'BEST_MATCH';

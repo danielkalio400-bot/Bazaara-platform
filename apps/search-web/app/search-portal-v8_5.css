@@ -1,0 +1,69 @@
+/* BAZAARA Search Portal V8.5 — scoped visual language: neon-black, violet, cyan. */
+.bz85-screen-backdrop {position:fixed;inset:0;z-index:1100;display:flex;align-items:flex-start;justify-content:flex-end;background:rgba(2,5,15,.49);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:88px clamp(14px,4.2vw,72px) 22px 14px;box-sizing:border-box;color:#f5f6ff}
+.bz85-launcher {position:relative;width:min(460px,calc(100vw - 28px));max-height:min(810px,calc(100dvh - 112px));display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(123,150,220,.27);border-radius:30px;background:radial-gradient(ellipse at 90% -5%,rgba(98,48,245,.3),transparent 48%),radial-gradient(ellipse at 2% 100%,rgba(0,194,230,.12),transparent 45%),linear-gradient(150deg,#12172b,#151a2d 68%,#121a27);box-shadow:0 38px 100px rgba(0,0,0,.5),0 0 52px rgba(94,58,255,.12);isolation:isolate}
+.bz85-launcher-top,.bz85-settings-head {display:flex;justify-content:space-between;align-items:center;gap:10px;padding:24px 24px 14px}
+.bz85-launcher-top small,.bz85-settings-head small{color:#a69eff;font-weight:750;font-size:10px;letter-spacing:.15em}
+.bz85-launcher-top h2,.bz85-settings-head h2{margin:4px 0 0;font-size:25px;line-height:1.1;letter-spacing:-.04em;color:#f5f7ff}
+.bz85-close{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);color:#f5f7ff;border-radius:50%;font-size:26px;cursor:pointer}
+.bz85-close:hover,.bz85-close:focus-visible{background:rgba(137,101,255,.2);border-color:#a58bff}
+.bz85-app-find {margin:0 24px 12px;display:flex;align-items:center;gap:10px;padding:0 16px;min-height:52px;border-radius:17px;border:1px solid rgba(134,152,206,.3);background:rgba(6,12,28,.72);color:#a5baff}
+.bz85-app-find span{font-size:28px;line-height:1}.bz85-app-find input{width:100%;outline:none;background:transparent;border:0;color:#f2f7ff;font:inherit;font-size:14px}
+.bz85-app-find input::placeholder{color:#8b94b0}.bz85-app-find:focus-within{border-color:#2ad6ff;box-shadow:0 0 0 3px rgba(42,214,255,.10)}
+.bz85-launcher-scroll,.bz85-settings-scroll{overflow-y:auto;overscroll-behavior:contain;scrollbar-color:#555d7e transparent;scrollbar-width:thin;padding:0 17px 14px;min-height:0}
+.bz85-app-section{border-radius:21px;padding:9px 7px 15px}.bz85-section-head{display:flex;align-items:center;justify-content:space-between;padding:0 9px 8px}.bz85-section-head h3{margin:0;color:#eef2ff;font-size:15px;font-weight:700}.bz85-edit-button{padding:7px 13px;border-radius:12px;border:1px solid rgba(145,165,219,.25);background:rgba(115,105,224,.15);color:#d8ddff;cursor:pointer;font-size:13px}
+.bz85-app-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));row-gap:12px;column-gap:5px}
+.bz85-app-item{min-width:0;position:relative;text-align:center;border-radius:16px}
+.bz85-app-tile{display:flex;align-items:center;flex-direction:column;justify-content:center;gap:8px;min-height:106px;min-width:0;padding:12px 4px 9px;text-decoration:none;color:#f6f6ff;border:1px solid transparent;background:transparent;border-radius:16px;transition:background .16s,border-color .16s,transform .16s}
+.bz85-app-tile:hover,.bz85-app-tile:focus-visible{border-color:rgba(118,181,255,.27);background:rgba(125,129,214,.12);transform:translateY(-2px)}
+.bz85-app-icon{width:57px;height:57px;display:grid;place-items:center;border-radius:17px;border:1px solid rgba(255,255,255,.15);font-size:29px;font-weight:800;line-height:1;color:#fff;text-shadow:0 2px 15px rgba(255,255,255,.42);background:linear-gradient(132deg,#6b21f3,#3733e5 48%,#07c9e9);box-shadow:inset 0 1px rgba(255,255,255,.24),0 5px 19px rgba(35,28,171,.24);font-family:system-ui,sans-serif}
+.bz85-icon-internet{background:linear-gradient(132deg,#a02cf3,#3456ef 53%,#00c7df)}
+.bz85-icon-communication{background:linear-gradient(132deg,#9141ea,#433fce 48%,#369bea)}
+.bz85-icon-productivity{background:linear-gradient(132deg,#6649e9,#2c82e3 55%,#34d5d0)}
+.bz85-icon-storage-security{background:linear-gradient(132deg,#414ddd,#288cc7 55%,#14c9b5)}
+.bz85-icon-creative{background:linear-gradient(132deg,#e03ec6,#7e4bf1 56%,#25bcf0)}
+.bz85-icon-platform{background:linear-gradient(132deg,#6417d7,#3f56e8 57%,#12e0df)}
+.bz85-app-name{display:block;font-size:12.5px;line-height:1.2;font-weight:620;white-space:normal;overflow-wrap:anywhere;max-width:100%}.bz85-app-disabled{opacity:.46;cursor:not-allowed}.bz85-app-disabled small{font-size:10px;color:#c8cce5}
+.bz85-edit-controls{display:flex;justify-content:center;gap:3px;margin-top:1px}.bz85-edit-controls button{width:27px;height:26px;display:grid;place-items:center;color:#f3f5ff;background:#383757;border:1px solid #59537f;border-radius:8px;cursor:pointer}.bz85-edit-controls button:disabled{opacity:.3;cursor:default}
+.bz85-section-divider{height:1px;margin:6px 14px 18px;background:linear-gradient(90deg,transparent,rgba(137,118,255,.4),rgba(39,212,255,.3),transparent)}
+.bz85-show-all{display:flex;justify-content:center;align-items:center;gap:10px;width:calc(100% - 28px);margin:13px 14px 18px;padding:12px;color:#d5eaff;background:rgba(42,128,208,.09);border:1px solid rgba(72,191,231,.32);border-radius:16px;cursor:pointer;font-weight:640}
+.bz85-show-all:hover{background:rgba(57,170,228,.16)}
+.bz85-empty{color:#aeb8cd;font-size:13px;padding:5px 12px}.bz85-live-note{padding:9px 24px;font-size:12px;color:#8be6ec}
+.bz85-launcher-foot,.bz85-settings-foot{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:12px 22px;border-top:1px solid rgba(129,150,204,.16);font-size:12px;color:#a7aecd;background:rgba(3,9,24,.2)}
+.bz85-ribbon-mark{display:grid;place-items:center;width:22px;height:23px;border-radius:6px;font-weight:900;font-style:italic;background:linear-gradient(140deg,#d36eff,#712fff 45%,#02d8e4);color:white}
+.bz85-settings-backdrop{z-index:1120;justify-content:center;align-items:center;padding:14px}
+.bz85-settings{display:flex;flex-direction:column;width:min(690px,100%);max-height:min(830px,calc(100dvh - 28px));background:radial-gradient(circle at 96% 0,rgba(86,52,223,.21),transparent 35%),linear-gradient(160deg,#12182c,#161d31);border:1px solid rgba(130,164,234,.23);border-radius:29px;box-shadow:0 34px 100px rgba(0,0,0,.48);overflow:hidden}
+.bz85-settings-tabs{display:flex;gap:7px;padding:0 24px 14px;border-bottom:1px solid rgba(158,162,216,.16)}
+.bz85-settings-tabs button{cursor:pointer;border:0;border-bottom:2px solid transparent;background:transparent;color:#9ea7be;padding:9px 13px 11px;font-size:14px;font-weight:650}
+.bz85-settings-tabs button[aria-current=page]{color:#eff6ff;border-image:linear-gradient(90deg,#ba63ff,#11e2ef) 1}
+.bz85-settings-scroll{padding:7px 24px 20px}.bz85-preference-section{padding:20px 0;border-bottom:1px solid rgba(132,151,203,.18)}
+.bz85-preference-section h3{font-size:18px;letter-spacing:-.02em;margin:0 0 5px;color:#f6f8ff}.bz85-preference-section p{font-size:13px;line-height:1.55;color:#b6bdd2;margin:6px 0 17px}
+.bz85-control-row,.bz85-switch-row{display:flex;align-items:center;justify-content:space-between;gap:13px;padding:9px 0;font-size:14px;color:#e5e8f9}
+.bz85-control-row select{min-width:155px;max-width:55%;min-height:42px;border:1px solid rgba(152,167,221,.3);border-radius:11px;padding:0 12px;color:#edf4ff;background:#272e48;font:inherit;font-size:13px}
+.bz85-control-row select:disabled{opacity:.5}.bz85-switch-row input{accent-color:#8f5cff;width:22px;height:22px;cursor:pointer}.bz85-switch-row span small{display:block;color:#9aa9c5;font-size:11px;margin-top:4px}
+.bz85-preference-section .bz85-note{margin:8px 0;color:#a8c5df;font-size:12px}.bz85-data-pill{display:inline-flex;padding:9px 12px;border:1px solid #3b5379;border-radius:12px;background:#1d2c44;font-size:13px}
+.bz85-danger-button,.bz85-confirm button,.bz85-primary-link{display:inline-flex;align-items:center;justify-content:center;margin:12px 7px 0 0;padding:11px 15px;border-radius:12px;min-height:42px;border:1px solid rgba(141,159,226,.42);color:#f7f7ff;background:#343252;text-decoration:none;font-size:13px;font-weight:650;cursor:pointer}
+.bz85-danger-button{border-color:#d88c9b;color:#ffdce1;background:rgba(203,57,95,.1)}.bz85-confirm button:first-of-type{border-color:#f0aabb;background:#663245}.bz85-primary-link{background:linear-gradient(120deg,#6133b6,#185e9e);border-color:#777de2}
+/* Keep the launcher usable with keyboard and touch; never rely on hue alone. */
+.bz85-screen-backdrop :focus-visible{outline:2px solid #5eeaf3;outline-offset:3px}
+@media(max-width:640px){.bz85-screen-backdrop{padding:0;align-items:stretch;justify-content:center}.bz85-launcher{width:100%;max-height:100dvh;border-radius:0;border-left:0;border-right:0}.bz85-launcher-top,.bz85-settings-head{padding:21px 19px 12px}.bz85-app-find{margin:0 19px 12px}.bz85-settings{width:100%;max-height:100dvh;border-radius:0}.bz85-settings-scroll{padding:7px 18px 20px}.bz85-settings-tabs{padding:0 17px 12px}.bz85-control-row select{min-width:130px}}
+@media(prefers-reduced-motion:reduce){.bz85-app-tile{transition:none}.bz85-app-tile:hover{transform:none}}
+.bz85-footer-control{padding:6px 0;border:0;background:transparent;color:#bec3d1;cursor:pointer;font:inherit;font-size:13px}
+.bz85-footer-control:hover,.bz85-footer-control:focus-visible{color:#95e6f6;text-decoration:underline}
+.bz85-head-settings{color:#bfc6db;font-size:13px;font-weight:600;background:transparent;border:0;padding:9px 10px;cursor:pointer}
+.bz85-head-settings:hover{color:#82e2fc}
+/* BAZAARA Search's standalone page, not a reproduction of another product's branding. */
+.bz84-home,.bz84-results{--bz85-page:#0b101f}
+.bz84-home,.bz84-home .bzs-shell,.bz84-home .bzs-header{background:#0b101f!important;color:#f5f7ff}
+.bz84-home .bzs-main{background:radial-gradient(ellipse 28% 26% at 28% 9%,rgba(112,49,233,.08),transparent),radial-gradient(ellipse 23% 19% at 80% 54%,rgba(1,172,233,.055),transparent)}
+.bz84-home .bzs-intro h1{background:linear-gradient(109deg,#fafaff 10%,#a68bff 34%,#7140f6 55%,#1adcf5 83%,#f1faff 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.bz84-home .bzs-search-form{background:rgba(24,30,52,.86)!important;border-color:rgba(126,142,217,.38)!important;box-shadow:0 8px 42px rgba(2,5,21,.26)}
+.bz84-home .bzs-search-form:hover,.bz84-home .bzs-search-form:focus-within{border-color:rgba(66,202,251,.7)!important;box-shadow:0 0 0 3px rgba(23,215,255,.065),0 18px 52px rgba(2,5,21,.45)}
+.bz84-home .bz84-ai-chip{background:linear-gradient(110deg,rgba(114,61,244,.44),rgba(15,142,195,.33));border:1px solid rgba(119,168,255,.37)}
+.bz84-home .bz84-home-footer{background:rgba(10,17,32,.94);border-top:1px solid rgba(95,120,172,.2)}
+.bz84-home .bzs-avatar{background:linear-gradient(145deg,#ae38ff,#5440ff 48%,#05ccdd)}
+.bz84-home[data-theme=light],.bz84-home[data-theme=light] .bzs-shell,.bz84-home[data-theme=light] .bzs-header{background:#f7f9ff!important;color:#17203b}
+.bz84-home[data-theme=light] .bzs-main{background:radial-gradient(ellipse at 15% 20%,rgba(195,182,255,.16),transparent 38%),radial-gradient(ellipse at 81% 78%,rgba(113,219,242,.13),transparent 35%)}
+.bz84-home[data-theme=light] .bzs-intro h1{background:linear-gradient(109deg,#161c3d 10%,#7457d7 45%,#117faa 85%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.bz84-home[data-theme=light] .bzs-search-form{background:#fff!important;border-color:#d2d9ef!important;box-shadow:0 10px 35px rgba(42,57,101,.09)}
+.bz84-home[data-theme=light] .bz84-home-footer{background:rgba(249,251,255,.97)}
+.bz84-home[data-theme=light] .bz85-footer-control{color:#3b4260}

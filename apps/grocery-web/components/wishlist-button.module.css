@@ -1,0 +1,83 @@
+.compactWrap,
+.detailWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.heartButton {
+  position: relative;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  outline: 0;
+  border-radius: 999px;
+  color: #BBD0C5;
+  background: rgba(6, 24, 18, .82);
+  box-shadow: 0 8px 18px rgba(0,0,0,.16);
+  cursor: pointer;
+  transition: transform .14s ease, color .14s ease, background .14s ease;
+}
+
+.heartButton:hover:not(:disabled),
+.heartButton:focus-visible:not(:disabled) {
+  outline: 0;
+  color: #F4FBF7;
+  background: #14382A;
+  transform: translateY(-1px);
+}
+
+.heartButton:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+.heartButton:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+.compact {
+  width: 36px;
+  height: 36px;
+}
+
+.detail {
+  width: 42px;
+  height: 42px;
+}
+
+.saved {
+  color: #58B47E;
+  background: rgba(47,143,98,.11);
+}
+
+.heartIcon {
+  width: 19px;
+  height: 19px;
+}
+
+.detail .heartIcon {
+  width: 21px;
+  height: 21px;
+}
+
+.busyDot {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #3FA46F;
+  box-shadow: 0 0 0 2px #121412;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

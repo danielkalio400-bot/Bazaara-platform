@@ -1,0 +1,7 @@
+import {NextRequest,NextResponse} from 'next/server';
+const origin=process.env.PRODUCT_API_ORIGIN||'http://127.0.0.1:4037';
+const secret=process.env.PRODUCT_INTERNAL_SECRET||'';
+function h(req:NextRequest,body=false){return {...(body?{'content-type':'application/json'}:{}),'x-bazaara-internal':secret,'x-bazaara-user':req.cookies.get('bazid_sub')?.value||'local-dev'}}
+export async function GET(req:NextRequest,ctx:{params:Promise<{id:string}>}){const {id}=await ctx.params;const r=await fetch(origin+'/api/v1/items/'+encodeURIComponent(id),{headers:h(req),cache:'no-store'});return new NextResponse(await r.text(),{status:r.status,headers:{'content-type':'application/json','cache-control':'private, no-store'}})}
+export async function PUT(req:NextRequest,ctx:{params:Promise<{id:string}>}){const {id}=await ctx.params;const r=await fetch(origin+'/api/v1/items/'+encodeURIComponent(id),{method:'PUT',headers:h(req,true),body:await req.text(),cache:'no-store'});return new NextResponse(await r.text(),{status:r.status,headers:{'content-type':'application/json','cache-control':'private, no-store'}})}
+export async function DELETE(req:NextRequest,ctx:{params:Promise<{id:string}>}){const {id}=await ctx.params;const r=await fetch(origin+'/api/v1/items/'+encodeURIComponent(id),{method:'DELETE',headers:h(req),cache:'no-store'});return new NextResponse(await r.text(),{status:r.status,headers:{'content-type':'application/json','cache-control':'private, no-store'}})}

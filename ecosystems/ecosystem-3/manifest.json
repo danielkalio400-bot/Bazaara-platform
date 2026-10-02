@@ -1,0 +1,43 @@
+{
+  "ecosystem": 3,
+  "name": "Intelligence, Productivity & Infrastructure",
+  "status": "RESERVED_NOT_BUILDING",
+  "products": [
+    "Bazaara.com",
+    "Nova",
+    "Maps",
+    "Translate",
+    "News",
+    "Bmail",
+    "Meet",
+    "Calendar",
+    "Contacts",
+    "Docs",
+    "Sheets",
+    "Slides",
+    "Forms",
+    "Notes",
+    "Box",
+    "Vault",
+    "Photos",
+    "Studio",
+    "Bazaara AI",
+    "Spaces",
+    "Boards",
+    "Projects",
+    "Flow",
+    "Workspace",
+    "Sites",
+    "Code",
+    "Cloud",
+    "Creator Hub",
+    "Seller OS",
+    "Business OS",
+    "Bazaara One"
+  ],
+  "implementationGate": "DO_NOT_BUILD_UNTIL_ECOSYSTEM_2_STABLE",
+  "identityFoundation": {
+    "BazID": "global identity",
+    "Bmail": "mailbox service eventually activates BazID-reserved @bmail.com addresses"
+  }
+}

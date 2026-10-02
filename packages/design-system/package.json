@@ -1,0 +1,20 @@
+{
+    "name":  "@bazaara/design-system",
+    "version":  "0.1.0",
+    "private":  true,
+    "type":  "module",
+    "exports":  {
+                    ".":  "./src/index.ts",
+                    "./tokens.css":  "./src/tokens.css"
+                },
+    "peerDependencies":  {
+                             "react":  "19.2.3"
+                         },
+    "devDependencies":  {
+                            "@types/react":  "^19.0.0",
+                            "typescript":  "^5.9.0"
+                        },
+    "scripts":  {
+                    "typecheck":  "tsc --noEmit -p tsconfig.json"
+                }
+}

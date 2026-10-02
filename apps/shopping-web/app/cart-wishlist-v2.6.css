@@ -1,0 +1,101 @@
+/*
+ * Shopping Cart V2.6 — heart-only Wishlist + removal recommendation
+ */
+
+.cart-item-secondary-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px !important;
+}
+
+/* Keep Remove textual, Wishlist becomes icon-only. */
+.cart-item-secondary-actions .remove-link {
+  min-height: 34px;
+}
+
+.cart-remove-wishlist-suggestion {
+  margin: 10px 0 16px;
+  min-height: 58px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 13px;
+  color: #A9BDCE;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(76, 89, 220, .06), transparent 12rem),
+    rgba(255,255,255,.025);
+}
+
+.cart-remove-wishlist-suggestion-icon {
+  width: 33px;
+  height: 33px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: #6DDEF5;
+  background: rgba(0,168,255,.07);
+  font-size: .85rem;
+}
+
+.cart-remove-wishlist-suggestion-copy {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 2px;
+}
+
+.cart-remove-wishlist-suggestion-copy strong {
+  overflow: hidden;
+  color: #E8F4FC;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .72rem;
+}
+
+.cart-remove-wishlist-suggestion-copy span {
+  color: #6F859B;
+  font-size: .61rem;
+}
+
+.cart-remove-wishlist-suggestion-action {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-remove-wishlist-suggestion-dismiss {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  outline: 0;
+  border-radius: 999px;
+  color: #667E95;
+  background: transparent;
+  font: inherit;
+  font-size: .95rem;
+  cursor: pointer;
+}
+
+.cart-remove-wishlist-suggestion-dismiss:hover,
+.cart-remove-wishlist-suggestion-dismiss:focus-visible {
+  outline: 0;
+  color: #DDEBF6;
+  background: rgba(255,255,255,.035);
+}
+
+@media (max-width: 620px) {
+  .cart-remove-wishlist-suggestion {
+    align-items: flex-start;
+  }
+
+  .cart-remove-wishlist-suggestion-copy span {
+    max-width: 220px;
+  }
+}

@@ -1,0 +1,3 @@
+module.exports=[99806,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{children:a})})},"metadata",0,{title:"BAZAARA News — Your world in focus",description:"Independent news reader featuring live publisher feeds, following and saved articles."}])},78051,function(a){a.n(a.i(99806))}];
+
+//# sourceMappingURL=apps_news-web_app_layout_tsx_20q136a._.js.map

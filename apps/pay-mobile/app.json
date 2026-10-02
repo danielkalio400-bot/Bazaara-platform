@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Wallet",
+    "slug": "bazaara-pay",
+    "scheme": "bazaara-pay",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "android": {
+      "package": "com.bazaara.bazaarapay"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bazaara.bazaarapay"
+    }
+  }
+}

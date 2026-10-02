@@ -1,0 +1,5 @@
+'use client';
+import {useCollection} from './core';
+export type ChatPreference={id:string;pinned:boolean;archived:boolean;stars:string[];draft:string;folder?:string};
+const valid=(v:unknown):v is ChatPreference=>{const p=v as ChatPreference;return !!p&&typeof p.id==='string'&&typeof p.pinned==='boolean'&&typeof p.archived==='boolean'&&Array.isArray(p.stars)&&p.stars.every(x=>typeof x==='string')&&typeof p.draft==='string'&&p.draft.length<=4000&&(p.folder===undefined||typeof p.folder==='string'&&p.folder.length<=100);};
+export function useChatPreferences(userId:string){const store=useCollection<ChatPreference>('chat-preferences.'+userId,valid);const get=(id:string)=>store.items.find(p=>p.id===id)||{id,pinned:false,archived:false,stars:[],draft:''};const patch=(id:string,changes:Partial<ChatPreference>)=>store.mutate(rows=>{const old=rows.find(x=>x.id===id)||{id,pinned:false,archived:false,stars:[],draft:''};return [{...old,...changes,id},...rows.filter(x=>x.id!==id)];});return {...store,get,patch};}

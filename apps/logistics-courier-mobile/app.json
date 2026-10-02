@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "GO",
+    "slug": "logistics-courier-mobile",
+    "scheme": "bazaara-courier",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-location"
+    ],
+    "android": {
+      "package": "com.bazaara.courier"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bazaara.courier"
+    }
+  }
+}

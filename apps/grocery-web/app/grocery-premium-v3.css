@@ -1,0 +1,971 @@
+/*
+ * Grocery Full UI V5 — Fresh Commerce System
+ */
+
+:root {
+  --gr-bg: #0B0C0B;
+  --gr-bg-2: #071a15;
+  --gr-panel: #121412;
+  --gr-panel-2: #171A17;
+  --gr-line: rgba(255, 255, 255, .12);
+  --gr-text: #f4fbf7;
+  --gr-muted: #A0A49F;
+  --gr-muted-2: #688177;
+  --gr-primary: #2F8F62;
+  --gr-primary-2: #3FA46F;
+  --gr-lime: #3FA46F;
+  --gr-orange: #f59e0b;
+}
+
+body.bazaara-grocery-app {
+  min-height: 100vh;
+  color: var(--gr-text) !important;
+  background:
+    radial-gradient(circle at 92% -5%, rgba(47,143,98,.13), transparent 31rem),
+    radial-gradient(circle at 3% 22%, rgba(63,164,111,.055), transparent 27rem),
+    linear-gradient(180deg, #06130f 0%, #040c0a 68%, #06100d 100%) !important;
+}
+
+.bazaara-grocery-app *,
+.bazaara-grocery-app *::before,
+.bazaara-grocery-app *::after { box-sizing: border-box; }
+
+.bazaara-grocery-app button,
+.bazaara-grocery-app a,
+.bazaara-grocery-app [role="button"] { -webkit-tap-highlight-color: transparent; }
+
+.bazaara-grocery-app button:not(:disabled),
+.bazaara-grocery-app a[href],
+.bazaara-grocery-app [role="button"] { cursor: pointer; }
+
+.bazaara-grocery-app :focus-visible {
+  outline: 2px solid rgba(52,211,153,.85) !important;
+  outline-offset: 3px;
+}
+
+.bazaara-grocery-app .shop-shell,
+.bazaara-grocery-app .shop-main { background: transparent !important; }
+
+.bazaara-grocery-app .shop-main { width: min(1500px, calc(100% - 42px)); }
+
+/* Header */
+.bazaara-grocery-app .grocery-premium-header {
+  border-bottom: 0 !important;
+  background: rgba(4, 14, 11, .92) !important;
+  box-shadow: 0 14px 45px rgba(0,0,0,.24) !important;
+  backdrop-filter: blur(20px) saturate(130%);
+}
+
+.bazaara-grocery-app .bz-shop-header-inner {
+  min-height: 76px !important;
+  gap: clamp(12px, 1.5vw, 24px) !important;
+}
+
+.bazaara-grocery-app .bz-grocery-brand {
+  min-width: 128px;
+  display: grid !important;
+  gap: 1px;
+  color: var(--gr-text) !important;
+  text-decoration: none;
+}
+
+.bazaara-grocery-app .grocery-brand-master {
+  color: #789488;
+  font-size: .5rem;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+
+.bazaara-grocery-app .bz-grocery-brand strong {
+  color: #f7fff9;
+  font-size: 1.22rem;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+
+.bazaara-grocery-app .bz-shop-search {
+  min-width: 0;
+  height: 48px !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 15px !important;
+  background: radial-gradient(circle at 94% -20%, rgba(47,143,98,.08), transparent 11rem), #111311 !important;
+  box-shadow: 0 10px 26px rgba(0,0,0,.14) !important;
+}
+
+.bazaara-grocery-app .bz-shop-search:focus-within {
+  border: 0 !important;
+  outline: 0 !important;
+  background: #0d281f !important;
+  box-shadow: 0 12px 29px rgba(0,0,0,.17) !important;
+}
+
+.bazaara-grocery-app .bz-shop-search input {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: #eefbf3 !important;
+}
+
+.bazaara-grocery-app .bz-shop-search input::placeholder { color: #658074 !important; }
+.bazaara-grocery-app .bz-search-icon { color: #6d8f7e !important; }
+
+.bazaara-grocery-app .bz-search-suggestions,
+.bazaara-grocery-app .bz-account-popover {
+  overflow: hidden;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: rgba(7,24,19,.985) !important;
+  box-shadow: 0 22px 56px rgba(0,0,0,.42) !important;
+  backdrop-filter: blur(18px);
+}
+
+.bazaara-grocery-app .bz-search-suggestions a,
+.bazaara-grocery-app .bz-account-popover a { color: #b9cec4 !important; }
+
+.bazaara-grocery-app .bz-search-suggestions a:hover,
+.bazaara-grocery-app .bz-account-popover a:hover {
+  color: #fff !important;
+  background: rgba(47,143,98,.08) !important;
+}
+
+.bazaara-grocery-app .bz-grocery-nav { gap: 6px !important; }
+
+.bazaara-grocery-app .bz-grocery-nav-text {
+  min-height: 38px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  color: #9fb5ab !important;
+  font-size: .69rem !important;
+  font-weight: 820 !important;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.bazaara-grocery-app .bz-grocery-nav-text:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.025);
+}
+
+.bazaara-grocery-app .bz-grocery-ai-link {
+  min-height: 38px;
+  padding: 0 11px !important;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 11px !important;
+  color: #071510 !important;
+  background: linear-gradient(120deg, #58B47E, #3FA46F 58%, #3FA46F) !important;
+  box-shadow: 0 10px 24px rgba(47,143,98,.12) !important;
+  font-size: .66rem !important;
+  font-weight: 950 !important;
+  text-decoration: none;
+}
+
+.bazaara-grocery-app .bz-icon-link,
+.bazaara-grocery-app .cart-link {
+  border: 0 !important;
+  outline: 0 !important;
+  color: #b8cabf !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.bazaara-grocery-app .bz-icon-link:hover,
+.bazaara-grocery-app .bz-icon-link:focus-visible,
+.bazaara-grocery-app .bz-account-trigger[aria-expanded="true"],
+.bazaara-grocery-app .cart-link:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.04) !important;
+}
+
+/* Home */
+.grocery-premium-main {
+  padding-top: 18px !important;
+  padding-bottom: 94px !important;
+}
+
+.grocery-premium-hero {
+  position: relative;
+  min-height: 570px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(480px, 1.08fr);
+  border: 1px solid var(--gr-line);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 83% 6%, rgba(47,143,98,.14), transparent 28rem),
+    radial-gradient(circle at 22% 115%, rgba(63,164,111,.07), transparent 26rem),
+    linear-gradient(135deg, #0E100E 0%, #111311 50%, #06140f 100%);
+  box-shadow: 0 34px 90px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.025);
+}
+
+.grocery-premium-hero-copy {
+  position: relative;
+  z-index: 2;
+  padding: clamp(38px, 5vw, 72px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grocery-premium-kicker-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.grocery-premium-kicker,
+.grocery-premium-live {
+  min-height: 29px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: .58rem;
+  font-weight: 950;
+  letter-spacing: .11em;
+}
+
+.grocery-premium-kicker {
+  padding: 0 10px;
+  color: #06130e;
+  background: linear-gradient(120deg, #58B47E, #3FA46F);
+}
+
+.grocery-premium-live {
+  gap: 6px;
+  padding: 0 9px;
+  color: #8fa99c;
+  background: rgba(255,255,255,.025);
+}
+
+.grocery-premium-live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #42d88a;
+  box-shadow: 0 0 11px rgba(66,216,138,.55);
+}
+
+.grocery-premium-hero h1 {
+  max-width: 780px;
+  margin: 23px 0 18px;
+  color: #fff;
+  font-size: clamp(3.2rem, 6.2vw, 6.6rem);
+  line-height: .9;
+  letter-spacing: -.066em;
+}
+
+.grocery-premium-hero-copy > p {
+  max-width: 680px;
+  margin: 0;
+  color: #9db2a8;
+  font-size: clamp(.94rem, 1.4vw, 1.05rem);
+  line-height: 1.7;
+}
+
+.grocery-premium-actions {
+  margin-top: 27px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.grocery-premium-primary,
+.grocery-premium-secondary {
+  min-height: 48px;
+  padding: 0 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.grocery-premium-primary {
+  color: #04120d;
+  background: linear-gradient(120deg, #58B47E, #3FA46F 55%, #3FA46F);
+  box-shadow: 0 15px 32px rgba(47,143,98,.14);
+}
+
+.grocery-premium-secondary {
+  color: #cbe0d5;
+  background: rgba(255,255,255,.035);
+}
+
+.grocery-premium-proof {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #748e82;
+  font-size: .6rem;
+  font-weight: 760;
+}
+
+.grocery-premium-proof span { display: inline-flex; align-items: center; gap: 5px; }
+.grocery-premium-proof b { color: #58B47E; }
+
+.grocery-fresh-console {
+  position: relative;
+  min-height: 570px;
+  overflow: hidden;
+  padding: 27px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid rgba(255,255,255,.07);
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    radial-gradient(circle at 60% 45%, rgba(47,143,98,.08), transparent 20rem);
+  background-size: 44px 44px, 44px 44px, auto;
+}
+
+.grocery-fresh-orbit {
+  position: absolute;
+  border: 1px solid rgba(52,211,153,.09);
+  border-radius: 50%;
+}
+
+.grocery-fresh-orbit-one { width: 330px; height: 330px; right: -110px; top: -100px; }
+.grocery-fresh-orbit-two { width: 250px; height: 250px; left: -100px; bottom: -110px; }
+
+.grocery-fresh-console-head {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 16px;
+  display: grid;
+  gap: 4px;
+}
+
+.grocery-fresh-console-head > span {
+  color: #5c7e6f;
+  font-size: .54rem;
+  font-weight: 950;
+  letter-spacing: .14em;
+}
+
+.grocery-fresh-console-head > strong {
+  color: #f1faf5;
+  font-size: 1.55rem;
+  letter-spacing: -.035em;
+}
+
+.grocery-fresh-console-head > small { color: #799287; font-size: .68rem; }
+
+.grocery-fresh-feature-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.grocery-fresh-feature {
+  min-height: 155px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: start;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 16px;
+  color: inherit;
+  text-decoration: none;
+  background: rgba(6,24,18,.76);
+}
+
+.grocery-fresh-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: #81e9bf;
+  background: rgba(47,143,98,.08);
+  font-size: .7rem;
+  font-weight: 950;
+}
+
+.grocery-fresh-feature > div { min-width: 0; display: grid; gap: 3px; }
+.grocery-fresh-feature small { color: #5f7c6e; font-size: .49rem; font-weight: 950; letter-spacing: .09em; }
+.grocery-fresh-feature strong { color: #e9f7ef; font-size: .75rem; }
+.grocery-fresh-feature p { margin: 4px 0 0; color: #728c80; font-size: .6rem; line-height: 1.43; }
+
+.grocery-service-ribbon {
+  margin-top: 13px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--gr-line);
+  border-radius: 17px;
+  background: rgba(8,28,21,.78);
+}
+
+.grocery-service-ribbon article {
+  min-height: 82px;
+  padding: 13px 16px;
+  display: grid;
+  grid-template-columns: 33px 1fr;
+  gap: 9px;
+  align-items: center;
+}
+
+.grocery-service-ribbon article + article { border-left: 1px solid rgba(255,255,255,.07); }
+
+.grocery-service-ribbon article > span {
+  width: 33px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #79e2b5;
+  background: rgba(47,143,98,.07);
+}
+
+.grocery-service-ribbon article > div { display: grid; gap: 3px; }
+.grocery-service-ribbon small { color: #5e786c; font-size: .48rem; font-weight: 950; letter-spacing: .08em; }
+.grocery-service-ribbon strong { color: #dbeae2; font-size: .68rem; }
+
+.grocery-premium-section { padding-top: 58px; }
+
+.grocery-premium-section-head {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.grocery-premium-section-head > div > span,
+.grocery-planning-banner > div > span {
+  color: #54dca9;
+  font-size: .58rem;
+  font-weight: 950;
+  letter-spacing: .13em;
+}
+
+.grocery-premium-section-head h2,
+.grocery-planning-banner h2 {
+  margin: 6px 0 5px;
+  color: #f0faf5;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  letter-spacing: -.044em;
+}
+
+.grocery-premium-section-head p,
+.grocery-planning-banner p {
+  max-width: 720px;
+  margin: 0;
+  color: #748f83;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+.grocery-premium-section-head > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #82dfb6;
+  text-decoration: none;
+  font-size: .68rem;
+  font-weight: 850;
+}
+
+.grocery-premium-category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 9px;
+}
+
+.grocery-premium-category {
+  min-height: 108px;
+  padding: 13px;
+  display: grid;
+  grid-template-columns: 39px minmax(0,1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--gr-line);
+  border-radius: 15px;
+  color: inherit;
+  text-decoration: none;
+  background: radial-gradient(circle at 100% 0%, rgba(47,143,98,.05), transparent 10rem), rgba(10,31,24,.82);
+}
+
+.grocery-premium-category.is-featured {
+  background: radial-gradient(circle at 100% 0%, rgba(63,164,111,.075), transparent 10rem), linear-gradient(135deg, rgba(14,52,38,.95), rgba(9,31,24,.9));
+}
+
+.grocery-premium-category-icon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: #8be8c1;
+  background: rgba(47,143,98,.07);
+}
+
+.grocery-premium-category > span:nth-child(2) { min-width: 0; display: grid; gap: 3px; }
+.grocery-premium-category strong { overflow: hidden; color: #e8f5ed; text-overflow: ellipsis; white-space: nowrap; font-size: .69rem; }
+.grocery-premium-category small { overflow: hidden; color: #687f74; text-overflow: ellipsis; white-space: nowrap; font-size: .54rem; }
+.grocery-premium-category > b { color: #456558; }
+
+.grocery-premium-store-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 9px;
+}
+
+.grocery-premium-store {
+  min-height: 100px;
+  padding: 13px;
+  display: grid;
+  grid-template-columns: 42px minmax(0,1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--gr-line);
+  border-radius: 15px;
+  color: inherit;
+  text-decoration: none;
+  background: rgba(10,30,23,.8);
+}
+
+.grocery-premium-store-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #06140e;
+  background: linear-gradient(145deg, #58B47E, #3FA46F);
+  font-size: .9rem;
+  font-weight: 950;
+}
+
+.grocery-premium-store > div:nth-child(2) { min-width: 0; display: grid; gap: 3px; }
+.grocery-premium-store span { color: #5c7b6b; font-size: .48rem; font-weight: 950; letter-spacing: .09em; }
+.grocery-premium-store strong { overflow: hidden; color: #eaf6ef; text-overflow: ellipsis; white-space: nowrap; font-size: .72rem; }
+.grocery-premium-store small { overflow: hidden; color: #6d8579; text-overflow: ellipsis; white-space: nowrap; font-size: .55rem; }
+.grocery-premium-store > b { color: #456459; }
+
+.grocery-planning-banner {
+  margin-top: 58px;
+  padding: 27px 29px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 26px;
+  align-items: center;
+  border: 1px solid var(--gr-line);
+  border-radius: 21px;
+  background: radial-gradient(circle at 0% 120%, rgba(63,164,111,.05), transparent 19rem), radial-gradient(circle at 100% 0%, rgba(47,143,98,.07), transparent 19rem), rgba(8,27,21,.82);
+}
+
+.grocery-planning-actions {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 7px;
+}
+
+.grocery-planning-actions a {
+  min-height: 40px;
+  min-width: 100px;
+  padding: 0 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: #a9c2b6;
+  text-decoration: none;
+  background: rgba(255,255,255,.025);
+  font-size: .62rem;
+  font-weight: 850;
+}
+
+/* Products */
+.grocery-premium-product-grid,
+.bazaara-grocery-app .bz-product-grid {
+  grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+  gap: 12px !important;
+}
+
+.bazaara-grocery-app .grocery-product-card,
+.bazaara-grocery-app .shop-product-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  border-radius: 17px !important;
+  background: radial-gradient(circle at 100% 0%, rgba(47,143,98,.04), transparent 12rem), linear-gradient(180deg, #151815, #081710) !important;
+  box-shadow: none !important;
+}
+
+.bazaara-grocery-app .shop-product-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(52,211,153,.25) !important;
+  box-shadow: 0 19px 44px rgba(0,0,0,.22) !important;
+}
+
+.bazaara-grocery-app .product-image-wrap {
+  overflow: hidden;
+  background: #11271f !important;
+}
+
+.grocery-product-badges {
+  position: absolute;
+  left: 9px;
+  bottom: 9px;
+  z-index: 5;
+  display: flex;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.bazaara-grocery-app .discount-badge,
+.grocery-featured-badge {
+  position: static !important;
+  min-height: 22px;
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  border: 0 !important;
+  border-radius: 999px;
+  font-size: .52rem;
+  font-weight: 950;
+}
+
+.bazaara-grocery-app .discount-badge {
+  color: #1a1102 !important;
+  background: #f6b545 !important;
+}
+
+.grocery-featured-badge {
+  color: #b7f7d6;
+  background: rgba(6,36,25,.82);
+}
+
+.bazaara-grocery-app .product-card-body { padding: 13px !important; }
+
+.grocery-product-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+}
+
+.bazaara-grocery-app .product-kicker {
+  min-width: 0;
+  overflow: hidden;
+  color: #6bdaa9 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .55rem !important;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.grocery-stock {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #6d8177;
+  font-size: .5rem;
+  font-weight: 800;
+}
+
+.grocery-stock::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.grocery-stock.is-live { color: #74dca0; }
+.grocery-stock.is-live::before { background: #42d88a; box-shadow: 0 0 8px rgba(66,216,138,.42); }
+
+.bazaara-grocery-app .product-title {
+  min-height: 2.55em;
+  margin-top: 8px;
+  color: #eff8f3 !important;
+  font-size: .8rem !important;
+  line-height: 1.28 !important;
+}
+
+.grocery-product-description {
+  min-height: 2.5em;
+  margin: 6px 0 0;
+  overflow: hidden;
+  display: -webkit-box;
+  color: #6d8378;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: .59rem;
+  line-height: 1.35;
+}
+
+.bazaara-grocery-app .product-price-row { margin-top: 9px; }
+.bazaara-grocery-app .product-price-row strong { color: #8ee4b7 !important; font-size: 1rem !important; }
+.bazaara-grocery-app .product-price-row s { color: #647b70 !important; font-size: .62rem !important; }
+
+.grocery-product-meta {
+  margin-top: 9px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.grocery-product-meta > span,
+.grocery-product-meta > a {
+  min-height: 22px;
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  color: #738d81;
+  text-decoration: none;
+  background: rgba(255,255,255,.022);
+  font-size: .5rem;
+  font-weight: 750;
+}
+
+.grocery-product-meta > a.is-verified {
+  color: #75dda4;
+  background: rgba(66,216,138,.05);
+}
+
+/* Transactional surfaces */
+.bazaara-grocery-app .gv2-page {
+  width: min(1240px, calc(100% - 36px));
+  padding-top: 28px;
+}
+
+.bazaara-grocery-app .gv2-head h1 { color: #f3faf6; }
+.bazaara-grocery-app .gv2-kicker,
+.bazaara-grocery-app .eyebrow { color: #5EB184 !important; }
+
+.bazaara-grocery-app .gv2-muted,
+.bazaara-grocery-app .muted { color: #81998e !important; }
+
+.bazaara-grocery-app .gv2-card,
+.bazaara-grocery-app .panel,
+.bazaara-grocery-app .cart-item,
+.bazaara-grocery-app .cart-summary,
+.bazaara-grocery-app .checkout-panel,
+.bazaara-grocery-app .approved-buy-panel {
+  border-color: var(--gr-line) !important;
+  color: var(--gr-text) !important;
+  background: radial-gradient(circle at 100% 0%, rgba(47,143,98,.035), transparent 12rem), rgba(10,29,23,.91) !important;
+  box-shadow: 0 15px 38px rgba(0,0,0,.12) !important;
+}
+
+.bazaara-grocery-app .gv2-input,
+.bazaara-grocery-app .gv2-select,
+.bazaara-grocery-app .gv2-textarea,
+.bazaara-grocery-app input:not([type="checkbox"]):not([type="radio"]),
+.bazaara-grocery-app select,
+.bazaara-grocery-app textarea {
+  border-color: rgba(255,255,255,.13) !important;
+  color: #edf8f2 !important;
+  background: #101210 !important;
+}
+
+.bazaara-grocery-app input::placeholder,
+.bazaara-grocery-app textarea::placeholder { color: #597267 !important; }
+
+.bazaara-grocery-app .gv2-btn {
+  border: 0 !important;
+  color: #07150f !important;
+  background: linear-gradient(120deg, #58B47E, #3FA46F 56%, #3FA46F) !important;
+}
+
+.bazaara-grocery-app .gv2-btn.secondary,
+.bazaara-grocery-app .secondary-shop-button,
+.bazaara-grocery-app button.secondary {
+  border: 0 !important;
+  color: #c2d8cc !important;
+  background: rgba(255,255,255,.035) !important;
+}
+
+.bazaara-grocery-app .gv2-chip,
+.bazaara-grocery-app .status {
+  color: #85dfb4 !important;
+  background: rgba(47,143,98,.07) !important;
+}
+
+.bazaara-grocery-app .gv2-progress { background: #102a20 !important; }
+.bazaara-grocery-app .gv2-progress > i { background: linear-gradient(90deg, #2F8F62, #3FA46F) !important; }
+
+.bazaara-grocery-app .gv2-tabs a,
+.bazaara-grocery-app .gv2-tabs button {
+  border-color: var(--gr-line) !important;
+  color: #a5bdb1 !important;
+  background: #0a1f18 !important;
+}
+
+.bazaara-grocery-app .gv2-tabs .active {
+  color: #06130e !important;
+  border-color: transparent !important;
+  background: #58B47E !important;
+}
+
+.bazaara-grocery-app .bazaara-settings-panel,
+.bazaara-grocery-app .bazaara-account-state-card,
+.bazaara-grocery-app .bazaara-profile-panel,
+.bazaara-grocery-app .bazaara-address-wide {
+  border-color: var(--gr-line) !important;
+  color: #edf8f2 !important;
+  background: rgba(9,28,21,.9) !important;
+}
+
+.bazaara-grocery-app .bz-filter-panel,
+.bazaara-grocery-app .bz-results-heading,
+.bazaara-grocery-app .bz-query-recovery,
+.bazaara-grocery-app .bz-search-discovery,
+.bazaara-grocery-app .bz-grocery-list-create,
+.bazaara-grocery-app .bz-grocery-list-card,
+.bazaara-grocery-app .bz-grocery-repeat-card,
+.bazaara-grocery-app .bz-category-card,
+.bazaara-grocery-app .bz-grocery-store {
+  border-color: var(--gr-line) !important;
+  color: #edf8f2 !important;
+  background: rgba(9,29,22,.9) !important;
+}
+
+.bazaara-grocery-app .bz-category-icon,
+.bazaara-grocery-app .bz-view-all,
+.bazaara-grocery-app .bz-grocery-repeat-message { color: #74ddb0 !important; }
+
+.bazaara-grocery-app .bazaara-ai-launcher {
+  right: 18px !important;
+  bottom: 18px !important;
+  width: auto !important;
+  min-width: 118px;
+  height: 42px !important;
+  padding: 4px 10px 4px 4px !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 7px;
+  border: 0 !important;
+  border-radius: 12px !important;
+  color: #d5e8de;
+  background: rgba(8,28,21,.92) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.27) !important;
+}
+
+.bazaara-grocery-app .bazaara-ai-launcher::after {
+  content: "Grocery AI";
+  font-size: .61rem;
+  font-weight: 900;
+}
+
+.bazaara-grocery-app .bazaara-ai-mark {
+  width: 34px !important;
+  height: 34px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(145deg, #2F8F62, #3FA46F 60%, #3FA46F) !important;
+}
+
+@media (max-width: 760px) {
+  body.bazaara-grocery-app { padding-bottom: 82px !important; }
+  .bazaara-grocery-app .shop-main { width: min(100% - 18px, 720px); }
+  .bazaara-grocery-app .bz-shop-header-inner { min-height: auto !important; grid-template-columns: 1fr !important; gap: 9px !important; padding: 10px 9px !important; }
+  .bazaara-grocery-app .bz-grocery-brand { display: none !important; }
+  .bazaara-grocery-app .bz-shop-search { width: 100%; height: 46px !important; border-radius: 13px !important; }
+  .bazaara-grocery-app .bz-grocery-nav-text,
+  .bazaara-grocery-app .bz-grocery-ai-link { display: none !important; }
+
+  .grocery-mobile-nav {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    min-height: 62px !important;
+    border: 1px solid rgba(255,255,255,.11) !important;
+    border-radius: 18px !important;
+    background: rgba(6,22,16,.96) !important;
+    box-shadow: 0 16px 42px rgba(0,0,0,.4) !important;
+  }
+
+  .grocery-mobile-nav a { color: #71897d !important; }
+  .grocery-mobile-nav a.is-active { color: #83e4b6 !important; }
+
+  .grocery-mobile-nav a.is-center .grocery-mobile-nav-icon {
+    color: #06130e !important;
+    background: linear-gradient(135deg, #58B47E, #3FA46F) !important;
+    box-shadow: 0 8px 20px rgba(47,143,98,.18) !important;
+  }
+
+  .grocery-premium-main { padding-top: 10px !important; }
+  .grocery-premium-hero { min-height: 0; grid-template-columns: 1fr; border-radius: 20px; }
+  .grocery-premium-hero-copy { padding: 29px 19px 22px; }
+  .grocery-premium-hero h1 { font-size: clamp(2.9rem, 14vw, 4.5rem); }
+
+  .grocery-premium-actions { display: grid; }
+  .grocery-premium-primary,
+  .grocery-premium-secondary { width: 100%; }
+
+  .grocery-fresh-console { min-height: 360px; padding: 18px; border-top: 1px solid rgba(255,255,255,.06); border-left: 0; }
+  .grocery-service-ribbon { grid-template-columns: 1fr 1fr; }
+  .grocery-service-ribbon article:nth-child(3) { border-left: 0; border-top: 1px solid rgba(255,255,255,.07); }
+  .grocery-service-ribbon article:nth-child(4) { border-top: 1px solid rgba(255,255,255,.07); }
+
+  .grocery-premium-section { padding-top: 44px; }
+  .grocery-premium-section-head { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .grocery-premium-category-grid { grid-template-columns: 1fr 1fr; gap: 7px; }
+  .grocery-premium-category { min-height: 91px; padding: 10px; grid-template-columns: 35px minmax(0,1fr); }
+  .grocery-premium-category > b { display: none; }
+  .grocery-premium-category-icon { width: 35px; height: 35px; }
+  .grocery-premium-store-grid { grid-template-columns: 1fr; }
+
+  .grocery-planning-banner { margin-top: 44px; padding: 20px; grid-template-columns: 1fr; }
+  .grocery-planning-actions { grid-template-columns: repeat(3, 1fr); }
+  .grocery-planning-actions a { min-width: 0; }
+
+  .grocery-premium-product-grid,
+  .bazaara-grocery-app .bz-product-grid,
+  .bazaara-grocery-app .shopping-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .bazaara-grocery-app .product-card-body { padding: 9px !important; }
+  .grocery-product-description { display: none; }
+  .bazaara-grocery-app .product-title { font-size: .72rem !important; }
+  .bazaara-grocery-app .product-price-row strong { font-size: .88rem !important; }
+
+  .bazaara-grocery-app .gv2-page { width: min(100% - 18px, 720px); padding-top: 16px; }
+  .bazaara-grocery-app .gv2-card { padding: 14px; border-radius: 15px; }
+
+  .bazaara-grocery-app .bazaara-ai-launcher {
+    right: 10px !important;
+    bottom: calc(78px + env(safe-area-inset-bottom)) !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    padding: 4px !important;
+    justify-content: center;
+  }
+
+  .bazaara-grocery-app .bazaara-ai-launcher::after { display: none !important; }
+}
+
+@media (max-width: 430px) {
+  .grocery-fresh-feature-grid { grid-template-columns: 1fr; }
+  .grocery-fresh-feature { min-height: 102px; }
+  .grocery-premium-proof { display: grid; gap: 7px; }
+  .grocery-planning-actions { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 1440px) {
+  .grocery-premium-product-grid,
+  .bazaara-grocery-app .bz-product-grid {
+    grid-template-columns: repeat(5, minmax(0,1fr)) !important;
+  }
+}

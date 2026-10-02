@@ -1,0 +1,58 @@
+{
+  "name": "BAZAARA Shared Foundation",
+  "status": "FOUNDATION",
+  "systems": [
+    {
+      "name": "BazID",
+      "role": "global identity",
+      "currentWorkspaces": [
+        "apps/bazid-web"
+      ],
+      "foundationDecisions": [
+        "One account across all ecosystems.",
+        "BazID recommends a matching @bmail.com address.",
+        "The @bmail.com namespace is reserved/linked by the identity foundation before Bmail mailbox implementation.",
+        "If the preferred address is unavailable, suggest alternatives and require explicit user selection.",
+        "Bmail remains an Ecosystem 3 product and is not built during Ecosystem 1."
+      ]
+    },
+    {
+      "name": "Operations",
+      "role": "internal employee control plane",
+      "currentWorkspaces": [
+        "apps/operations-web"
+      ]
+    },
+    {
+      "name": "GO",
+      "role": "delivery and courier execution",
+      "currentWorkspaces": [
+        "apps/logistics-web",
+        "apps/logistics-mobile",
+        "apps/logistics-courier-mobile"
+      ]
+    },
+    {
+      "name": "BAZAARA Platform Home",
+      "role": "master platform gateway across all three ecosystems",
+      "port": 3005,
+      "currentWorkspaces": [
+        "apps/bazaara-web"
+      ]
+    }
+  ],
+  "sharedCapabilities": [
+    "identity",
+    "authorization",
+    "wallet-ledger",
+    "support",
+    "notifications",
+    "audit",
+    "security-risk",
+    "analytics",
+    "localization",
+    "media-storage",
+    "event-contracts",
+    "design-system"
+  ]
+}

@@ -1,0 +1,16 @@
+DRIVE + PHARMACY SOURCE VALIDATION
+Date: 2026-09-16
+
+PASS  Static validation: 440 source files; 12 web ports; 11 native clients
+PASS  Grocery/Food V2 regression validation: 2725 checks
+PASS  Drive/Pharmacy frozen-rule validation: 30 checks
+PASS  TypeScript parser validation for modified source: 31 files
+PASS  package-lock workspace dependency consistency
+
+NOT EXECUTED IN CONTAINER
+- prisma validate / prisma generate
+- full workspace typecheck
+- automated dependency-backed test suite
+- production web builds
+
+Reason: npm registry downloads failed in the artifact container with EAI_AGAIN; npm then reported "Exit handler never called". Use scripts/validate-drive-pharmacy-release.ps1 after npm ci on the development machine.

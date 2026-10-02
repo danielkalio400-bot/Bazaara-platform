@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Business",
+    "slug": "business-mobile",
+    "scheme": "bazaara-business",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "android": {
+      "package": "com.bazaara.business"
+    },
+    "ios": {
+      "bundleIdentifier": "com.bazaara.business"
+    }
+  }
+}

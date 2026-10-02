@@ -1,0 +1,7 @@
+﻿Grocery Complete V5.3
+Installed: 2026-09-20T22:26:47.8153066+01:00
+Backup: C:\Users\danie\Bazaara\bazaara-grocery-complete-v5.3-backup-20260920-222647
+Migration: 20260920210000_grocery_pricing_preferences_v53
+Service fee: 20%
+Express delivery: NGN 2,000
+Express allocation: NGN 1,000 platform + NGN 1,000 GO

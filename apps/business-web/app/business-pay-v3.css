@@ -1,0 +1,4 @@
+
+/* BUSINESS PAY V3 */
+.business-finance-wallet{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin:18px 0;padding:28px;border-radius:24px;color:#fff;background:radial-gradient(circle at 85% 0,rgba(177,92,255,.30),transparent 35%),linear-gradient(135deg,#11091e,#08050c 72%);box-shadow:0 24px 70px rgba(45,21,74,.16)}
+.business-finance-wallet>div:first-child{display:grid;gap:7px}.business-finance-wallet strong{font-size:clamp(2.2rem,5vw,4.5rem);letter-spacing:-.055em}.business-finance-wallet p{margin:0;color:#c7bbd2}.business-finance-help{margin-top:14px;padding:11px 12px;border-radius:11px;background:#f6f1fd;color:#766b80;font-size:.75rem;line-height:1.5}@media(max-width:800px){.business-finance-wallet{align-items:flex-start;flex-direction:column}}

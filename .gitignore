@@ -1,0 +1,117 @@
+node_modules
+.next
+coverage
+dist
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+packages/db/prisma/dev.db
+.bazaara-dev/
+.bazaara-backups/
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.turbo/
+packages/db/.env
+Thumbs.db
+
+.bazaara-e3-backups/
+
+# ============================================================
+# BAZAARA — LOCAL / PRIVATE / GENERATED FILES
+# ============================================================
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+ENV-KEYS-ONLY.txt
+ENV-KEYS-ONLY.txt.*
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js / frontend build output
+.next/
+**/.next/
+out/
+**/out/
+dist/
+**/dist/
+build/
+**/build/
+coverage/
+
+# BAZAARA local backups
+.bazaara-backups/
+.bazaara-dev/
+.bazaara-e2-backups/
+.bazaara-e3-backups/
+.bazaara-internet-backups/
+.bazaara-search-backups/
+.bazaara-ui-backups/
+.bazaara-logs/
+backups/
+
+# Logs / temporary files
+*.log
+*.tmp
+*.temp
+*.cache
+*.bak
+*.bak-*
+*.swp
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large local installers / binaries
+*.exe
+*.msi
+
+# Local archive artifacts
+*.zip
+*.7z
+*.rar
+
+
+# BAZAARA additional repository hygiene
+*.bak*
+*.before-*
+*.before-*
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# EDB/PostgreSQL local installers
+edb_*
+edb-*
+
+# Local installer remnants
+*.exe-*
+
+# PowerShell/local installer backups
+*.before-remove-hub
+*.before-*
+
+# Runtime PID / lock / dump files
+*.pid
+*.dump
+*.dmp
+

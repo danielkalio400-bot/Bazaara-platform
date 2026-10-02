@@ -1,0 +1,20 @@
+{
+  "name": "@bazaara/search-engine",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "description": "BAZAARA-owned crawler, index, ranking and retrieval service",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "dev": "node --watch src/server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "seed": "node src/cli.mjs seed",
+    "crawl": "node src/cli.mjs crawl",
+    "pagerank": "node src/cli.mjs pagerank",
+    "status": "node src/cli.mjs status"
+  },
+  "dependencies": {}
+}
