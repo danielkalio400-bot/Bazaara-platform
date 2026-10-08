@@ -50,7 +50,13 @@ export default function NewsExperience(){
  function hideSource(source:string){setHiddenSources(current=>current.includes(source)?current:[...current,source].slice(-30));setTune(null);}
  function listenBriefing(){if(!('speechSynthesis' in window)){setError('Audio briefing is unavailable in this browser.');return;}const copy=visible.slice(0,6).map((item,index)=>`${index+1}. ${item.title}. ${item.source}.`).join(' ');if(!copy){setError('No stories are loaded for a briefing.');return;}window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(copy.slice(0,6000));utterance.rate=.96;window.speechSynthesis.speak(utterance);}
  const lead=visible[0], secondary=visible.slice(1,7), moreStories=visible.slice(7);
- const translateLink=(story:Article)=>{const url=new URL('/','https://translate.bazaara.com');url.searchParams.set('text',story.title.slice(0,240));return url.href;};
+ const translateLink=(story:Article)=>{
+   let base='';
+   try{const configured=JSON.parse(process.env.NEXT_PUBLIC_BAZAARA_APP_URLS||'{}') as Record<string,unknown>;if(typeof configured.translate==='string'&&/^https:\/\//.test(configured.translate))base=configured.translate;}catch{}
+   if(!base&&typeof window!=='undefined'&&['localhost','127.0.0.1'].includes(window.location.hostname))base=`${window.location.protocol}//${window.location.hostname}:3039/`;
+   if(!base)return '#';
+   const url=new URL(base);url.searchParams.set('text',story.title.slice(0,240));return url.href;
+ };
  const tabs=['For you','Headlines','Local','Nigeria','Following','Newsstand','Saved','Business','Technology','World','Africa'];
  return <StandaloneFrame product="News" tagline="" tabs={tabs} active={section} onTab={goto} actions={<button type="button" className="ig5-top-icon" aria-label="Search headlines" aria-expanded={searchMode} onClick={()=>setSearchMode(value=>!value)}>⌕</button>}>
   {searchMode&&<form className="bz83-news-search" role="search" onSubmit={(e:FormEvent)=>e.preventDefault()}><span>⌕</span><input aria-label="Search news" autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search topics, locations and sources"/><button type="button" onClick={()=>{setSearchMode(false);setQuery('');}}>×</button></form>}
