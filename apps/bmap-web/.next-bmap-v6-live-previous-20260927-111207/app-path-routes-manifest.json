@@ -1,8 +1,0 @@
-{
-  "/_global-error/page": "/_global-error",
-  "/_not-found/page": "/_not-found",
-  "/api/geocode/route": "/api/geocode",
-  "/api/items/[id]/route": "/api/items/[id]",
-  "/api/items/route": "/api/items",
-  "/page": "/"
-}

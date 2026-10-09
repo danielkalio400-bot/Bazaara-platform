@@ -22,7 +22,7 @@ Thumbs.db
 .bazaara-e3-backups/
 
 # ============================================================
-# BAZAARA � LOCAL / PRIVATE / GENERATED FILES
+# BAZAARA — LOCAL / PRIVATE / GENERATED FILES
 # ============================================================
 
 # Secrets
@@ -115,3 +115,16 @@ edb-*
 *.dump
 *.dmp
 
+# Generated/temporary project snapshots — never commit
+**/.next-*/
+**/.next_*/
+**/*-previous-*/
+**/*-backup-*/
+**/*-backups-*/
+**/backup/
+**/backups/
+**/tmp/
+**/temp/
+*.old
+*.orig
+*~

@@ -1,3 +1,0 @@
-module.exports=[69757,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{children:a})})},"metadata",0,{title:"BAZAARA Search — Search built for people",description:"Explore the web through BAZAARA Search. Original interface. Transparent provider integration. No BAZAARA query-history database.",robots:{index:!1,follow:!1}}])},15152,function(a){a.n(a.i(69757))}];
-
-//# sourceMappingURL=apps_search-web_app_layout_tsx_06jnkfc._.js.map
