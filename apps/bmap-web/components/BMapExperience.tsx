@@ -215,8 +215,13 @@ function applyBazaaraNeon(map: any) {
   } catch { /* a provider style may not expose every layer at once */ }
 }
 
-function osmPlaceUrl(place: Place, zoom = 16) {
-  return `https://www.openstreetmap.org/?mlat=${encodeURIComponent(place.lat)}&mlon=${encodeURIComponent(place.lon)}#map=${zoom}/${encodeURIComponent(place.lat)}/${encodeURIComponent(place.lon)}`;
+/** BMap-owned share links keep users in the ecosystem without exposing the place to a third party. */
+function bmapPlaceUrl(place: Place) {
+  const url = new URL(window.location.pathname, window.location.origin);
+  url.searchParams.set('lat', place.lat.toFixed(6));
+  url.searchParams.set('lon', place.lon.toFixed(6));
+  url.searchParams.set('label', place.name.slice(0, 120));
+  return url.href;
 }
 
 export default function BMapExperience() {
@@ -247,6 +252,12 @@ export default function BMapExperience() {
   useEffect(() => {
     setSaved(readStored(SAVED_KEY));
     setRecents(readStored(RECENTS_KEY));
+    const params = new URLSearchParams(window.location.search);
+    // Prefill only: opening a deep link never silently submits a geocoder request.
+    const linkedQuery = (params.get('q') || '').trim();
+    if (linkedQuery.length >= 3 && linkedQuery.length <= 120 && !/[\u0000-\u001f\u007f]/u.test(linkedQuery)) {
+      setQuery(linkedQuery);
+    }
   }, []);
 
   const showToast = useCallback((message: string) => {
@@ -274,6 +285,19 @@ export default function BMapExperience() {
       setSelected(place);
     } catch { setMapError('The map could not move to that location.'); }
   }, []);
+
+  useEffect(() => {
+    if (!mapReady) return;
+    const params = new URLSearchParams(window.location.search);
+    const rawLat = params.get('lat');
+    const rawLon = params.get('lon');
+    if (!rawLat || !rawLon) return;
+    const lat = Number(rawLat);
+    const lon = Number(rawLon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) return;
+    const name = (params.get('label') || '').trim().slice(0, 120) || 'Shared location';
+    focusPlace({id: `shared:${lat.toFixed(6)}:${lon.toFixed(6)}`, name, subtitle: `${lat.toFixed(5)}, ${lon.toFixed(5)}`, lat, lon});
+  }, [mapReady, focusPlace]);
 
   useEffect(() => {
     let cancelled = false;
@@ -415,7 +439,7 @@ export default function BMapExperience() {
 
   const shareSelected = useCallback(async () => {
     if (!selected) return;
-    const url = osmPlaceUrl(selected);
+    const url = bmapPlaceUrl(selected);
     try {
       if (navigator.share) await navigator.share({title: selected.name, text: selected.name, url});
       else {

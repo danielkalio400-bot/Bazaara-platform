@@ -25,6 +25,16 @@ export default function TranslateExperience(){
  function swap(){if(source==='auto'){setNotice('Choose a source language to swap.');return;}setSource(target);setTarget(source);setText(output);setOutput(text);}
  function copy(value:string){if(!navigator.clipboard){setNotice('Select and copy text manually.');return;}void navigator.clipboard.writeText(value).then(()=>setNotice('Copied')).catch(()=>setNotice('Clipboard is unavailable.'));}
  function speak(value:string,lang:string){if(!value.trim())return;if(!('speechSynthesis'in window)){setNotice('Speech playback is unavailable in this browser.');return;}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(value.slice(0,5000));u.lang=lang==='auto'?'en':lang;window.speechSynthesis.speak(u);}
+ // Cross-app links are user-initiated. Do not send deep-linked text to a provider until Translate is pressed.
+ useEffect(()=>{
+   const params=new URLSearchParams(window.location.search);
+   const incoming=params.get('text')||'';
+   const from=params.get('from')||'';
+   const to=params.get('to')||'';
+   if(incoming&&incoming.length<=5000){setText(incoming);setOutput('');setTab('Text');}
+   if(/^(auto|[a-z]{2,3}(?:-[a-z]{2})?)$/i.test(from))setSource(from.toLowerCase());
+   if(/^[a-z]{2,3}(?:-[a-z]{2})?$/i.test(to))setTarget(to.toLowerCase());
+ },[]);
  useEffect(()=>{job.current?.abort();setWorking(false);},[text,source,target,tab]);
  async function translateText(original:string,from:string,to:string,saveHistory=true){if(!provider){setError('Connect your translation provider to translate.');return;}if(!original.trim())return;job.current?.abort();const controller=new AbortController();job.current=controller;setWorking(true);setError('');try{const translated=await translationRequest(original,from,to,controller.signal);if(controller.signal.aborted)return;setOutput(translated);if(saveHistory){const item:Entry={id:crypto.randomUUID(),original,translation:translated,from,to,at:new Date().toISOString()};setHistory(old=>{const next=[item,...old].slice(0,50);try{localStorage.setItem(historyKey,JSON.stringify(next));}catch{setNotice('Translation completed, but history could not be saved.');}return next;});}if(tab==='Live'&&liveMode==='Conversation')speak(translated,to);}catch(e){if(!controller.signal.aborted)setError(e instanceof Error?e.message:'Translation is unavailable.');}finally{if(job.current===controller)setWorking(false);}}
  async function translateDocument(){if(!doc||!provider)return;job.current?.abort();const controller=new AbortController();job.current=controller;setWorking(true);setError('');setDoc({...doc,translation:''});try{const chunks=translationChunks(doc.text),translated:string[]=[];for(let i=0;i<chunks.length;i++){setProgress(`Translating part ${i+1} of ${chunks.length}`);translated.push(chunks[i].trim()?await translationRequest(chunks[i],source,target,controller.signal):chunks[i]);if(controller.signal.aborted)return;}setDoc({...doc,translation:translated.join('\n')});setNotice('Every document part was translated. Review formatting before exporting.');}catch(e){if(!controller.signal.aborted)setError(e instanceof Error?e.message:'Document translation failed.');}finally{if(job.current===controller){setWorking(false);setProgress('');}}}
