@@ -3,6 +3,7 @@ export type ProductStatus = 'available' | 'planned';
 export type Product = { id:string; name:string; description:string; category:ProductGroup; icon:string; status:ProductStatus; href?:string; color:string; };
 export const categories: ProductGroup[] = ['Internet','Communication','Productivity','Storage & Security','Creative & Intelligence','Collaboration','Platform & Infrastructure'];
 export const products: Product[] = [
+  {id:'ui-foundation',name:'UI Foundation',description:'16 BAZAARA HTML/CSS concept interfaces and responsive previews.',category:'Creative & Intelligence',icon:'◈',status:'available',href:'/ui-foundation',color:'ember'},
   {id:'search',name:'Search',description:'Privacy-first web discovery.',category:'Internet',icon:'⌕',status:'available',href:'http://localhost:3020',color:'aqua'},
   {id:'bmap',name:'BMap',description:'Maps, places and local discovery.',category:'Internet',icon:'◇',status:'available',href:'http://localhost:3038',color:'aqua'},
   {id:'translate',name:'Translate',description:'Language tools and translation history.',category:'Internet',icon:'文',status:'available',href:'http://localhost:3039',color:'aqua'},
