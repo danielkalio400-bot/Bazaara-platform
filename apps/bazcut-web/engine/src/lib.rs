@@ -1,3 +1,4 @@
+mod motion;
 use rusqlite::{params, Connection, OptionalExtension, TransactionBehavior};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
@@ -129,6 +130,7 @@ pub fn validate_project(p: &Value) -> Result<()> {
                 ((duration as u128 * num as u128 + den as u128 / 2) / den as u128) as u64
             };
             if a["kind"] != "image"
+                && c["extensions"].get(motion::TIME_MAP).is_none()
                 && source.checked_add(extent).ok_or("Source overflow")?
                     > number(a, "duration")? + frame
             {
@@ -167,6 +169,7 @@ pub fn validate_project(p: &Value) -> Result<()> {
         }
         text(c, "text")?;
     }
+    motion::validate_motion(p)?;
     Ok(())
 }
 
@@ -190,18 +193,32 @@ impl ProjectStore {
     pub fn save(&mut self, p: &Value, expected: Option<u64>, label: Option<&str>) -> Result<()> {
         self.save_with_history(p, expected, label, None)
     }
-    pub fn save_with_history(&mut self, p: &Value, expected: Option<u64>, label: Option<&str>, history: Option<&Value>) -> Result<()> {
+    pub fn save_with_history(
+        &mut self,
+        p: &Value,
+        expected: Option<u64>,
+        label: Option<&str>,
+        history: Option<&Value>,
+    ) -> Result<()> {
         validate_project(p)?;
         if let Some(h) = history {
-            if h["format"] != 1 || h["projectId"] != p["id"] || h["revision"] != p["revision"] || serde_json::to_vec(h).map_err(error)?.len() > 8 * 1024 * 1024 {
+            if h["format"] != 1
+                || h["projectId"] != p["id"]
+                || h["revision"] != p["revision"]
+                || serde_json::to_vec(h).map_err(error)?.len() > 8 * 1024 * 1024
+            {
                 return Err("Recovery journal does not match the saved project".into());
             }
             for key in ["past", "future"] {
                 let snapshots = array(h, key)?;
-                if snapshots.len() > 100 { return Err("Recovery journal too long".into()); }
+                if snapshots.len() > 100 {
+                    return Err("Recovery journal too long".into());
+                }
                 for snapshot in snapshots {
                     validate_project(snapshot)?;
-                    if snapshot["id"] != p["id"] { return Err("Recovery journal contains another project".into()); }
+                    if snapshot["id"] != p["id"] {
+                        return Err("Recovery journal contains another project".into());
+                    }
                 }
             }
         }
@@ -231,7 +248,8 @@ impl ProjectStore {
         if let Some(h) = history {
             tx.execute("INSERT INTO journals(project_id,document) VALUES(?1,?2) ON CONFLICT(project_id) DO UPDATE SET document=excluded.document", params![id, serde_json::to_string(h).map_err(error)?]).map_err(error)?;
         } else {
-            tx.execute("DELETE FROM journals WHERE project_id=?1", [id]).map_err(error)?;
+            tx.execute("DELETE FROM journals WHERE project_id=?1", [id])
+                .map_err(error)?;
         }
         if let Some(label) = label {
             if label.len() > 300 {
@@ -246,8 +264,18 @@ impl ProjectStore {
         tx.commit().map_err(error)
     }
     pub fn history(&self, id: &str) -> Result<Option<Value>> {
-        let value: Option<String> = self.conn.query_row("SELECT document FROM journals WHERE project_id=?1", [id], |r| r.get(0)).optional().map_err(error)?;
-        value.map(|v| serde_json::from_str(&v).map_err(error)).transpose()
+        let value: Option<String> = self
+            .conn
+            .query_row(
+                "SELECT document FROM journals WHERE project_id=?1",
+                [id],
+                |r| r.get(0),
+            )
+            .optional()
+            .map_err(error)?;
+        value
+            .map(|v| serde_json::from_str(&v).map_err(error))
+            .transpose()
     }
     pub fn list(&self) -> Result<Vec<Value>> {
         let mut s = self

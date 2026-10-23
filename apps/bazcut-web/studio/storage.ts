@@ -11,10 +11,13 @@ function db(): Promise<IDBDatabase> {
     const req = indexedDB.open("bazcut-studio-v2", 2);
     req.onupgradeneeded = () => {
       const d = req.result;
-      if (!d.objectStoreNames.contains("projects")) d.createObjectStore("projects", { keyPath: "id" });
+      if (!d.objectStoreNames.contains("projects"))
+        d.createObjectStore("projects", { keyPath: "id" });
       if (!d.objectStoreNames.contains("media")) d.createObjectStore("media");
-      if (!d.objectStoreNames.contains("versions")) d.createObjectStore("versions", { keyPath: "key" });
-      if (!d.objectStoreNames.contains("journals")) d.createObjectStore("journals", { keyPath: "projectId" });
+      if (!d.objectStoreNames.contains("versions"))
+        d.createObjectStore("versions", { keyPath: "key" });
+      if (!d.objectStoreNames.contains("journals"))
+        d.createObjectStore("journals", { keyPath: "projectId" });
     };
     req.onsuccess = () => {
       req.result.onversionchange = () => {
@@ -65,7 +68,9 @@ export async function saveProject(
     return;
   }
   const d = await db(),
-    tx = d.transaction(["projects", "versions", "journals"], "readwrite", { durability: "strict" }),
+    tx = d.transaction(["projects", "versions", "journals"], "readwrite", {
+      durability: "strict",
+    }),
     complete = done(tx),
     store = tx.objectStore("projects");
   let conflict = false,
@@ -105,10 +110,17 @@ export async function saveProject(
     throw e;
   }
 }
-export async function loadHistory(project: Project): Promise<EditHistory | null> {
+export async function loadHistory(
+  project: Project,
+): Promise<EditHistory | null> {
   const value = native()
     ? await invoke("load_history", { id: project.id })
-    : await request((await db()).transaction("journals").objectStore("journals").get(project.id));
+    : await request(
+        (await db())
+          .transaction("journals")
+          .objectStore("journals")
+          .get(project.id),
+      );
   return value == null ? null : validateHistory(value, project);
 }
 

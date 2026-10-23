@@ -2329,3 +2329,139 @@
     scroll-behavior: auto !important;
   }
 }
+
+.bc-source-monitor {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  outline: none;
+}
+.bc-source-monitor canvas {
+  width: 100%;
+  max-height: 42vh;
+  object-fit: contain;
+  background: #070a13;
+  border-radius: 12px;
+}
+.bc-source-transport {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.bc-source-range {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 10px;
+}
+.bc-source-range label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+}
+.bc-source-monitor input[type="range"] {
+  width: 100%;
+  accent-color: #84b7ff;
+}
+.bc-source-range input,
+.bc-source-monitor select {
+  width: 100%;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid #303d54;
+  background: #141d2e;
+  color: #ecf2ff;
+  border-radius: 7px;
+}
+@media (max-width: 520px) {
+  .bc-source-transport {
+    flex-wrap: wrap;
+  }
+  .bc-source-range {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.bc-effects-stack,
+.bc-time-remap {
+  display: grid;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid #273148;
+}
+.bc-effects-stack h3,
+.bc-time-remap h3 {
+  margin: 0;
+  font-size: 13px;
+}
+.bc-effect-card {
+  padding: 12px;
+  border: 1px solid #2a3850;
+  border-radius: 10px;
+  display: grid;
+  gap: 10px;
+  background: #111a29;
+}
+.bc-effect-card header,
+.bc-effect-card header label,
+.bc-effect-card header div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bc-effect-card header {
+  justify-content: space-between;
+  font-size: 12px;
+}
+.bc-effects-stack button,
+.bc-time-remap button {
+  cursor: pointer;
+}
+.bc-effect-card header button,
+.bc-effect-key button,
+.bc-time-key button {
+  background: #1e2b41;
+  color: #cfddf2;
+  border: 0;
+  border-radius: 5px;
+  min-width: 24px;
+  min-height: 28px;
+}
+.bc-effect-key {
+  display: grid;
+  grid-template-columns: 40px 1fr 80px 24px;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+.bc-effect-key input,
+.bc-effect-key select,
+.bc-time-key input,
+.bc-time-key select,
+.bc-effects-stack select {
+  min-width: 0;
+  width: 100%;
+  padding: 6px;
+  background: #172237;
+  color: #e2ebfc;
+  border: 1px solid #34425a;
+  border-radius: 5px;
+}
+.bc-time-remap svg {
+  width: 100%;
+  background: #101724;
+  border-radius: 8px;
+}
+.bc-time-key {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+.bc-time-key label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+}

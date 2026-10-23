@@ -1,7 +1,7 @@
 {
   "product": "BazCut",
   "version": "2.0.0-dev.1",
-  "updated": "2026-10-21",
+  "updated": "2026-10-23",
   "completion": "incomplete",
   "productionReady": false,
   "basis": "BazCut_2.0_Complete_Master_Specification_2026.pdf",
@@ -10,14 +10,14 @@
   "implementation": {
     "interface": "React and TypeScript shared by Next.js and native Tauri entry",
     "nativeStorage": "Rust SQLite WAL transactions and verified media chunk writes",
-    "mediaExecution": "Browser/WebView WebCodecs with Mediabunny and Canvas2D; this is not the specification\u2019s complete Rust/wgpu media engine",
+    "mediaExecution": "Browser/WebView WebCodecs with Mediabunny and Canvas2D; this is not the specification’s complete Rust/wgpu media engine",
     "nativeShare": "Rust, Kotlin and Swift save/share bridge source; target compilation unverified",
     "portableProject": "Versioned .bazcut metadata plus original bytes with SHA-256 integrity and isolated import IDs"
   },
   "verified": {
     "timelineTests": 13,
     "installerTests": 3,
-    "rustCoreTests": 6,
+    "rustCoreTests": 9,
     "strictStudioTypecheck": "passed",
     "viteBundle": "passed",
     "nextWebpackProductionBuild": "passed on Next 16.4.2",
@@ -33,8 +33,19 @@
       "unsupported extension export blocking",
       "optimistic conflict protection",
       "portable originals and project roundtrip",
-      "corrupt and truncated package rejection"
-    ]
+      "corrupt and truncated package rejection",
+      "source monitor in/out insertion",
+      "persisted undo/redo after reload",
+      "reverse and forward JKL shuttle with K stop",
+      "ordered effect-stack pixel comparison",
+      "parented preview and encoded export pixel agreement",
+      "freeze and reverse time-remap audio"
+    ],
+    "recoveryTests": 2,
+    "sourceEditTests": 3,
+    "motionTests": 3,
+    "timeMapTests": 4,
+    "totalTypeScriptTests": 28
   },
   "platforms": {
     "Android": {
@@ -79,22 +90,22 @@
     {
       "id": "CUT-01",
       "status": "partial",
-      "implemented": "Split, trim, ripple, roll, slip, slide, markers, snapping, linked moves, frame stepping and constant speed.",
-      "remaining": "Nested sequences, multicam, full JKL shuttle, speed curves and source monitor.",
+      "implemented": "Split, trim, ripple, roll, slip, slide, markers, snapping, linked moves, source in/out insert/overwrite, 1–16x bidirectional JKL shuttle and time-remapping curves.",
+      "remaining": "Nested sequences, multicam and native device qualification.",
       "acceptedForProduction": false
     },
     {
       "id": "CUT-02",
       "status": "partial",
-      "implemented": "Shared preview/export transforms, color filters, crop, two masks, blend modes and per-property curves.",
-      "remaining": "Editable effect graph, tracking, stabilization and proxy pipeline.",
+      "implemented": "Shared preview/export transforms, ordered animated effect stack, parent transforms/opacity, color filters, crop, two masks, blend modes and per-property curves.",
+      "remaining": "Mattes, tracking, stabilization and proxy pipeline.",
       "acceptedForProduction": false
     },
     {
       "id": "CUT-03",
       "status": "partial",
-      "implemented": "Exact-hash relink, persisted blobs, named versions and optimistic save conflict rejection.",
-      "remaining": "Crash journal replay, unsupported codec transcode, collaboration lineage merge and native device recovery qualification.",
+      "implemented": "Exact-hash relink, persisted originals, immutable versions, atomic graph/undo journals and optimistic conflict rejection.",
+      "remaining": "Power-loss and native-device crash qualification, unsupported codec transcode and collaboration lineage merge.",
       "acceptedForProduction": false
     },
     {
@@ -170,15 +181,15 @@
     {
       "id": "EDIT-03",
       "status": "partial",
-      "implemented": "Undo/redo, optimistic autosave, immutable versions and persisted originals.",
-      "remaining": "Persisted undo journal and crash/power-loss/device recovery qualification.",
+      "implemented": "Undo/redo journals persist atomically with graph revisions in IndexedDB and Rust SQLite; browser reload and native database reopen are tested.",
+      "remaining": "Crash/power-loss/device recovery qualification.",
       "acceptedForProduction": false
     },
     {
       "id": "MOT-01",
       "status": "partial",
-      "implemented": "Bezier/linear/hold/ease interpolation, shared compositor, crop and masks. Nonlinear split continuity tested.",
-      "remaining": "Parenting, mattes, 3D, tracking, particles, procedural effects and cross-renderer visual tests.",
+      "implemented": "Bezier/linear/hold/ease interpolation, ordered animated effects, parenting, shared compositor, time remapping, crop and masks. Split continuity and preview/export parent pixels tested.",
+      "remaining": "Mattes, 3D, tracking, particles, procedural effects and native renderer qualification.",
       "acceptedForProduction": false
     },
     {
@@ -205,7 +216,7 @@
     {
       "id": "AUD-01",
       "status": "partial",
-      "implemented": "Stereo gain/pan, fades, automation, reverse/speed sample mapping, WAV and non-silent encoded output.",
+      "implemented": "Stereo gain/pan, fades, automation, reverse/speed and time-curve sample mapping, silent freezes, WAV and non-silent encoded output.",
       "remaining": "LUFS mastering, EQ/dynamics, channel layouts, pitch preservation and long/device sync tests.",
       "acceptedForProduction": false
     },

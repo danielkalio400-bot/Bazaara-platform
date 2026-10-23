@@ -98,7 +98,7 @@ import {
   persistStorage,
   putMedia,
 } from "./storage";
-import { inspectMedia, MediaPool, mixAudio } from "./media";
+import { inspectMedia, MediaPool } from "./media";
 import {
   capabilities,
   drawFrame,
@@ -109,6 +109,11 @@ import {
 } from "./render";
 import { useProject } from "./controller";
 import { isPortableProject, packageProject, unpackProject } from "./package";
+import { useTransport, shuttleSpeed } from "./transport";
+import { SourceMonitor } from "./SourceMonitor";
+import { insertSourceRange } from "./source-edit";
+import { EffectStack } from "./EffectStack";
+import { TimeRemap } from "./TimeRemap";
 import "./studio.css";
 
 type Workspace =
@@ -311,6 +316,8 @@ export default function Studio() {
     [selected, setSelected] = useState(""),
     [frame, setFrame] = useState(0),
     [playing, setPlaying] = useState(false),
+    [playbackSpeed, setPlaybackSpeed] = useState(1),
+    [sourceId, setSourceId] = useState(""),
     [busy, setBusy] = useState(""),
     [notice, setNotice] = useState(""),
     [search, setSearch] = useState(""),
@@ -342,7 +349,6 @@ export default function Studio() {
     relink = useRef<Asset | null>(null),
     drawQueue = useRef(Promise.resolve()),
     latestDraw = useRef(0),
-    audio = useRef<AudioContext | null>(null),
     recorder = useRef<MediaRecorder | null>(null),
     recordStream = useRef<MediaStream | null>(null),
     timeline = useRef<HTMLDivElement>(null);
@@ -368,7 +374,6 @@ export default function Studio() {
     return () => {
       window.removeEventListener("bazcut-export-error", onExportError);
       pool.current?.dispose();
-      void audio.current?.close();
       recorder.current?.stop();
       recordStream.current?.getTracks().forEach((t) => t.stop());
     };
@@ -410,81 +415,16 @@ export default function Studio() {
         if (!playing) report(e);
       });
   }, [p, at, home, safeArea, quality]);
-  useEffect(() => {
-    if (!playing || !p || !pool.current) return;
-    let stopped = false,
-      raf = 0;
-    const initial = frame,
-      rate = fpsValue(p.fps),
-      media = pool.current;
-    const context = new AudioContext({ sampleRate: p.sampleRate });
-    audio.current = context;
-    let base: number | null = null;
-    const tick = () => {
-      if (stopped) return;
-      const next =
-        initial +
-        Math.floor(
-          Math.max(0, base === null ? 0 : context.currentTime - base) * rate,
-        );
-      if (next >= total) {
-        setFrame(Math.max(0, total - 1));
-        setPlaying(false);
-        return;
-      }
-      setFrame(next);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    // Start the shared audio/playhead clock after the first decoded block is ready.
-    const nodes = new Set<AudioBufferSourceNode>();
-    void (async () => {
-      await context.resume();
-      let sample = Math.round((initial / rate) * p.sampleRate);
-      const end = Math.ceil(seconds(endOf(p)) * p.sampleRate);
-      let scheduled = 0;
-      while (!stopped && sample < end) {
-        if (base !== null && base + scheduled - context.currentTime > 1.2) {
-          await new Promise<void>((r) => setTimeout(r, 50));
-          continue;
-        }
-        const len = Math.min(Math.round(p.sampleRate / 4), end - sample),
-          buffer = await mixAudio(p, media, sample, len);
-        if (stopped) break;
-        base ??= context.currentTime + 0.05;
-        const target = base + scheduled;
-        const late = Math.max(0, context.currentTime - target);
-        if (late >= buffer.duration) {
-          scheduled += len / p.sampleRate;
-          sample += len;
-          continue;
-        }
-        const node = context.createBufferSource();
-        node.buffer = buffer;
-        node.connect(context.destination);
-        nodes.add(node);
-        node.onended = () => nodes.delete(node);
-        node.start(Math.max(context.currentTime, target), late);
-        scheduled += len / p.sampleRate;
-        sample += len;
-      }
-    })().catch((e) => {
-      if (!stopped) {
-        report(e);
-        setPlaying(false);
-      }
-    });
-    return () => {
-      stopped = true;
-      cancelAnimationFrame(raf);
-      nodes.forEach((n) => {
-        try {
-          n.stop();
-        } catch {}
-      });
-      void context.close().catch(() => {});
-    };
-  }, [playing]);
+  useTransport({
+    project: p,
+    pool: pool.current,
+    frame,
+    playing,
+    speed: playbackSpeed,
+    onFrame: setFrame,
+    onPlaying: setPlaying,
+    onError: report,
+  });
   const change = (fn: (p: Project) => Project) => {
     setPlaying(false);
     ctl.edit(fn);
@@ -528,9 +468,14 @@ export default function Studio() {
         command("duplicate");
         return;
       }
-      if (e.code === "Space" || e.key.toLowerCase() === "k") {
+      if (e.code === "Space") {
         e.preventDefault();
+        setPlaybackSpeed(1);
         setPlaying((v) => !v);
+      }
+      if (e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPlaying(false);
       }
       if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
         e.preventDefault();
@@ -545,10 +490,16 @@ export default function Studio() {
           ),
         );
       }
-      if (e.key.toLowerCase() === "l") setPlaying(true);
-      if (e.key.toLowerCase() === "j") {
-        setPlaying(false);
-        setFrame((f) => Math.max(0, f - Math.ceil(fpsValue(p.fps))));
+      if (["j", "l"].includes(e.key.toLowerCase()) && !e.repeat) {
+        e.preventDefault();
+        setPlaybackSpeed(
+          shuttleSpeed(
+            playbackSpeed,
+            e.key.toLowerCase() === "j" ? -1 : 1,
+            playing,
+          ),
+        );
+        setPlaying(true);
       }
       if (e.key.toLowerCase() === "s") command("split");
       if (e.key === "Delete" || e.key === "Backspace") {
@@ -559,7 +510,7 @@ export default function Studio() {
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [p, c, at, home, total, ripple]);
+  }, [p, c, at, home, total, ripple, playing, playbackSpeed]);
   async function create(title = name, ratio = aspect) {
     const next = newProject(title.trim() || "Untitled project", ratio);
     await ctl.open(next, false);
@@ -1217,16 +1168,10 @@ export default function Studio() {
                           <article className="bc-media-item" key={a.id}>
                             <button
                               className={`bc-media-thumb ${a.kind}`}
+                              aria-label={`Open source ${a.name}`}
                               onClick={() => {
-                                const clip = p.clips.find(
-                                  (c) => c.assetId === a.id,
-                                );
-                                if (clip) {
-                                  setSelected(clip.id);
-                                  setFrame(
-                                    Math.round(clip.start / frameTicks(p.fps)),
-                                  );
-                                }
+                                setPlaying(false);
+                                setSourceId(a.id);
                               }}
                             >
                               {a.kind === "audio" ? (
@@ -1485,6 +1430,7 @@ export default function Studio() {
                       aria-label={playing ? "Pause" : "Play"}
                       disabled={!total}
                       onClick={() => {
+                        setPlaybackSpeed(1);
                         if (frame >= total - 1) setFrame(0);
                         setPlaying((v) => !v);
                       }}
@@ -1508,7 +1454,9 @@ export default function Studio() {
                     </IconButton>
                   </div>
                   <span className="bc-fps">
-                    {Number(fpsValue(p.fps).toFixed(3))} FPS
+                    {playing
+                      ? `${playbackSpeed < 0 ? "Reverse" : "Forward"} ${Math.abs(playbackSpeed)}×`
+                      : `${Number(fpsValue(p.fps).toFixed(3))} FPS`}
                   </span>
                 </div>
                 <input
@@ -1885,12 +1833,27 @@ export default function Studio() {
                                 onChange={(opacity) => patch({ opacity })}
                               />
                               {tab === "Motion" ? (
-                                <Keyframes
-                                  clip={c}
-                                  local={Math.max(0, at - c.start)}
-                                  fps={p.fps}
-                                  patch={patch}
-                                />
+                                <>
+                                  <Keyframes
+                                    clip={c}
+                                    local={Math.max(0, at - c.start)}
+                                    fps={p.fps}
+                                    patch={patch}
+                                  />
+
+                                  <EffectStack
+                                    project={p}
+                                    clip={c}
+                                    local={at - c.start}
+                                    patch={patch}
+                                  />
+                                  <TimeRemap
+                                    project={p}
+                                    clip={c}
+                                    local={at - c.start}
+                                    patch={patch}
+                                  />
+                                </>
                               ) : (
                                 <>
                                   <div className="bc-button-pair">
@@ -2934,10 +2897,42 @@ export default function Studio() {
           )}
         </Modal>
       )}
+      {sourceId && p && p.assets.find((a) => a.id === sourceId) && (
+        <Modal title="Source monitor" close={() => setSourceId("")}>
+          <SourceMonitor
+            asset={p.assets.find((a) => a.id === sourceId)!}
+            project={p}
+            insert={(track, input, output, mode) => {
+              try {
+                const result = insertSourceRange(
+                  p,
+                  sourceId,
+                  track,
+                  input,
+                  output,
+                  at,
+                  mode,
+                );
+                change(() => result.project);
+                setSelected(result.clipId);
+                setSourceId("");
+                setNotice(
+                  mode === "insert"
+                    ? "Source range inserted."
+                    : "Source range overwritten.",
+                );
+              } catch (error) {
+                report(error);
+              }
+            }}
+          />
+        </Modal>
+      )}
       {modal === "shortcuts" && (
         <Modal title="Make your next move" close={() => setModal(null)}>
           {[
-            ["Space / K", "Play / pause"],
+            ["Space", "Play / pause"],
+            ["J / K / L", "Reverse / stop / forward; repeat J or L for 2–16×"],
             ["L", "Play forward"],
             ["J", "Step back one second"],
             ["← / →", "One frame"],

@@ -1,3 +1,5 @@
+import { worldTransform } from "./motion";
+import { timeMapOf } from "./time-map";
 import {
   Input,
   ALL_FORMATS,
@@ -73,19 +75,11 @@ export async function drawFrame(
         const local = time - c.start;
         ctx.save();
         try {
-          ctx.globalAlpha = Math.max(
-            0,
-            Math.min(1, propertyAt(c, "opacity", local) * fadeAt(c, local)),
-          );
+          const world = worldTransform(p, c, time);
+          ctx.globalAlpha = world.opacity;
           ctx.globalCompositeOperation = c.blend;
-          ctx.translate(
-            w / 2 + propertyAt(c, "x", local) * w,
-            h / 2 + propertyAt(c, "y", local) * h,
-          );
-          ctx.rotate((propertyAt(c, "rotation", local) * Math.PI) / 180);
-          const scale = propertyAt(c, "scale", local);
-          ctx.scale(c.mirror ? -scale : scale, scale);
-          ctx.filter = clipFilter(c);
+          ctx.transform(...world.matrix);
+          ctx.filter = clipFilter(c, local);
           if (c.mask === "circle") {
             ctx.beginPath();
             ctx.arc(0, 0, Math.min(w, h) / 2, 0, 2 * Math.PI);
@@ -275,7 +269,7 @@ export async function renderProject(
     throw Error("Choose H.264, HEVC or AV1 for MP4.");
   const audio = p.clips.some(
     (c) =>
-      !c.freeze &&
+      (!c.freeze || !!timeMapOf(c)) &&
       (c.volume > 0 ||
         c.keyframes.some((k) => k.property === "volume" && k.value > 0)) &&
       !p.tracks.find((t) => t.id === c.trackId)?.muted &&

@@ -1,3 +1,10 @@
+import { EFFECTS, PARENT, validateMotion } from "./motion.ts";
+import {
+  TIME_MAP,
+  mappedTime,
+  timeMapOf,
+  validateTimeMaps,
+} from "./time-map.ts";
 /** Integer ticks exactly represent 24/25/30/50/60 and NTSC rates, plus 44.1/48 kHz audio. */
 export const TIMEBASE = 35_280_000;
 export const SCHEMA = 2;
@@ -401,7 +408,7 @@ export function validateProject(value: unknown): Project {
     if (c.assetId) {
       const a = p.assets.find((a) => a.id === c.assetId);
       assert(a, "Clip source is missing from the manifest.");
-      if (a.kind !== "image")
+      if (a.kind !== "image" && !timeMapOf(c))
         assert(
           c.sourceIn +
             (c.freeze
@@ -525,6 +532,8 @@ export function validateProject(value: unknown): Project {
     "Invalid caption styling.",
   );
   assert(p.sync && p.permissions, "Project privacy settings are missing.");
+  validateMotion(p);
+  validateTimeMaps(p);
   return p;
 }
 export function unsupportedFeatures(p: Project): string[] {
@@ -532,11 +541,18 @@ export function unsupportedFeatures(p: Project): string[] {
   if (p.extensions && Object.keys(p.extensions).length)
     issues.push("Project extension data");
   for (const c of p.clips)
-    if (c.extensions && Object.keys(c.extensions).length)
+    if (
+      c.extensions &&
+      Object.keys(c.extensions).some(
+        (key) => ![EFFECTS, PARENT, TIME_MAP].includes(key),
+      )
+    )
       issues.push(`${c.name}: extension effects`);
   return issues;
 }
 export function sourceTime(c: Clip, local: number): number {
+  const map = timeMapOf(c);
+  if (map) return Math.round(mappedTime(map, local + (c.animationOffset ?? 0)));
   if (c.freeze) return c.sourceIn;
   const elapsed = Math.max(0, Math.min(local, c.duration));
   return Math.round(
@@ -618,6 +634,16 @@ export function applyEdit(project: Project, edit: Edit): Project {
   };
   if ("id" in edit && !c) throw Error("Clip not found.");
   if (c) unlocked(c);
+  if (
+    c &&
+    timeMapOf(c) &&
+    (edit.type === "speed" ||
+      (edit.type === "patch" &&
+        ["speed", "reverse", "freeze"].some((key) => key in edit.patch)))
+  )
+    throw Error(
+      "Clear time remapping before changing constant speed, reverse, or freeze.",
+    );
   if (edit.type === "split" && c) {
     const at = snapFrame(edit.at, p.fps) - c.start;
     if (at <= 0 || at >= c.duration)
@@ -689,8 +715,11 @@ export function applyEdit(project: Project, edit: Edit): Project {
           unlocked(x);
           x.start += end - oldEnd;
         }
-  } else if (edit.type === "slip" && c) c.sourceIn += edit.delta;
-  else if (edit.type === "roll" && c) {
+  } else if (edit.type === "slip" && c) {
+    const map = timeMapOf(c);
+    if (map) for (const point of map.points) point.source += edit.delta;
+    else c.sourceIn += edit.delta;
+  } else if (edit.type === "roll" && c) {
     const next = p.clips.find(
       (x) => x.trackId === c.trackId && x.start === c.start + c.duration,
     );

@@ -118,11 +118,16 @@ fn graph_and_recovery_history_commit_atomically() {
     let history = json!({"format":1,"projectId":p["id"],"revision":1,"past":[initial],"future":[]});
     {
         let mut db = ProjectStore::open(&dir).unwrap();
-        db.save_with_history(&p, None, Some("Recovered cut"), Some(&history)).unwrap();
+        db.save_with_history(&p, None, Some("Recovered cut"), Some(&history))
+            .unwrap();
         let mut invalid = history.clone();
         invalid["past"][0]["id"] = json!("another-project");
-        assert!(db.save_with_history(&p, Some(1), None, Some(&invalid)).is_err());
-        assert!(db.save_with_history(&p, Some(0), None, Some(&history)).is_err());
+        assert!(db
+            .save_with_history(&p, Some(1), None, Some(&invalid))
+            .is_err());
+        assert!(db
+            .save_with_history(&p, Some(0), None, Some(&history))
+            .is_err());
     }
     let mut db = ProjectStore::open(&dir).unwrap();
     assert_eq!(db.list().unwrap()[0], p);
@@ -134,4 +139,32 @@ fn graph_and_recovery_history_commit_atomically() {
     assert_eq!(db.versions("fixture").unwrap()[0]["project"]["revision"], 1);
     drop(db);
     fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn effect_and_parent_metadata_is_validated_before_save() {
+    let mut p = fixture();
+    p["clips"][0]["extensions"] = json!({"bazcut.effects.v1":[{"id":"effect","type":"brightness","enabled":true,"amount":0.5,"keyframes":[]}]});
+    validate_project(&p).unwrap();
+    p["clips"][0]["extensions"]["bazcut.effects.v1"][0]["amount"] = json!(99);
+    assert!(validate_project(&p).is_err());
+    p["clips"][0]["extensions"] =
+        json!({"bazcut.parent.v1":{"id":p["clips"][0]["id"],"inheritOpacity":true}});
+    assert!(validate_project(&p).is_err());
+}
+
+#[test]
+fn time_maps_enforce_source_bounds_speed_and_coverage() {
+    let mut p = fixture();
+    let duration = p["clips"][0]["duration"].as_u64().unwrap();
+    p["assets"] = json!([{"id":"source","kind":"video","duration":duration}]);
+    p["clips"][0]["assetId"] = json!("source");
+    p["clips"][0]["kind"] = json!("video");
+    p["clips"][0]["extensions"] = json!({"bazcut.time.v1":{"points":[{"at":0,"source":duration-1,"easing":"linear"},{"at":duration,"source":0,"easing":"linear"}]}});
+    validate_project(&p).unwrap();
+    p["clips"][0]["extensions"]["bazcut.time.v1"]["points"][0]["source"] = json!(duration);
+    assert!(validate_project(&p).is_err());
+    p["clips"][0]["extensions"]["bazcut.time.v1"]["points"][0]["source"] = json!(duration - 1);
+    p["clips"][0]["extensions"]["bazcut.time.v1"]["points"][1]["at"] = json!(duration / 100);
+    assert!(validate_project(&p).is_err());
 }

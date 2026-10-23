@@ -59,7 +59,9 @@ export function useProject() {
     if (current.current) await schedule(current.current, label);
     await queue.current;
     if (failed.current)
-      throw Error("Save failed. Export the project file to preserve this edit.");
+      throw Error(
+        "Save failed. Export the project file to preserve this edit.",
+      );
   }
 
   async function open(p: Project, existing = true) {
@@ -72,9 +74,14 @@ export function useProject() {
     if (existing) {
       try {
         const journal = await loadHistory(p);
-        if (journal) { past.current = journal.past; future.current = journal.future; }
+        if (journal) {
+          past.current = journal.past;
+          future.current = journal.future;
+        }
       } catch (e) {
-        setError(`The project opened, but its recovery history could not be restored: ${String(e)}`);
+        setError(
+          `The project opened, but its recovery history could not be restored: ${String(e)}`,
+        );
       }
     }
     set(p, !existing);

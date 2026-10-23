@@ -5,7 +5,11 @@ import { editHistory, validateHistory } from "../studio/history.ts";
 
 test("recovery history is bounded, independent, and validates every snapshot", () => {
   const p = newProject();
-  const history = editHistory(p, Array.from({ length: 110 }, () => p), [p]);
+  const history = editHistory(
+    p,
+    Array.from({ length: 110 }, () => p),
+    [p],
+  );
   assert.equal(history.past.length, 100);
   p.name = "Later edit";
   assert.notEqual(history.past[0]!.name, p.name);
@@ -15,7 +19,8 @@ test("recovery history is bounded, independent, and validates every snapshot", (
 });
 
 test("recovery rejects mismatched projects and revisions", () => {
-  const p = newProject(), h = editHistory(p, [p], []);
+  const p = newProject(),
+    h = editHistory(p, [p], []);
   assert.throws(() => validateHistory(h, { ...p, revision: 1 }), /match/);
   h.past[0]!.id = "foreign-project";
   assert.throws(() => validateHistory(h, p), /another project/);

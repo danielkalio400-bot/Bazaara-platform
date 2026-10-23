@@ -22,10 +22,18 @@ The browser integration suite requires FFmpeg and Playwright Chromium. Set `BAZC
 
 The current preview/export engine uses Canvas2D and WebCodecs through Mediabunny. Codec availability depends on the host WebView. The native Rust/wgpu media compositor, native codec fallback, background rendering, 3D, Nova, production collaboration, account integration, billing, marketplace, and publishing remain unfinished.
 
+## Editing additions
+
+The media library opens a source monitor with frame-based in/out marks, preview audio, and insert/overwrite into an unlocked compatible track. J/K/L shuttles backward, stops, or shuttles forward; repeated J/L reaches 16x. Space plays or pauses at normal speed.
+
+The Motion inspector includes ordered, bypassable color/effect stacks, effect keyframes, acyclic visual parenting with optional opacity inheritance, and a source-time curve for holds, reversals, and speed ramps. Preview and video export use the same evaluator. Frozen time-map segments are silent; other speed changes affect audio pitch. Splits and trims retain the original animation/time-curve origin.
+
+Verification on the development host: 28 TypeScript tests, 9 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, and remapped audio. This does not establish native device compatibility.
+
 ## Native targets
 
 ```powershell
-.\apps\bazcut-web\Build-BazCut.ps1 -Action doctor -Target windows
+.\apps\bazcut-web\Build-BazCut.ps1 -Action doctor -Platform windows
 npm run build:windows --workspace=@bazaara/bazcut-web
 npm run build:android --workspace=@bazaara/bazcut-web
 ```

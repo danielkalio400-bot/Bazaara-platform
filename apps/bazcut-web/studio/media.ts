@@ -1,3 +1,5 @@
+import { effectFilter } from "./motion";
+import { mappedIntervals, mappedSpeed, timeMapOf } from "./time-map";
 import {
   Input,
   ALL_FORMATS,
@@ -209,7 +211,7 @@ export async function mixAudio(
       track?.muted ||
       (c.volume === 0 &&
         !c.keyframes.some((k) => k.property === "volume" && k.value > 0)) ||
-      c.freeze ||
+      (c.freeze && !timeMapOf(c)) ||
       seconds(c.start) >= end ||
       seconds(c.start + c.duration) <= begin
     )
@@ -219,19 +221,30 @@ export async function mixAudio(
         length,
         Math.ceil((seconds(c.start + c.duration) - begin) * rate),
       );
+    if (to <= from) continue;
     const localStart = ticks(begin + from / rate) - c.start,
       localEnd = ticks(begin + (to - 1) / rate) - c.start;
-    const a = seconds(sourceTime(c, localStart)),
-      b = seconds(sourceTime(c, localEnd));
-    const chunks = await pool.audio(
-      asset,
-      Math.min(a, b),
-      Math.max(a, b) + 2 / rate,
-    );
+    const map = timeMapOf(c),
+      offset = c.animationOffset ?? 0;
+    const intervals = map
+      ? mappedIntervals(map, localStart + offset, localEnd + offset)
+      : [
+          [
+            Math.min(sourceTime(c, localStart), sourceTime(c, localEnd)),
+            Math.max(sourceTime(c, localStart), sourceTime(c, localEnd)),
+          ],
+        ];
+    const chunks: WrappedAudioBuffer[] = [];
+    for (const [a, b] of intervals)
+      chunks.push(
+        ...(await pool.audio(asset, seconds(a!), seconds(b!) + 2 / rate)),
+      );
+    chunks.sort((a, b) => a.timestamp - b.timestamp);
     let index = 0;
     for (let n = from; n < to; n++) {
       const local = ticks((startSample + n) / rate) - c.start,
         sampleTime = seconds(sourceTime(c, local));
+      if (map && Math.abs(mappedSpeed(map, local + offset)) < 1e-8) continue;
       // Reverse and variable-rate reads are explicitly sample-mapped; speed changes also change pitch.
       while (
         index < chunks.length - 1 &&
@@ -271,6 +284,6 @@ export async function mixAudio(
   }
   return buffer;
 }
-export function clipFilter(c: Clip) {
-  return `brightness(${c.brightness}) contrast(${c.contrast}) saturate(${c.saturation}) hue-rotate(${c.hue}deg) blur(${c.blur}px)`;
+export function clipFilter(c: Clip, local = 0) {
+  return `brightness(${c.brightness}) contrast(${c.contrast}) saturate(${c.saturation}) hue-rotate(${c.hue}deg) blur(${c.blur}px) ${effectFilter(c, local)}`.trim();
 }

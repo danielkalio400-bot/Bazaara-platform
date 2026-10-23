@@ -115,15 +115,11 @@ try {
     .waitFor();
   await page.getByLabel("Mask", { exact: true }).selectOption("circle");
   await page.getByRole("button", { name: "Captions", exact: true }).click();
-  await page
-    .locator('input[accept=".srt,.vtt"]')
-    .setInputFiles({
-      name: "captions.srt",
-      mimeType: "text/plain",
-      buffer: Buffer.from(
-        "1\n00:00:00,500 --> 00:00:01,500\nMade with BazCut\n",
-      ),
-    });
+  await page.locator('input[accept=".srt,.vtt"]').setInputFiles({
+    name: "captions.srt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("1\n00:00:00,500 --> 00:00:01,500\nMade with BazCut\n"),
+  });
   await page.getByLabel("Caption text", { exact: true }).waitFor();
   assert.equal(
     await page.getByLabel("Caption text", { exact: true }).inputValue(),
@@ -224,8 +220,72 @@ try {
   console.log(
     "PASS: import, captions, named version, 60-frame VP9/Opus export, non-silent audio, rendered mask",
   );
+  const studioBase = `/@fs/${app.replaceAll("\\", "/")}/studio/`;
+  const waitClips = (count) =>
+    page.waitForFunction(
+      async ({ base, count }) => {
+        const { listProjects } = await import(`${base}storage.ts`);
+        return (await listProjects())[0]?.clips.length === count;
+      },
+      { base: studioBase, count },
+    );
+  await page.getByRole("button", { name: "Edit", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Open source source.webm", exact: true })
+    .click();
+  await page.getByLabel("Source in frame", { exact: true }).fill("15");
+  await page.getByLabel("Source out frame", { exact: true }).fill("45");
+  await page.screenshot({
+    path: path.join(output, "source-monitor.png"),
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: "Insert range", exact: true }).click();
+  await waitClips(2);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await waitClips(1);
   await page.reload();
   await page.getByRole("button", { name: /Browser verification/ }).click();
+  await page.getByText("Saved on this device", { exact: true }).waitFor();
+  assert.ok(
+    await page.getByRole("button", { name: "Redo", exact: true }).isEnabled(),
+  );
+  await page.getByRole("button", { name: "Redo", exact: true }).click();
+  await waitClips(2);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await waitClips(1);
+  const playhead = page.getByLabel("Timeline playhead", { exact: true });
+  await playhead.focus();
+  await playhead.press("End");
+  await page.locator(".bc-preview-stage").click();
+  const lastFrame = Number(await playhead.inputValue());
+  await page.keyboard.press("j");
+  await page.waitForFunction(
+    (last) =>
+      Number(document.querySelector('[aria-label="Timeline playhead"]').value) <
+      last - 2,
+    lastFrame,
+  );
+  await page.keyboard.press("j");
+  await page.getByText("Reverse 2×", { exact: true }).waitFor();
+  await page.keyboard.press("k");
+  const stoppedFrame = Number(await playhead.inputValue());
+  await page.waitForTimeout(150);
+  assert.equal(Number(await playhead.inputValue()), stoppedFrame);
+  await page.keyboard.press("l");
+  await page.waitForFunction(
+    (last) =>
+      Number(document.querySelector('[aria-label="Timeline playhead"]').value) >
+      last,
+    lastFrame === stoppedFrame ? 0 : stoppedFrame,
+  );
+  await page.keyboard.press("k");
+  await playhead.focus();
+  await playhead.press("Home");
+  await page.locator(".bc-preview-stage").click();
+  console.log(
+    "PASS: source-range insert, persisted undo/redo, reverse/forward shuttle, K stop",
+  );
+
   await page.getByText("Saved on this device", { exact: true }).waitFor();
   await page
     .getByRole("button", { name: "Select source.webm", exact: true })
@@ -266,13 +326,25 @@ try {
   );
   const moduleBase = `/@fs/${app.replaceAll("\\", "/")}/studio/`;
   const checks = await page.evaluate(async (base) => {
-    const { listProjects, listVersions, saveProject, getMedia } = await import(
-      `${base}storage.ts`
-    );
-    const { renderProject, renderWav, capabilities } = await import(
+    const {
+      listProjects,
+      listVersions,
+      saveProject,
+      getMedia,
+      putMedia,
+      loadHistory,
+    } = await import(`${base}storage.ts`);
+    const { renderProject, renderWav, capabilities, drawFrame } = await import(
       `${base}render.ts`
     );
-    const { MediaPool } = await import(`${base}media.ts`);
+    const { MediaPool, inspectMedia, mixAudio } = await import(
+      `${base}media.ts`
+    );
+    const { newProject, newClip, ticks, validateProject } = await import(
+      `${base}model.ts`
+    );
+    const { EFFECTS, PARENT } = await import(`${base}motion.ts`);
+    const { TIME_MAP } = await import(`${base}time-map.ts`);
     const { packageProject, unpackProject } = await import(`${base}package.ts`);
     const project = (await listProjects())[0];
     const settings = {
@@ -283,6 +355,9 @@ try {
       height: 180,
       captions: true,
     };
+    const recovered = await loadHistory(project);
+    const historyRecovered =
+      !!recovered && recovered.past.length + recovered.future.length > 0;
     const before = JSON.stringify(project);
     const portable = await packageProject(project);
     const imported = await unpackProject(portable);
@@ -352,6 +427,87 @@ try {
     } catch (error) {
       unsupportedWav = error.message;
     }
+    const canvas = document.createElement("canvas");
+    canvas.width = 64;
+    canvas.height = 64;
+    const context = canvas.getContext("2d", { willReadFrequently: true }),
+      pixel = (x, y) => Array.from(context.getImageData(x, y, 1, 1).data);
+    const motionProject = newProject("Motion render check");
+    motionProject.width = 64;
+    motionProject.height = 64;
+    motionProject.background = "#000000";
+    const shape = newClip(motionProject.tracks[0].id, 0, undefined, "shape");
+    shape.background = "#ff0000";
+    shape.duration = ticks(0.1);
+    shape.extensions = {
+      [EFFECTS]: [
+        {
+          id: "dark",
+          type: "brightness",
+          amount: 0.5,
+          enabled: true,
+          keyframes: [],
+        },
+        {
+          id: "invert",
+          type: "invert",
+          amount: 1,
+          enabled: true,
+          keyframes: [],
+        },
+      ],
+    };
+    motionProject.clips = [shape];
+    validateProject(motionProject);
+    const motionPool = new MediaPool();
+    await drawFrame(canvas, motionProject, motionPool, 0);
+    const firstOrder = pixel(32, 32);
+    shape.extensions[EFFECTS].reverse();
+    await drawFrame(canvas, motionProject, motionPool, 0);
+    const secondOrder = pixel(32, 32);
+    const effectOrder = firstOrder[1] > secondOrder[1] + 80;
+    const parent = newClip(motionProject.tracks[0].id, 0, undefined, "shape");
+    parent.duration = ticks(0.1);
+    parent.x = 0.25;
+    parent.opacity = 0;
+    shape.background = "#ffffff";
+    shape.scale = 0.25;
+    shape.extensions = { [PARENT]: { id: parent.id, inheritOpacity: false } };
+    motionProject.clips = [parent, shape];
+    validateProject(motionProject);
+    await drawFrame(canvas, motionProject, motionPool, 0);
+    const parentPreview = pixel(48, 32)[0] > 240 && pixel(32, 32)[0] < 10;
+    const encoded = await renderProject(
+      motionProject,
+      { ...settings, width: 64, height: 64 },
+      new AbortController().signal,
+      () => {},
+    );
+    const encodedAsset = await inspectMedia(
+      new File([encoded.blob], "motion.webm", { type: "video/webm" }),
+    );
+    await putMedia(encodedAsset, encoded.blob);
+    const decoded = await motionPool.frame(encodedAsset, 0);
+    context.drawImage(decoded, 0, 0, 64, 64);
+    const parentingMatchesExport =
+      parentPreview && pixel(48, 32)[0] > 200 && pixel(32, 32)[0] < 40;
+    const mapped = structuredClone(project);
+    mapped.clips[0].extensions = {
+      [TIME_MAP]: {
+        points: [
+          { at: 0, source: ticks(1), easing: "hold" },
+          { at: ticks(0.5), source: ticks(1), easing: "linear" },
+          { at: mapped.clips[0].duration, source: 0, easing: "linear" },
+        ],
+      },
+    };
+    validateProject(mapped);
+    const frozen = await mixAudio(mapped, motionPool, 0, 24000),
+      moving = await mixAudio(mapped, motionPool, 30000, 4096);
+    const remapAudio =
+      frozen.getChannelData(0).every((x) => x === 0) &&
+      moving.getChannelData(0).some((x) => Math.abs(x) > 0.005);
+    motionPool.dispose();
     const edited = structuredClone(project);
     edited.revision++;
     edited.name = "Concurrent revision";
@@ -378,6 +534,10 @@ try {
       closed = error.message;
     }
     return {
+      historyRecovered,
+      effectOrder,
+      parentingMatchesExport,
+      remapAudio,
       portableValid,
       truncated,
       corruptPackage,
@@ -394,6 +554,13 @@ try {
       capabilities: await capabilities(project),
     };
   }, moduleBase);
+  assert.ok(
+    checks.historyRecovered &&
+      checks.effectOrder &&
+      checks.parentingMatchesExport &&
+      checks.remapAudio,
+    JSON.stringify(checks),
+  );
   assert.equal(checks.cancellation, "AbortError");
   assert.match(checks.missing, /Missing media/);
   assert.ok(checks.portableValid);
@@ -419,6 +586,9 @@ try {
   );
   console.log(
     "PASS: portable project/originals roundtrip and rejection of truncated/corrupt packages",
+  );
+  console.log(
+    "PASS: ordered effect pixels, parent preview/export agreement, frozen/remapped audio",
   );
   console.log(`Artifacts: ${output}`);
 } catch (error) {
