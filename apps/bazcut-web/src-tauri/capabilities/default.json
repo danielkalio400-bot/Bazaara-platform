@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "Local BazCut window. No remote origins or shell execution.",
+  "windows": ["main"],
+  "permissions": ["core:default", "bazcut-share:default"]
+}

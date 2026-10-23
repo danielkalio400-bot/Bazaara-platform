@@ -1,2 +1,2 @@
-import Experience from '../../../packages/flagship-ui/src/video';
-export default function Page(){return <Experience/>;}
+import Studio from './studio-entry';
+export default function Page(){return <Studio/>;}

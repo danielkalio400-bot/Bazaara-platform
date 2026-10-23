@@ -1,0 +1,402 @@
+{
+  "product": "BazCut",
+  "version": "2.0.0-dev.1",
+  "updated": "2026-10-21",
+  "completion": "incomplete",
+  "productionReady": false,
+  "basis": "BazCut_2.0_Complete_Master_Specification_2026.pdf",
+  "repositoryBase": "c072aa43aed2fd47f9168ed4c844c884f0d9ccfd",
+  "canonicalApp": "apps/bazcut-web",
+  "implementation": {
+    "interface": "React and TypeScript shared by Next.js and native Tauri entry",
+    "nativeStorage": "Rust SQLite WAL transactions and verified media chunk writes",
+    "mediaExecution": "Browser/WebView WebCodecs with Mediabunny and Canvas2D; this is not the specification\u2019s complete Rust/wgpu media engine",
+    "nativeShare": "Rust, Kotlin and Swift save/share bridge source; target compilation unverified",
+    "portableProject": "Versioned .bazcut metadata plus original bytes with SHA-256 integrity and isolated import IDs"
+  },
+  "verified": {
+    "timelineTests": 13,
+    "installerTests": 3,
+    "rustCoreTests": 6,
+    "strictStudioTypecheck": "passed",
+    "viteBundle": "passed",
+    "nextWebpackProductionBuild": "passed on Next 16.4.2",
+    "browser": "Chromium 153.0.8010.0",
+    "export": "60 VP9 frames, 320x180, 30 fps, 48 kHz stereo Opus; dimensions, frame count, mask pixels, duration and audio energy verified",
+    "integration": [
+      "import and original persistence after reload",
+      "caption import and rendering",
+      "named revision storage",
+      "desktop and 390px touch layouts",
+      "real render cancellation",
+      "missing original rejection",
+      "unsupported extension export blocking",
+      "optimistic conflict protection",
+      "portable originals and project roundtrip",
+      "corrupt and truncated package rejection"
+    ]
+  },
+  "platforms": {
+    "Android": {
+      "source": "included",
+      "nativeBuild": "not-run",
+      "signedBinary": "not-produced",
+      "deviceQualification": "not-run"
+    },
+    "iOS": {
+      "source": "included",
+      "nativeBuild": "not-run",
+      "signedBinary": "not-produced",
+      "deviceQualification": "not-run"
+    },
+    "Windows": {
+      "source": "included",
+      "nativeBuild": "not-run",
+      "signedBinary": "not-produced",
+      "deviceQualification": "not-run"
+    }
+  },
+  "knownLimits": [
+    "512 MiB estimated in-memory video/WAV output; no native streaming render queue",
+    "Available decoders/encoders depend on the device WebView; AAC was unavailable in the tested Chromium build",
+    "iOS 17 minimum in configuration is a proposed floor, not a qualified codec-support claim",
+    "No Rust/wgpu media compositor, 3D engine, multicam, tracking or stabilization",
+    "No Nova, BazID session integration, BCloud, production collaboration, marketplace, billing or publishing",
+    "No store signing, release deployment, region infrastructure or operational qualification"
+  ],
+  "commands": {
+    "browserDevelopment": "npm run studio --workspace=@bazaara/bazcut-web",
+    "nextDevelopment": "npm run dev --workspace=@bazaara/bazcut-web",
+    "windowsDevelopmentInstaller": "npm run build:windows --workspace=@bazaara/bazcut-web",
+    "androidDevelopmentApk": "npm run build:android --workspace=@bazaara/bazcut-web",
+    "iosSimulatorOnMac": "npm run build:ios-simulator --workspace=@bazaara/bazcut-web",
+    "iosDeviceOnMac": "npm run build:ios --workspace=@bazaara/bazcut-web",
+    "targetDoctor": "node apps/bazcut-web/scripts/native.mjs doctor windows",
+    "browserTests": "npm run test:browser --workspace=@bazaara/bazcut-web (requires FFmpeg and Playwright Chromium)"
+  },
+  "platformSetup": "https://v2.tauri.app/start/prerequisites/",
+  "acceptance": [
+    {
+      "id": "CUT-01",
+      "status": "partial",
+      "implemented": "Split, trim, ripple, roll, slip, slide, markers, snapping, linked moves, frame stepping and constant speed.",
+      "remaining": "Nested sequences, multicam, full JKL shuttle, speed curves and source monitor.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-02",
+      "status": "partial",
+      "implemented": "Shared preview/export transforms, color filters, crop, two masks, blend modes and per-property curves.",
+      "remaining": "Editable effect graph, tracking, stabilization and proxy pipeline.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-03",
+      "status": "partial",
+      "implemented": "Exact-hash relink, persisted blobs, named versions and optimistic save conflict rejection.",
+      "remaining": "Crash journal replay, unsupported codec transcode, collaboration lineage merge and native device recovery qualification.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-04",
+      "status": "partial",
+      "implemented": "Device codec checks, rational FPS, dimensions, sRGB, bitrate and estimated size. VP9/Opus output probed.",
+      "remaining": "Native codec fallback, loudness targets, complete codec/device matrix and streaming long exports.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-05",
+      "status": "partial",
+      "implemented": "Real frame progress, abort, resource cleanup and demux verification.",
+      "remaining": "Native background queue and resumable render checkpoints.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-06",
+      "status": "partial",
+      "implemented": "Original checksums, license notes, local comments and named versions.",
+      "remaining": "Rights workflow, authenticated collaborators, export approval policy and full provenance ledger.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-A01",
+      "status": "not-implemented",
+      "implemented": "Proxy references are explicitly blocked for final output.",
+      "remaining": "Proxy generation, source-time mapping and automatic original substitution.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CUT-A02",
+      "status": "partial",
+      "implemented": "Browser cancellation leaves saved graph unchanged; disposed media sessions reject further reads.",
+      "remaining": "Native process termination/restart and long-render recovery tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "UX-01",
+      "status": "partial",
+      "implemented": "Create, import and export work in the editor; previous creator route is preserved.",
+      "remaining": "Unified simplified Creator workflow using the v2 graph and usability qualification.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "UX-02",
+      "status": "partial",
+      "implemented": "Shared component/model and portable project package retain motion values.",
+      "remaining": "Cross-device Android/iOS/Windows native roundtrip and visual tolerance qualification.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "UX-03",
+      "status": "partial",
+      "implemented": "Keyboard editing, labeled inputs, modal focus, reduced-motion styling and mobile touch panels.",
+      "remaining": "Screen-reader audit, gesture suite, offline fresh-launch and device accessibility tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "EDIT-01",
+      "status": "partial",
+      "implemented": "Rational-time trims, reverse splits/rolls, linked moves and atomic locked-track rejection tested.",
+      "remaining": "Nested sequences, multicam, full linked edit semantics and broader edit boundary suite.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "EDIT-02",
+      "status": "partial",
+      "implemented": "Integer timebase and per-sample resampling/mapping implemented.",
+      "remaining": "VFR, mixed sample-rate, long-form and all device sync matrix.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "EDIT-03",
+      "status": "partial",
+      "implemented": "Undo/redo, optimistic autosave, immutable versions and persisted originals.",
+      "remaining": "Persisted undo journal and crash/power-loss/device recovery qualification.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "MOT-01",
+      "status": "partial",
+      "implemented": "Bezier/linear/hold/ease interpolation, shared compositor, crop and masks. Nonlinear split continuity tested.",
+      "remaining": "Parenting, mattes, 3D, tracking, particles, procedural effects and cross-renderer visual tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "MOT-02",
+      "status": "implemented-browser-tested",
+      "implemented": "Unknown extension metadata survives edits and blocks video/WAV export.",
+      "remaining": "Native end-to-end qualification and a complete extension compatibility registry.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "MOT-03",
+      "status": "partial",
+      "implemented": "Current schema validated; future schemas rejected without changing source files.",
+      "remaining": "Engine migration tooling and read-only compatibility mode.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "COL-01",
+      "status": "partial",
+      "implemented": "SDR sRGB canvas and encoded color metadata; RGB preview histogram.",
+      "remaining": "Color management, ICC/ACES, HDR, LUTs, curves, qualifiers, scopes and calibrated reference tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AUD-01",
+      "status": "partial",
+      "implemented": "Stereo gain/pan, fades, automation, reverse/speed sample mapping, WAV and non-silent encoded output.",
+      "remaining": "LUFS mastering, EQ/dynamics, channel layouts, pitch preservation and long/device sync tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "CAP-01",
+      "status": "partial",
+      "implemented": "Editable SRT/VTT with timing validation, sidecar export and burn-in.",
+      "remaining": "Native target qualification, translation, automatic transcription and professional caption standards.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AI-01",
+      "status": "not-implemented",
+      "implemented": "Service visibly disconnected.",
+      "remaining": "Nova structured draft generation, isolated preview and approved application.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AI-02",
+      "status": "not-implemented",
+      "implemented": "No cloud inference or upload path is enabled.",
+      "remaining": "Selected-media authorization enforced by production inference service.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AI-03",
+      "status": "not-implemented",
+      "implemented": "No credit spending is enabled.",
+      "remaining": "Estimation, consent, reservation, settlement and failed-job refunds.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AI-04",
+      "status": "partial",
+      "implemented": "Separate local permissions default false, including after portable import.",
+      "remaining": "Independent server-side training consent and audit/withdrawal lifecycle.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AI-05",
+      "status": "not-implemented",
+      "implemented": "No external publication is enabled.",
+      "remaining": "Per-action approval, scheduling and destination publication integrations.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "AI-06",
+      "status": "not-implemented",
+      "implemented": "No generation service is enabled.",
+      "remaining": "Safety moderation, case handling and appeals integration.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "BC-01",
+      "status": "partial",
+      "implemented": "Local media/project persistence implemented.",
+      "remaining": "BCloud authorized revision sync and reconnect reconciliation.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "BC-02",
+      "status": "partial",
+      "implemented": "Metadata sync and original upload flags are separate and default off.",
+      "remaining": "Server-side selective upload enforcement and integration tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "BC-03",
+      "status": "partial",
+      "implemented": "Edits and exports do not delete original media.",
+      "remaining": "Storage quota policy, cloud overage lifecycle and user controls.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "BC-04",
+      "status": "partial",
+      "implemented": "Local stale writes are rejected without replacing committed revisions.",
+      "remaining": "Offline remote branch lineage, merge UI and shared revisions.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "BC-05",
+      "status": "not-implemented",
+      "implemented": "Region field retained; no cloud backend connected.",
+      "remaining": "Account region, transparent migration and verified transfer.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SEC-01",
+      "status": "not-implemented",
+      "implemented": "No tenant/cloud service is connected.",
+      "remaining": "Production tenant and region isolation tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SEC-02",
+      "status": "partial",
+      "implemented": "Local media processing; no embedded credentials or AI prompt pipeline.",
+      "remaining": "Full log/privacy review of production services and operational telemetry.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SEC-03",
+      "status": "partial",
+      "implemented": "Checksum validation, safe native media IDs, constrained asset protocol and no remote webview origins.",
+      "remaining": "Decoder fuzzing, dependency review, plugin sandboxing and penetration tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SEC-04",
+      "status": "partial",
+      "implemented": "Project, originals and named revisions remain on the current device.",
+      "remaining": "Region-bound cloud recovery and backup restore exercises.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SEC-05",
+      "status": "not-implemented",
+      "implemented": "No shared access service exists.",
+      "remaining": "Deletion, access revocation, retention and ordinary-copy expiry.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "MKT-01",
+      "status": "not-implemented",
+      "implemented": "Marketplace is disconnected.",
+      "remaining": "Creator approval, submissions, publishing and moderation.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "MKT-02",
+      "status": "not-implemented",
+      "implemented": "User-supplied asset license notes are editable.",
+      "remaining": "Marketplace licenses, dependencies, reporting, takedowns and appeals.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "MKT-03",
+      "status": "not-implemented",
+      "implemented": "No payments or payouts are enabled.",
+      "remaining": "Payout/refund ledger and reconciliation.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SUB-01",
+      "status": "not-implemented",
+      "implemented": "Local development tools have no simulated subscription gating.",
+      "remaining": "Five-tier entitlements, store billing and cross-device receipt verification.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SUB-02",
+      "status": "partial",
+      "implemented": "Development projects remain locally accessible; no automatic billing.",
+      "remaining": "Production trial/beta transitions and downgrade entitlement tests.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "SUB-03",
+      "status": "not-implemented",
+      "implemented": "Cloud jobs and credits are disconnected.",
+      "remaining": "Allowance ledger, concurrent job accounting and overspend prevention.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "OPS-01",
+      "status": "not-implemented",
+      "implemented": "No production deployment created.",
+      "remaining": "Load testing and region failure handling at the specified scale.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "OPS-02",
+      "status": "not-implemented",
+      "implemented": "No regional data plane exists.",
+      "remaining": "RPO/RTO restore and residency exercises.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "OPS-03",
+      "status": "partial",
+      "implemented": "Local-only edits do not depend on provider availability.",
+      "remaining": "Live provider outage, budget throttle and acknowledged remote project recovery.",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "OPS-04",
+      "status": "partial",
+      "implemented": "Native source, icons, capability policy and target build/doctor commands supplied.",
+      "remaining": "Signed Android/iOS/Windows packages, device tests, store qualification, observability and rollback.",
+      "acceptedForProduction": false
+    }
+  ]
+}

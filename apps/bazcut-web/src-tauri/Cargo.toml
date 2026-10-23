@@ -1,0 +1,22 @@
+[package]
+name = "bazcut"
+version = "2.0.0-dev.1"
+edition = "2021"
+license = "LicenseRef-Proprietary"
+
+[lib]
+name = "bazcut_app"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset"] }
+serde_json = "1"
+bazcut-core = { path = "../engine" }
+
+tauri-plugin-bazcut-share = { path = "../native-share" }
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-dialog = "2"

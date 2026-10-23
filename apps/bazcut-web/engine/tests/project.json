@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 2,
+  "engineVersion": "2.0.0-dev.1",
+  "id": "fixture",
+  "name": "Native fixture",
+  "revision": 0,
+  "parentRevision": null,
+  "created": "2026-10-21T12:58:28.932Z",
+  "updated": "2026-10-21T12:58:28.932Z",
+  "timebase": 35280000,
+  "fps": {
+    "num": 30,
+    "den": 1
+  },
+  "width": 1920,
+  "height": 1080,
+  "background": "#070a13",
+  "sampleRate": 48000,
+  "colorSpace": "srgb",
+  "tracks": [
+    {
+      "id": "video",
+      "name": "Video 1",
+      "kind": "visual",
+      "locked": false,
+      "muted": false,
+      "hidden": false,
+      "volume": 1
+    },
+    {
+      "id": "audio",
+      "name": "Audio 1",
+      "kind": "audio",
+      "locked": false,
+      "muted": false,
+      "hidden": false,
+      "volume": 1
+    }
+  ],
+  "clips": [
+    {
+      "id": "title",
+      "trackId": "video",
+      "name": "Your story starts here",
+      "kind": "text",
+      "start": 0,
+      "duration": 176400000,
+      "sourceIn": 0,
+      "speed": {
+        "num": 1,
+        "den": 1
+      },
+      "reverse": false,
+      "freeze": false,
+      "x": 0,
+      "y": 0,
+      "scale": 1,
+      "rotation": 0,
+      "opacity": 1,
+      "mirror": false,
+      "fit": "contain",
+      "crop": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mask": "none",
+      "blend": "source-over",
+      "brightness": 1,
+      "contrast": 1,
+      "saturation": 1,
+      "hue": 0,
+      "blur": 0,
+      "volume": 1,
+      "pan": 0,
+      "fadeIn": 0,
+      "fadeOut": 0,
+      "text": "Your story starts here",
+      "fontSize": 96,
+      "color": "#ffffff",
+      "background": "#2778ff",
+      "shape": "rectangle",
+      "keyframes": []
+    }
+  ],
+  "assets": [],
+  "captions": [],
+  "markers": [],
+  "comments": [],
+  "captionStyle": {
+    "size": 52,
+    "color": "#ffffff",
+    "background": "#101524",
+    "position": 0.89
+  },
+  "sync": {
+    "enabled": false,
+    "originals": false,
+    "region": null,
+    "remoteRevision": null
+  },
+  "permissions": {
+    "cloudInference": false,
+    "training": false,
+    "publishing": false
+  }
+}

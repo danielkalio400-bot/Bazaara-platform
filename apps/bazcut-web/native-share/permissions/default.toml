@@ -1,0 +1,3 @@
+[default]
+description = "Allow explicit export to the system save/share dialog"
+permissions = ["allow-share"]

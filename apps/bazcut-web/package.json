@@ -1,24 +1,50 @@
 {
   "name": "@bazaara/bazcut-web",
-  "version": "0.1.0",
+  "version": "2.0.0-dev.1",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3018",
     "build": "next build",
     "start": "next start -p 3018",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "studio": "vite --config vite.config.ts",
+    "bundle": "tsc -p tsconfig.studio.json && vite build --config vite.config.ts",
+    "test:studio": "node --experimental-strip-types --test tests/*.test.ts",
+    "check:studio": "tsc -p tsconfig.studio.json",
+    "native:dev": "tauri dev",
+    "native:build": "tauri build",
+    "android:init": "tauri android init",
+    "android:dev": "tauri android dev",
+    "android:build": "tauri android build",
+    "ios:init": "tauri ios init",
+    "ios:dev": "tauri ios dev",
+    "ios:build": "tauri ios build",
+    "test:engine": "cargo test --locked --manifest-path engine/Cargo.toml",
+    "test:browser": "node tests/browser.mjs",
+    "doctor": "node scripts/native.mjs doctor",
+    "build:windows": "node scripts/native.mjs build windows",
+    "build:android": "node scripts/native.mjs build android",
+    "build:ios": "node scripts/native.mjs build ios",
+    "build:ios-simulator": "node scripts/native.mjs build ios-simulator"
   },
   "dependencies": {
     "next": "^16.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "@bazaara/api-client": "0.1.0",
-    "@bazaara/social-ui": "0.1.0"
+    "@bazaara/social-ui": "0.1.0",
+    "@tauri-apps/api": "2.12.4",
+    "mediabunny": "1.62.0",
+    "@noble/hashes": "2.0.1",
+    "lucide-react": "1.61.0"
   },
   "devDependencies": {
     "@types/node": "^22.17.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "@tauri-apps/cli": "2.12.4",
+    "vite": "7.3.7",
+    "playwright": "1.51.1"
   }
 }

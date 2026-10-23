@@ -1,0 +1,11 @@
+node_modules/
+.next/
+dist-native/
+engine/target/
+src-tauri/target/
+src-tauri/gen/
+native-share/target/
+native-share/android/.gradle/
+native-share/android/build/
+native-share/.tauri/
+*.tsbuildinfo
