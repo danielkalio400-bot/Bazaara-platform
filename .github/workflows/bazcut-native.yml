@@ -1,0 +1,72 @@
+name: BazCut native compilation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/bazcut-native-editor]
+    paths:
+      - 'apps/bazcut-web/**'
+      - '.github/workflows/bazcut-native.yml'
+      - 'package-lock.json'
+  pull_request:
+    paths:
+      - 'apps/bazcut-web/**'
+      - '.github/workflows/bazcut-native.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bazcut-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    name: ${{ matrix.platform }} development build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows
+            runner: windows-latest
+          - platform: android
+            runner: ubuntu-latest
+          - platform: ios-simulator
+            runner: macos-latest
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    env:
+      CI: 'true'
+      NEXT_TELEMETRY_DISABLED: '1'
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install frontend dependencies
+        run: npm ci --workspace=@bazaara/bazcut-web --include-workspace-root=false --no-audit
+      - name: Install Rust toolchain
+        shell: bash
+        run: rustup toolchain install stable --profile minimal --no-self-update && rustup default stable
+      - name: Configure Java
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Install Android SDK packages
+        if: matrix.platform == 'android'
+        shell: bash
+        run: |
+          sdkmanager 'platform-tools' 'platforms;android-37' 'build-tools;37.0.0' 'ndk;27.2.12479018'
+          echo "NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_ENV"
+      - name: Install CocoaPods
+        if: matrix.platform == 'ios-simulator'
+        shell: bash
+        run: command -v pod >/dev/null || brew install cocoapods
+      - name: Check native prerequisites
+        run: node apps/bazcut-web/scripts/native.mjs doctor ${{ matrix.platform }}
+      - name: Compile and run core tests
+        run: node apps/bazcut-web/scripts/native.mjs build ${{ matrix.platform }}
