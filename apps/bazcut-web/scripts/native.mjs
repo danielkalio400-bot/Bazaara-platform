@@ -56,13 +56,18 @@ function directories(parent) {
     : [];
 }
 function tauri(argv) {
-  const pkg = require.resolve("@tauri-apps/cli/package.json");
-  run(process.execPath, [path.join(path.dirname(pkg), "tauri.js"), ...argv]);
+  // Mobile projects embed this entry point in their Gradle/Xcode build phases.
+  // A dedicated npm lifecycle keeps it valid from the generated directories.
+  npm("tauri", argv);
 }
-function npm(script) {
-  run(process.platform === "win32" ? "npm.cmd" : "npm", ["run", script], {
-    shell: process.platform === "win32",
-  });
+function npm(script, argv = []) {
+  run(
+    process.platform === "win32" ? "npm.cmd" : "npm",
+    ["run", script, "--", ...argv],
+    {
+      shell: process.platform === "win32",
+    },
+  );
 }
 function doctor() {
   console.log(
@@ -178,16 +183,13 @@ function doctor() {
       ).match(/compileSdk\s*=\s*(\d+)/)?.[1],
     );
     check(
-      existsSync(
-        path.join(
-          env.ANDROID_HOME,
-          "platforms",
-          `android-${sdkLevel}`,
-          "android.jar",
+      [`android-${sdkLevel}`, `android-${sdkLevel}.0`].some((platform) =>
+        existsSync(
+          path.join(env.ANDROID_HOME, "platforms", platform, "android.jar"),
         ),
       ),
       `Android SDK Platform ${sdkLevel}`,
-      `Install Android SDK Platform ${sdkLevel} in SDK Manager.`,
+      `Install Android SDK Platform ${sdkLevel}.0 in SDK Manager.`,
     );
     check(
       directories(path.join(env.ANDROID_HOME, "build-tools")).length > 0,

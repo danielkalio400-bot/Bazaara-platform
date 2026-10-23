@@ -11,6 +11,7 @@
     "bundle": "tsc -p tsconfig.studio.json && vite build --config vite.config.ts",
     "test:studio": "node --experimental-strip-types --test tests/*.test.ts",
     "check:studio": "tsc -p tsconfig.studio.json",
+    "tauri": "tauri",
     "native:dev": "tauri dev",
     "native:build": "tauri build",
     "android:init": "tauri android init",

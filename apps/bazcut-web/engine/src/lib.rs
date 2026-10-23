@@ -4,7 +4,7 @@ use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 use std::{
     collections::HashSet,
-    fs::{self, File, OpenOptions},
+    fs::{self, OpenOptions},
     io::{Read, Write},
     path::{Path, PathBuf},
 };
@@ -335,7 +335,12 @@ impl ProjectStore {
     }
     pub fn finish(&self, id: &str, hash: &str, size: u64) -> Result<()> {
         let part = self.path(id, true)?;
-        let mut f = File::open(&part).map_err(error)?;
+        // FlushFileBuffers on Windows requires a write-capable handle.
+        let mut f = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(&part)
+            .map_err(error)?;
         if f.metadata().map_err(error)?.len() != size {
             return Err("Media size mismatch".into());
         }
