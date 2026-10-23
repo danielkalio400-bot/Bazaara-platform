@@ -11,7 +11,7 @@
     "interface": "React and TypeScript shared by Next.js and native Tauri entry",
     "nativeStorage": "Rust SQLite WAL transactions and verified media chunk writes",
     "mediaExecution": "Browser/WebView WebCodecs with Mediabunny and Canvas2D; this is not the specification’s complete Rust/wgpu media engine",
-    "nativeShare": "Rust, Kotlin and Swift save/share bridge source; target compilation unverified",
+    "nativeShare": "Rust and Swift compiled for iOS simulator; Rust Windows save bridge compiled; Android Kotlin compilation pending",
     "portableProject": "Versioned .bazcut metadata plus original bytes with SHA-256 integrity and isolated import IDs"
   },
   "verified": {
@@ -50,21 +50,33 @@
   "platforms": {
     "Android": {
       "source": "included",
-      "nativeBuild": "not-run",
+      "nativeBuild": "Rust shared library passed; Gradle failed on conflicting SDK locations; fix pending verification",
       "signedBinary": "not-produced",
-      "deviceQualification": "not-run"
+      "deviceQualification": "not-run",
+      "buildEvidence": {
+        "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
+      }
     },
     "iOS": {
       "source": "included",
-      "nativeBuild": "not-run",
+      "nativeBuild": "passed: arm64 iOS simulator app; device signing not run",
       "signedBinary": "not-produced",
-      "deviceQualification": "not-run"
+      "deviceQualification": "not-run",
+      "buildEvidence": {
+        "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
+      }
     },
     "Windows": {
       "source": "included",
-      "nativeBuild": "not-run",
+      "nativeBuild": "passed: x86_64 MSVC development executable and unsigned NSIS installer",
       "signedBinary": "not-produced",
-      "deviceQualification": "not-run"
+      "deviceQualification": "not-run",
+      "buildEvidence": {
+        "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
+      }
     }
   },
   "knownLimits": [

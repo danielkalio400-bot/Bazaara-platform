@@ -164,6 +164,8 @@ function doctor() {
         : process.platform === "darwin"
           ? path.join(homedir(), "Library", "Android", "sdk")
           : path.join(homedir(), "Android", "Sdk"));
+    // Gradle rejects conflicting SDK locations inherited from the build host.
+    if (env.ANDROID_SDK_ROOT) env.ANDROID_SDK_ROOT = env.ANDROID_HOME;
     check(
       existsSync(env.ANDROID_HOME),
       "Android SDK",

@@ -70,6 +70,7 @@ jobs:
           "$BAZCUT_SDK_MANAGER" --sdk_root="$BAZCUT_ANDROID_SDK" --licenses < <(printf 'y\n%.0s' {1..100})
           "$BAZCUT_SDK_MANAGER" --sdk_root="$BAZCUT_ANDROID_SDK" 'platform-tools' 'platforms;android-37.0' 'build-tools;37.0.0' 'ndk;27.2.12479018'
           echo "ANDROID_HOME=$BAZCUT_ANDROID_SDK" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$BAZCUT_ANDROID_SDK" >> "$GITHUB_ENV"
           echo "NDK_HOME=$BAZCUT_ANDROID_SDK/ndk/27.2.12479018" >> "$GITHUB_ENV"
       - name: Install CocoaPods
         if: matrix.platform == 'ios-simulator'

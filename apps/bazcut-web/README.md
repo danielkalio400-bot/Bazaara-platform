@@ -45,7 +45,9 @@ npm run build:ios-simulator --workspace=@bazaara/bazcut-web
 npm run build:ios --workspace=@bazaara/bazcut-web
 ```
 
-The target doctor reports missing SDKs and toolchains. Windows needs the Visual Studio C++ and Windows SDK toolchain; Android needs Java, Android SDK/NDK and the configured API level; iOS needs macOS/Xcode and an Apple development team for device signing. Development build scripts do not publish to stores. Native platform compilation and device testing must pass before release readiness can be claimed.
+The target doctor reports missing SDKs and toolchains. Windows needs the Visual Studio C++ and Windows SDK toolchain; Android needs Java, Android SDK/NDK and the configured API level; iOS needs macOS/Xcode and an Apple development team for device signing. Development build scripts do not publish to stores.
+
+[Native CI run 40011781320](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320) compiled the Windows x64 development executable and unsigned NSIS installer, and the arm64 iOS simulator app, at commit `6d38b253882cdb74a4b0ac6cc9574f6794a019c0`. Android compiled its Rust shared library but Gradle rejected conflicting SDK paths; the build launcher now normalizes them. Android packaging, real-device testing and distribution signing remain unqualified.
 
 ## Data behavior
 
