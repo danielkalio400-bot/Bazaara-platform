@@ -345,6 +345,7 @@ try {
     );
     const { EFFECTS, PARENT } = await import(`${base}motion.ts`);
     const { TIME_MAP } = await import(`${base}time-map.ts`);
+    const { MATTE } = await import(`${base}matte.ts`);
     const { packageProject, unpackProject } = await import(`${base}package.ts`);
     const project = (await listProjects())[0];
     const settings = {
@@ -491,6 +492,60 @@ try {
     context.drawImage(decoded, 0, 0, 64, 64);
     const parentingMatchesExport =
       parentPreview && pixel(48, 32)[0] > 200 && pixel(32, 32)[0] < 40;
+    // A transformed red matte distinguishes luma from alpha and detects a
+    // source layer accidentally being painted over its consumer.
+    shape.scale = 2;
+    parent.opacity = 1;
+    parent.scale = 0.5;
+    parent.shape = "ellipse";
+    parent.background = "#ff0000";
+    shape.extensions = {
+      [MATTE]: { id: parent.id, mode: "alpha", hideSource: true },
+    };
+    motionProject.clips = [shape, parent];
+    const mattePixels = {};
+    for (const mode of ["alpha", "alpha-inverted", "luma", "luma-inverted"]) {
+      shape.extensions[MATTE].mode = mode;
+      validateProject(motionProject);
+      await drawFrame(canvas, motionProject, motionPool, 0);
+      mattePixels[mode] = { inside: pixel(48, 32), outside: pixel(32, 32) };
+    }
+    const cutout = newClip(parent.trackId, 0, undefined, "shape");
+    cutout.x = 0.25;
+    cutout.scale = 0.125;
+    cutout.shape = "ellipse";
+    cutout.background = "#ffffff";
+    cutout.duration = ticks(0.1);
+    parent.extensions = {
+      [MATTE]: { id: cutout.id, mode: "alpha", hideSource: true },
+    };
+    motionProject.clips.push(cutout);
+    shape.extensions[MATTE].mode = "alpha";
+    await drawFrame(canvas, motionProject, motionPool, 0);
+    const nestedMatte = pixel(48, 32)[0] > 240 && pixel(54, 32)[0] < 10;
+    parent.duration = ticks(0.05);
+    await drawFrame(canvas, motionProject, motionPool, ticks(0.08));
+    const inactiveMatte = pixel(48, 32)[0] < 10;
+    parent.duration = ticks(0.1);
+    parent.extensions = undefined;
+    motionProject.clips = [shape, parent];
+    const matteExport = await renderProject(
+      motionProject,
+      { ...settings, width: 64, height: 64 },
+      new AbortController().signal,
+      () => {},
+    );
+    const matteAsset = await inspectMedia(
+      new File([matteExport.blob], "matte.webm", { type: "video/webm" }),
+    );
+    await putMedia(matteAsset, matteExport.blob);
+    context.drawImage(await motionPool.frame(matteAsset, 0), 0, 0, 64, 64);
+    const mattesMatchExport = pixel(48, 32)[0] > 200 && pixel(32, 32)[0] < 40;
+    const portableMatte = await unpackProject(
+      await packageProject(motionProject),
+    );
+    const mattePackage =
+      portableMatte.clips[0].extensions[MATTE].id === portableMatte.clips[1].id;
     const mapped = structuredClone(project);
     mapped.clips[0].extensions = {
       [TIME_MAP]: {
@@ -537,6 +592,11 @@ try {
       historyRecovered,
       effectOrder,
       parentingMatchesExport,
+      mattePixels,
+      nestedMatte,
+      inactiveMatte,
+      mattesMatchExport,
+      mattePackage,
       remapAudio,
       portableValid,
       truncated,
@@ -562,6 +622,29 @@ try {
     JSON.stringify(checks),
   );
   assert.equal(checks.cancellation, "AbortError");
+  assert.ok(
+    checks.nestedMatte &&
+      checks.inactiveMatte &&
+      checks.mattesMatchExport &&
+      checks.mattePackage,
+    JSON.stringify(checks),
+  );
+  assert.ok(
+    checks.mattePixels.alpha.inside[0] > 240 &&
+      checks.mattePixels.alpha.outside[0] < 10,
+  );
+  assert.ok(
+    checks.mattePixels["alpha-inverted"].inside[0] < 10 &&
+      checks.mattePixels["alpha-inverted"].outside[0] > 240,
+  );
+  assert.ok(
+    Math.abs(checks.mattePixels.luma.inside[0] - 54) <= 2 &&
+      checks.mattePixels.luma.outside[0] < 10,
+  );
+  assert.ok(
+    Math.abs(checks.mattePixels["luma-inverted"].inside[0] - 201) <= 2 &&
+      checks.mattePixels["luma-inverted"].outside[0] > 240,
+  );
   assert.match(checks.missing, /Missing media/);
   assert.ok(checks.portableValid);
   assert.match(checks.truncated, /truncated/);
@@ -572,11 +655,138 @@ try {
   assert.equal(checks.retainedName, "Concurrent revision");
   assert.ok(checks.unchanged && checks.versions > 0 && checks.mediaSize > 0);
   assert.match(checks.closed, /closed/);
+  // A separate touch context exercises actual tap input and coarse-pointer CSS.
+  page = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  });
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(origin);
+  await page
+    .getByRole("button", { name: "Create a project", exact: true })
+    .tap();
+  await page
+    .getByRole("dialog")
+    .getByLabel("Project name")
+    .fill("Touch motion verification");
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Create project", exact: true })
+    .tap();
+  await page.locator("input[type=file][multiple]").setInputFiles(fixture);
+  await page
+    .getByText("Media imported and stored on this device.", { exact: true })
+    .waitFor();
+  await page.getByRole("button", { name: "Motion", exact: true }).tap();
+  await page.getByRole("button", { name: "Adjust", exact: true }).tap();
+  await page.getByRole("button", { name: "Add effect", exact: true }).tap();
+  await page.getByLabel("Effect 1 amount", { exact: true }).fill("1.25");
+  await page
+    .getByRole("button", { name: "Keyframe at playhead", exact: true })
+    .tap();
+  await page.getByLabel("Effect 1 key 1 value", { exact: true }).fill("0.8");
+  await page
+    .getByLabel("Effect 1 key 1 easing", { exact: true })
+    .selectOption("easeInOut");
+  await page.getByLabel("Effect type", { exact: true }).selectOption("invert");
+  await page.getByRole("button", { name: "Add effect", exact: true }).tap();
+  await page
+    .getByRole("button", { name: "Move effect 2 up", exact: true })
+    .tap();
+  const invert = page.getByLabel("Enable Invert effect 1", { exact: true });
+  assert.ok(await invert.isChecked());
+  await invert.tap();
+  assert.ok(!(await invert.isChecked()));
+  const removeEffect = page.getByRole("button", {
+    name: "Remove effect 1",
+    exact: true,
+  });
+  const touchBounds = await removeEffect.boundingBox();
+  assert.ok(touchBounds.width >= 44 && touchBounds.height >= 44);
+  await removeEffect.tap();
+  await page
+    .getByRole("button", { name: "Enable time remapping", exact: true })
+    .tap();
+  await page.getByLabel("Time key 1 source seconds", { exact: true }).fill("1");
+  await page
+    .getByLabel("Time key 1 easing", { exact: true })
+    .selectOption("hold");
+  await page.getByLabel("Time key 2 source seconds", { exact: true }).fill("0");
+  await page
+    .getByRole("img", { name: "Source time curve", exact: true })
+    .scrollIntoViewIfNeeded();
+  assert.ok(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  );
+  await page.screenshot({
+    path: path.join(output, "motion-touch.png"),
+    fullPage: true,
+  });
+  await page
+    .getByRole("button", { name: "Close inspector", exact: true })
+    .tap();
+  await page.getByRole("button", { name: "Text", exact: true }).tap();
+  await page.getByLabel("Title text", { exact: true }).fill("Parented title");
+  await page
+    .getByLabel("Transform parent", { exact: true })
+    .selectOption({ label: "source.webm" });
+  await page.getByLabel("Inherit parent opacity", { exact: true }).uncheck();
+  await page
+    .getByLabel("Matte source", { exact: true })
+    .selectOption({ label: "source.webm" });
+  await page
+    .getByLabel("Matte mode", { exact: true })
+    .selectOption("luma-inverted");
+  await page.getByText("Saved on this device", { exact: true }).waitFor();
+  const touchMotion = await page.evaluate(async (base) => {
+    const { listProjects } = await import(`${base}storage.ts`);
+    const project = (await listProjects())[0];
+    const source = project.clips.find((clip) => clip.kind === "video"),
+      title = project.clips.find((clip) => clip.kind === "text");
+    return {
+      sourceId: source.id,
+      effects: source.extensions["bazcut.effects.v1"],
+      timeMap: source.extensions["bazcut.time.v1"],
+      parent: title.extensions["bazcut.parent.v1"],
+      matte: title.extensions["bazcut.matte.v1"],
+    };
+  }, moduleBase);
+  assert.equal(touchMotion.effects.length, 1);
+  assert.equal(touchMotion.effects[0].type, "brightness");
+  assert.equal(touchMotion.effects[0].amount, 1.25);
+  assert.equal(touchMotion.effects[0].keyframes[0].value, 0.8);
+  assert.equal(touchMotion.effects[0].keyframes[0].easing, "easeInOut");
+  assert.equal(touchMotion.timeMap.points[0].easing, "hold");
+  assert.equal(touchMotion.timeMap.points[1].source, 0);
+  assert.deepEqual(touchMotion.parent, {
+    id: touchMotion.sourceId,
+    inheritOpacity: false,
+  });
+  assert.deepEqual(touchMotion.matte, {
+    id: touchMotion.sourceId,
+    mode: "luma-inverted",
+    hideSource: true,
+  });
+  await page.reload();
+  await page.getByRole("button", { name: /Touch motion verification/ }).tap();
+  await page.getByText("Saved on this device", { exact: true }).waitFor();
+  console.log(
+    "PASS: touch effect ordering/bypass/keyframes, time-map editing and persisted parenting",
+  );
   assert.deepEqual(errors, []);
   await writeFile(
     path.join(output, "result.json"),
     JSON.stringify(
-      { passed: true, browser: await browser.version(), probe, checks },
+      {
+        passed: true,
+        browser: await browser.version(),
+        probe,
+        checks,
+        touchMotion,
+      },
       null,
       2,
     ),
@@ -591,6 +801,9 @@ try {
     "PASS: ordered effect pixels, parent preview/export agreement, frozen/remapped audio",
   );
   console.log(`Artifacts: ${output}`);
+  console.log(
+    "PASS: alpha/luma/inverted/nested matte pixels, source timing, portable references and encoded export agreement",
+  );
 } catch (error) {
   if (page)
     await page

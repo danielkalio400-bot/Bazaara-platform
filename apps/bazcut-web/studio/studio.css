@@ -2386,6 +2386,7 @@
 }
 
 .bc-effects-stack,
+.bc-matte,
 .bc-time-remap {
   display: grid;
   gap: 12px;
@@ -2393,6 +2394,7 @@
   border-top: 1px solid #273148;
 }
 .bc-effects-stack h3,
+.bc-matte h3,
 .bc-time-remap h3 {
   margin: 0;
   font-size: 13px;
@@ -2464,4 +2466,29 @@
   display: grid;
   gap: 6px;
   font-size: 11px;
+}
+@media (pointer: coarse) {
+  .bc-effect-card header {
+    flex-wrap: wrap;
+  }
+  .bc-effect-card header label {
+    min-height: 44px;
+  }
+  .bc-effects-stack button,
+  .bc-effects-stack select,
+  .bc-matte select,
+  .bc-effects-stack input[type="number"],
+  .bc-time-remap button,
+  .bc-time-remap select,
+  .bc-time-remap input {
+    min-height: 44px;
+  }
+  .bc-effect-card header button,
+  .bc-effect-key button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .bc-effect-key {
+    grid-template-columns: 36px minmax(0, 1fr) 80px 44px;
+  }
 }

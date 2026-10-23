@@ -1,4 +1,5 @@
 "use client";
+import { MatteControls } from "./MatteControls";
 import {
   cloneElement,
   isValidElement,
@@ -1851,6 +1852,11 @@ export default function Studio() {
                                     project={p}
                                     clip={c}
                                     local={at - c.start}
+                                    patch={patch}
+                                  />
+                                  <MatteControls
+                                    project={p}
+                                    clip={c}
                                     patch={patch}
                                   />
                                 </>

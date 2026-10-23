@@ -28,7 +28,9 @@ The media library opens a source monitor with frame-based in/out marks, preview 
 
 The Motion inspector includes ordered, bypassable color/effect stacks, effect keyframes, acyclic visual parenting with optional opacity inheritance, and a source-time curve for holds, reversals, and speed ramps. Preview and video export use the same evaluator. Frozen time-map segments are silent; other speed changes affect audio pitch. Splits and trims retain the original animation/time-curve origin.
 
-Verification on the development host: 28 TypeScript tests, 9 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, and remapped audio. This does not establish native device compatibility.
+Track mattes support alpha, luma and their inverses, transformed/effected source layers, nested dependencies up to eight levels, and source hiding. A hidden matte source remains hidden while assigned, including outside the consumer’s duration; its audio is unaffected. The same compositor evaluates preview and export. Cycles, missing sources and unsupported modes are rejected by both TypeScript and Rust. Matte references survive portable project roundtrips.
+
+Verification on the development host: 31 TypeScript tests, 10 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, remapped audio, coarse-pointer Motion controls, and alpha/luma/nested matte pixel/export agreement. This does not establish native device compatibility.
 
 ## Native targets
 
@@ -47,7 +49,9 @@ npm run build:ios --workspace=@bazaara/bazcut-web
 
 The target doctor reports missing SDKs and toolchains. Windows needs the Visual Studio C++ and Windows SDK toolchain; Android needs Java, Android SDK/NDK and the configured API level; iOS needs macOS/Xcode and an Apple development team for device signing. Development build scripts do not publish to stores.
 
-[Native CI run 40011781320](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320) compiled the Windows x64 development executable and unsigned NSIS installer, and the arm64 iOS simulator app, at commit `6d38b253882cdb74a4b0ac6cc9574f6794a019c0`. Android compiled its Rust shared library but Gradle rejected conflicting SDK paths; the build launcher now normalizes them. Android packaging, real-device testing and distribution signing remain unqualified.
+[Native CI run 40011781320](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320) compiled the Windows x64 development executable and unsigned NSIS installer, and the arm64 iOS simulator app, at commit `6d38b253882cdb74a4b0ac6cc9574f6794a019c0`. Android compiled its Rust shared library. Subsequent compilation exposed a FileProvider manifest collision; a dedicated export provider now separates it from Tauri’s provider. Android verification is being rerun. Android packaging, real-device testing and distribution signing remain unqualified.
+
+The Windows CI job also runs `tests/windows-native.mjs` against the compiled WebView2 app to exercise native import, preview, SQLite persistence, named versions and undo recovery. Its initial result is pending; the script is restricted to disposable CI hosts.
 
 ## Data behavior
 

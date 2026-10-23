@@ -6,11 +6,15 @@ on:
     branches: [codex/bazcut-native-editor]
     paths:
       - 'apps/bazcut-web/**'
+      - '!apps/bazcut-web/README.md'
+      - '!apps/bazcut-web/release-status.json'
       - '.github/workflows/bazcut-native.yml'
       - 'package-lock.json'
   pull_request:
     paths:
       - 'apps/bazcut-web/**'
+      - '!apps/bazcut-web/README.md'
+      - '!apps/bazcut-web/release-status.json'
       - '.github/workflows/bazcut-native.yml'
 
 permissions:
@@ -80,3 +84,6 @@ jobs:
         run: node apps/bazcut-web/scripts/native.mjs doctor ${{ matrix.platform }}
       - name: Compile and run core tests
         run: node apps/bazcut-web/scripts/native.mjs build ${{ matrix.platform }}
+      - name: Exercise the packaged Windows app
+        if: matrix.platform == 'windows'
+        run: node apps/bazcut-web/tests/windows-native.mjs

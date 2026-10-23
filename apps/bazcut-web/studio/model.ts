@@ -1,4 +1,5 @@
 import { EFFECTS, PARENT, validateMotion } from "./motion.ts";
+import { MATTE, validateMattes } from "./matte.ts";
 import {
   TIME_MAP,
   mappedTime,
@@ -533,6 +534,7 @@ export function validateProject(value: unknown): Project {
   );
   assert(p.sync && p.permissions, "Project privacy settings are missing.");
   validateMotion(p);
+  validateMattes(p);
   validateTimeMaps(p);
   return p;
 }
@@ -544,7 +546,7 @@ export function unsupportedFeatures(p: Project): string[] {
     if (
       c.extensions &&
       Object.keys(c.extensions).some(
-        (key) => ![EFFECTS, PARENT, TIME_MAP].includes(key),
+        (key) => ![EFFECTS, PARENT, TIME_MAP, MATTE].includes(key),
       )
     )
       issues.push(`${c.name}: extension effects`);

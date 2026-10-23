@@ -28,6 +28,31 @@ fn rational_time_is_exact() {
     assert!(frame_ticks(0, 1).is_err());
     assert!(frame_ticks(239, 1).is_err());
 }
+
+#[test]
+fn matte_references_are_validated_and_persisted() {
+    let mut p = fixture();
+    let mut mask = p["clips"][0].clone();
+    mask["id"] = json!("matte-source");
+    p["clips"].as_array_mut().unwrap().push(mask);
+    p["clips"][0]["extensions"] =
+        json!({"bazcut.matte.v1":{"id":"matte-source","mode":"luma-inverted","hideSource":true}});
+    let dir = root();
+    let mut db = ProjectStore::open(&dir).unwrap();
+    db.save(&p, None, None).unwrap();
+    assert_eq!(db.list().unwrap()[0], p);
+    p["clips"][1]["extensions"] =
+        json!({"bazcut.matte.v1":{"id":p["clips"][0]["id"],"mode":"alpha","hideSource":true}});
+    assert!(validate_project(&p).unwrap_err().contains("acyclic"));
+    p["clips"][1]["extensions"] = json!({});
+    p["clips"][0]["extensions"]["bazcut.matte.v1"]["id"] = json!("missing");
+    assert!(validate_project(&p).unwrap_err().contains("matte source"));
+    p["clips"][0]["extensions"]["bazcut.matte.v1"]["id"] = json!("matte-source");
+    p["clips"][0]["extensions"]["bazcut.matte.v1"]["mode"] = json!("unsupported");
+    assert!(validate_project(&p).is_err());
+    drop(db);
+    fs::remove_dir_all(dir).unwrap();
+}
 #[test]
 fn malformed_and_future_documents_are_rejected() {
     let mut p = fixture();

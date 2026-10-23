@@ -3,6 +3,7 @@ use serde_json::Value;
 use std::collections::HashSet;
 const EFFECTS: &str = "bazcut.effects.v1";
 const PARENT: &str = "bazcut.parent.v1";
+const MATTE: &str = "bazcut.matte.v1";
 pub const TIME_MAP: &str = "bazcut.time.v1";
 fn finite(v: &Value) -> Result<f64> {
     v.as_f64()
@@ -81,6 +82,38 @@ pub fn validate_motion(p: &Value) -> Result<()> {
                             .iter()
                             .find(|x| x["id"] == id)
                             .ok_or("Missing visual parent")?,
+                    ),
+                    None => None,
+                };
+            }
+        }
+        if let Some(matte) = ext.get(MATTE) {
+            let id = text(matte, "id")?;
+            let target = clips
+                .iter()
+                .find(|x| x["id"] == id)
+                .ok_or("Missing visual matte source")?;
+            if !matches!(
+                matte["mode"].as_str(),
+                Some("alpha" | "alpha-inverted" | "luma" | "luma-inverted")
+            ) || matte["hideSource"].as_bool().is_none()
+                || target["kind"] == "audio"
+                || c["kind"] == "audio"
+            {
+                return Err("Invalid visual matte".into());
+            }
+            let mut visited = HashSet::from([text(c, "id")?]);
+            let mut next = Some(target);
+            while let Some(node) = next {
+                if visited.len() > 8 || !visited.insert(text(node, "id")?) {
+                    return Err("Mattes must be acyclic and no deeper than 8 layers".into());
+                }
+                next = match node["extensions"][MATTE]["id"].as_str() {
+                    Some(id) => Some(
+                        clips
+                            .iter()
+                            .find(|x| x["id"] == id)
+                            .ok_or("Missing visual matte source")?,
                     ),
                     None => None,
                 };

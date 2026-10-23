@@ -1,4 +1,5 @@
 import { worldTransform } from "./motion";
+import { matteCoverage, matteOf } from "./matte";
 import { timeMapOf } from "./time-map";
 import {
   Input,
@@ -48,6 +49,157 @@ function wrap(
   }
   return lines;
 }
+async function paintClip(
+  ctx: CanvasRenderingContext2D,
+  p: Project,
+  pool: MediaPool,
+  c: Clip,
+  time: number,
+  blend: boolean,
+) {
+  const w = p.width,
+    h = p.height;
+  const local = time - c.start;
+  ctx.save();
+  try {
+    const world = worldTransform(p, c, time);
+    ctx.globalAlpha = world.opacity;
+    ctx.globalCompositeOperation = blend ? c.blend : "source-over";
+    ctx.transform(...world.matrix);
+    ctx.filter = clipFilter(c, local);
+    if (c.mask === "circle") {
+      ctx.beginPath();
+      ctx.arc(0, 0, Math.min(w, h) / 2, 0, 2 * Math.PI);
+      ctx.clip();
+    }
+    if (c.mask === "rounded") {
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, Math.min(w, h) * 0.12);
+      ctx.clip();
+    }
+    if (c.kind === "text") {
+      ctx.font = `700 ${c.fontSize}px Inter, ui-sans-serif, system-ui, sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = c.color;
+      const lines = wrap(ctx, c.text, w * 0.85);
+      ctx.shadowColor = "#00000080";
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 3;
+      lines.forEach((line, i) =>
+        ctx.fillText(
+          line,
+          0,
+          (i - (lines.length - 1) / 2) * c.fontSize * 1.22,
+          w * 0.94,
+        ),
+      );
+    } else if (c.kind === "shape") {
+      ctx.fillStyle = c.background;
+      ctx.beginPath();
+      if (c.shape === "ellipse")
+        ctx.ellipse(0, 0, w * 0.25, h * 0.25, 0, 0, Math.PI * 2);
+      else ctx.roundRect(-w * 0.25, -h * 0.25, w * 0.5, h * 0.5, 24);
+      ctx.fill();
+    } else if (c.assetId) {
+      const asset = p.assets.find((a) => a.id === c.assetId);
+      if (!asset) throw Error("Source manifest is missing.");
+      const image = await pool.frame(asset, sourceTime(c, local));
+      if (!image) throw Error(`No decoded frame for ${asset.name}.`);
+      const [top, right, bottom, left] = c.crop,
+        sw = asset.width * (1 - left - right),
+        sh = asset.height * (1 - top - bottom),
+        ratio =
+          c.fit === "cover"
+            ? Math.max(w / sw, h / sh)
+            : Math.min(w / sw, h / sh);
+      ctx.drawImage(
+        image,
+        asset.width * left,
+        asset.height * top,
+        sw,
+        sh,
+        (-sw * ratio) / 2,
+        (-sh * ratio) / 2,
+        sw * ratio,
+        sh * ratio,
+      );
+    }
+  } finally {
+    ctx.restore();
+  }
+}
+
+const activeAt = (clip: Clip, time: number) =>
+  clip.start <= time && clip.start + clip.duration > time;
+async function isolatedLayer(
+  p: Project,
+  pool: MediaPool,
+  c: Clip,
+  time: number,
+  width: number,
+  height: number,
+  ancestors = new Set<string>(),
+): Promise<HTMLCanvasElement> {
+  if (ancestors.has(c.id) || ancestors.size > 8)
+    throw Error("Invalid matte chain.");
+  const layer = document.createElement("canvas");
+  layer.width = width;
+  layer.height = height;
+  try {
+    const context = layer.getContext("2d");
+    if (!context) throw Error("Matte rendering is unavailable.");
+    if (!activeAt(c, time)) return layer;
+    context.setTransform(width / p.width, 0, 0, height / p.height, 0, 0);
+    await paintClip(context, p, pool, c, time, false);
+    const matte = matteOf(c);
+    if (matte) {
+      const source = p.clips.find((clip) => clip.id === matte.id);
+      if (!source) throw Error("Matte source is missing.");
+      const next = new Set(ancestors).add(c.id);
+      const mask = await isolatedLayer(
+        p,
+        pool,
+        source,
+        time,
+        width,
+        height,
+        next,
+      );
+      try {
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        if (matte.mode.startsWith("luma")) {
+          const maskContext = mask.getContext("2d")!;
+          const image = maskContext.getImageData(0, 0, width, height);
+          for (let i = 0; i < image.data.length; i += 4) {
+            image.data[i + 3] = matteCoverage(
+              image.data[i]!,
+              image.data[i + 1]!,
+              image.data[i + 2]!,
+              image.data[i + 3]!,
+              matte.mode,
+            );
+          }
+          maskContext.putImageData(image, 0, 0);
+          context.globalCompositeOperation = "destination-in";
+        } else {
+          context.globalCompositeOperation =
+            matte.mode === "alpha-inverted"
+              ? "destination-out"
+              : "destination-in";
+        }
+        context.drawImage(mask, 0, 0);
+      } finally {
+        mask.width = mask.height = 0;
+      }
+    }
+    return layer;
+  } catch (error) {
+    layer.width = layer.height = 0;
+    throw error;
+  }
+}
+
 export async function drawFrame(
   canvas: HTMLCanvasElement,
   p: Project,
@@ -59,6 +211,12 @@ export async function drawFrame(
   if (!ctx) throw Error("Canvas rendering is unavailable.");
   const w = p.width,
     h = p.height;
+  const hiddenMatteSources = new Set(
+    p.clips
+      .map(matteOf)
+      .filter((matte) => matte?.hideSource)
+      .map((matte) => matte!.id),
+  );
   ctx.save();
   try {
     ctx.setTransform(canvas.width / w, 0, 0, canvas.height / h, 0, 0);
@@ -72,74 +230,27 @@ export async function drawFrame(
           c.start <= time &&
           c.start + c.duration > time,
       )) {
-        const local = time - c.start;
-        ctx.save();
-        try {
-          const world = worldTransform(p, c, time);
-          ctx.globalAlpha = world.opacity;
-          ctx.globalCompositeOperation = c.blend;
-          ctx.transform(...world.matrix);
-          ctx.filter = clipFilter(c, local);
-          if (c.mask === "circle") {
-            ctx.beginPath();
-            ctx.arc(0, 0, Math.min(w, h) / 2, 0, 2 * Math.PI);
-            ctx.clip();
+        if (hiddenMatteSources.has(c.id)) continue;
+        if (matteOf(c)) {
+          const layer = await isolatedLayer(
+            p,
+            pool,
+            c,
+            time,
+            canvas.width,
+            canvas.height,
+          );
+          ctx.save();
+          try {
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.globalCompositeOperation = c.blend;
+            ctx.drawImage(layer, 0, 0);
+          } finally {
+            ctx.restore();
+            layer.width = layer.height = 0;
           }
-          if (c.mask === "rounded") {
-            ctx.beginPath();
-            ctx.roundRect(-w / 2, -h / 2, w, h, Math.min(w, h) * 0.12);
-            ctx.clip();
-          }
-          if (c.kind === "text") {
-            ctx.font = `700 ${c.fontSize}px Inter, ui-sans-serif, system-ui, sans-serif`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = c.color;
-            const lines = wrap(ctx, c.text, w * 0.85);
-            ctx.shadowColor = "#00000080";
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetY = 3;
-            lines.forEach((line, i) =>
-              ctx.fillText(
-                line,
-                0,
-                (i - (lines.length - 1) / 2) * c.fontSize * 1.22,
-                w * 0.94,
-              ),
-            );
-          } else if (c.kind === "shape") {
-            ctx.fillStyle = c.background;
-            ctx.beginPath();
-            if (c.shape === "ellipse")
-              ctx.ellipse(0, 0, w * 0.25, h * 0.25, 0, 0, Math.PI * 2);
-            else ctx.roundRect(-w * 0.25, -h * 0.25, w * 0.5, h * 0.5, 24);
-            ctx.fill();
-          } else if (c.assetId) {
-            const asset = p.assets.find((a) => a.id === c.assetId);
-            if (!asset) throw Error("Source manifest is missing.");
-            const image = await pool.frame(asset, sourceTime(c, local));
-            if (!image) throw Error(`No decoded frame for ${asset.name}.`);
-            const [top, right, bottom, left] = c.crop,
-              sw = asset.width * (1 - left - right),
-              sh = asset.height * (1 - top - bottom),
-              ratio =
-                c.fit === "cover"
-                  ? Math.max(w / sw, h / sh)
-                  : Math.min(w / sw, h / sh);
-            ctx.drawImage(
-              image,
-              asset.width * left,
-              asset.height * top,
-              sw,
-              sh,
-              (-sw * ratio) / 2,
-              (-sh * ratio) / 2,
-              sw * ratio,
-              sh * ratio,
-            );
-          }
-        } finally {
-          ctx.restore();
+        } else {
+          await paintClip(ctx, p, pool, c, time, true);
         }
       }
     }

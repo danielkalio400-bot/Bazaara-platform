@@ -17,7 +17,7 @@
   "verified": {
     "timelineTests": 13,
     "installerTests": 3,
-    "rustCoreTests": 9,
+    "rustCoreTests": 10,
     "strictStudioTypecheck": "passed",
     "viteBundle": "passed",
     "nextWebpackProductionBuild": "passed on Next 16.4.2",
@@ -39,23 +39,27 @@
       "reverse and forward JKL shuttle with K stop",
       "ordered effect-stack pixel comparison",
       "parented preview and encoded export pixel agreement",
-      "freeze and reverse time-remap audio"
+      "freeze and reverse time-remap audio",
+      "coarse-pointer Motion controls with 44px action targets",
+      "alpha/luma/inverted/nested matte pixels and timing",
+      "matte encoded-export agreement and portable-reference roundtrip"
     ],
     "recoveryTests": 2,
     "sourceEditTests": 3,
     "motionTests": 3,
     "timeMapTests": 4,
-    "totalTypeScriptTests": 28
+    "totalTypeScriptTests": 31,
+    "matteTests": 3
   },
   "platforms": {
     "Android": {
       "source": "included",
-      "nativeBuild": "Rust shared library passed; Gradle failed on conflicting SDK locations; fix pending verification",
+      "nativeBuild": "Rust shared library passed; Gradle manifest provider collision corrected; packaging verification pending",
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
+        "commit": "f19832b82c3841ce5428071e4de0f5c80d986ad4",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40012849800"
       }
     },
     "iOS": {
@@ -76,7 +80,8 @@
       "buildEvidence": {
         "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
         "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
-      }
+      },
+      "nativeAppSmoke": "implemented; pending first CI run"
     }
   },
   "knownLimits": [
@@ -109,8 +114,8 @@
     {
       "id": "CUT-02",
       "status": "partial",
-      "implemented": "Shared preview/export transforms, ordered animated effect stack, parent transforms/opacity, color filters, crop, two masks, blend modes and per-property curves.",
-      "remaining": "Mattes, tracking, stabilization and proxy pipeline.",
+      "implemented": "Shared preview/export transforms, ordered animated effect stack, parent transforms/opacity, color filters, crop, two masks, blend modes and per-property curves. Alpha/luma/inverted/nested mattes share preview/export evaluation.",
+      "remaining": "Tracking, stabilization and proxy pipeline.",
       "acceptedForProduction": false
     },
     {
@@ -200,8 +205,8 @@
     {
       "id": "MOT-01",
       "status": "partial",
-      "implemented": "Bezier/linear/hold/ease interpolation, ordered animated effects, parenting, shared compositor, time remapping, crop and masks. Split continuity and preview/export parent pixels tested.",
-      "remaining": "Mattes, 3D, tracking, particles, procedural effects and native renderer qualification.",
+      "implemented": "Bezier/linear/hold/ease interpolation, ordered animated effects, parenting, shared compositor, time remapping, crop and masks. Split continuity and preview/export parent pixels tested. Alpha/luma/inverted/nested mattes, source timing, native validation and portable references are tested.",
+      "remaining": "3D, tracking, particles, procedural effects, native GPU compositor and device qualification.",
       "acceptedForProduction": false
     },
     {
