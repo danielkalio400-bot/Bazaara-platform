@@ -359,7 +359,8 @@ export function validateProject(value: unknown): Project {
     );
   for (const a of p.assets)
     assert(
-      ["video", "audio", "image"].includes(a.kind) &&
+      !a.id.startsWith("export-") &&
+        ["video", "audio", "image"].includes(a.kind) &&
         integer(a.duration) &&
         a.duration > 0 &&
         integer(a.size) &&

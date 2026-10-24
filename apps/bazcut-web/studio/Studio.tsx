@@ -92,6 +92,7 @@ import {
 } from "./model";
 import {
   download,
+  saveNotice,
   getMedia,
   listProjects,
   listVersions,
@@ -369,11 +370,8 @@ export default function Studio() {
     }
   };
   useEffect(() => {
-    const onExportError = (e: Event) => report((e as CustomEvent).detail);
-    window.addEventListener("bazcut-export-error", onExportError);
     void listProjects().then(setProjects).catch(report);
     return () => {
-      window.removeEventListener("bazcut-export-error", onExportError);
       pool.current?.dispose();
       recorder.current?.stop();
       recordStream.current?.getTracks().forEach((t) => t.stop());
@@ -675,8 +673,23 @@ export default function Studio() {
       throw e;
     }
   }
+  const saveFile = (
+    name: string,
+    data: Blob | string,
+    mime: string,
+    item: string,
+  ) =>
+    void run(async () => {
+      setNotice(saveNotice(await download(name, data, mime), item));
+    }, "Saving file…");
   const exportJson = () => {
-    if (p) download(`${p.name}.bazcut.json`, JSON.stringify(p, null, 2));
+    if (p)
+      saveFile(
+        `${p.name}.bazcut.json`,
+        JSON.stringify(p, null, 2),
+        "application/json",
+        "Editable project",
+      );
   };
   const exportPortable = () =>
     void run(async () => {
@@ -685,9 +698,11 @@ export default function Studio() {
       const blob = await packageProject(p, (name) =>
         setBusy(`Verifying ${name}…`),
       );
-      download(`${p.name}.bazcut`, blob);
       setNotice(
-        "Portable project prepared with original media. Keep this file to move your project between devices.",
+        saveNotice(
+          await download(`${p.name}.bazcut`, blob),
+          "Portable project with original media",
+        ),
       );
     }, "Preparing portable project…");
   const goHome = () =>
@@ -1555,10 +1570,11 @@ export default function Studio() {
                         <button
                           className="bc-quiet"
                           onClick={() =>
-                            download(
+                            saveFile(
                               `${p.name}.srt`,
                               exportCaptions(p.captions, "srt"),
                               "text/plain",
+                              "SRT captions",
                             )
                           }
                         >
@@ -1567,10 +1583,11 @@ export default function Studio() {
                         <button
                           className="bc-quiet"
                           onClick={() =>
-                            download(
+                            saveFile(
                               `${p.name}.vtt`,
                               exportCaptions(p.captions, "vtt"),
                               "text/vtt",
+                              "VTT captions",
                             )
                           }
                         >
@@ -3250,6 +3267,7 @@ function Delivery({
     [burn, setBurn] = useState(true),
     [progress, setProgress] = useState<Progress | null>(null),
     [running, setRunning] = useState(false),
+    [saving, setSaving] = useState(false),
     [support, setSupport] = useState<Awaited<
       ReturnType<typeof capabilities>
     > | null>(null);
@@ -3292,8 +3310,10 @@ function Delivery({
             total: 100,
           }),
         );
-        download(`${p.name}.wav`, blob);
-        onNotice("Stereo WAV exported.");
+        setSaving(true);
+        const outcome = await download(`${p.name}.wav`, blob);
+        if (outcome === "cancelled") setProgress(null);
+        onNotice(saveNotice(outcome, "Stereo WAV"));
       } else {
         const result = await renderProject(
           p,
@@ -3308,15 +3328,20 @@ function Delivery({
           abort.current.signal,
           setProgress,
         );
-        download(`${p.name}.${container}`, result.blob);
+        setSaving(true);
+        const outcome = await download(`${p.name}.${container}`, result.blob);
+        if (outcome === "cancelled") setProgress(null);
         onNotice(
-          `Export verified: ${result.frames} frames · ${result.duration.toFixed(2)} seconds${result.audio ? " · stereo audio" : ""}.`,
+          outcome === "cancelled"
+            ? saveNotice(outcome, "Video")
+            : `${saveNotice(outcome, "Video")} Verified ${result.frames} frames · ${result.duration.toFixed(2)} seconds${result.audio ? " · stereo audio" : ""}.`,
         );
       }
     } catch (e) {
       onError(e);
     } finally {
       setRunning(false);
+      setSaving(false);
       abort.current = null;
     }
   };
@@ -3421,7 +3446,7 @@ function Delivery({
         onClick={() => void start()}
       >
         <Download size={16} />
-        {running ? "Rendering…" : "Export video"}
+        {saving ? "Saving…" : running ? "Rendering…" : "Export video"}
       </button>
       {support && (!codecReady || !audioReady) && (
         <p className="bc-help" role="status">
@@ -3431,7 +3456,7 @@ function Delivery({
           Choose another codec or container to export.
         </p>
       )}
-      {running && (
+      {running && !saving && (
         <button
           className="bc-quiet bc-full"
           onClick={() => abort.current?.abort()}
@@ -3439,7 +3464,12 @@ function Delivery({
           Cancel export
         </button>
       )}
-      {progress && (
+      {saving && (
+        <p className="bc-help" role="status">
+          Choose a save location or sharing destination.
+        </p>
+      )}
+      {progress && !saving && (
         <div className="bc-render-progress" role="status">
           <progress max={100} value={progress.percent} />
           <span>

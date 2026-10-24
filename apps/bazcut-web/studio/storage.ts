@@ -186,20 +186,37 @@ export const platformName = () =>
 export async function nativeValidate(project: Project) {
   if (native()) await invoke("validate_project", { project });
 }
-export function download(
+export type SaveOutcome =
+  "download-started" | "saved" | "share-prepared" | "cancelled";
+export function saveNotice(outcome: SaveOutcome, item: string) {
+  switch (outcome) {
+    case "saved":
+      return `${item} saved.`;
+    case "share-prepared":
+      return `${item} prepared for sharing.`;
+    case "cancelled":
+      return "Save or share cancelled.";
+    case "download-started":
+      return `${item} download started.`;
+  }
+}
+export async function download(
   name: string,
   data: Blob | string,
   mime = "application/json",
-) {
+): Promise<SaveOutcome> {
   const blob =
     typeof data === "string" ? new Blob([data], { type: mime }) : data;
   if (native()) {
-    void (async () => {
-      const { fingerprint } = await import("./media");
-      const id = `export-${crypto.randomUUID()}`;
-      const safeName = name
-        .replace(/[<>:"/\\|?*\u0000-\u001f]/g, "_")
-        .slice(0, 200);
+    const { fingerprint } = await import("./media");
+    const id = `export-${crypto.randomUUID()}`;
+    const safeName = name
+      .replace(/[<>:"/\\|?*\u0000-\u001f]/g, "_")
+      .slice(0, 200);
+    let outcome: SaveOutcome = "cancelled";
+    let failed = false,
+      failure: unknown;
+    try {
       await putMedia(
         {
           id,
@@ -218,15 +235,35 @@ export function download(
         },
         blob,
       );
-      await invoke("plugin:bazcut-share|share", {
-        payload: { id, name: safeName, mime: blob.type || mime },
-      });
-    })().catch((e) =>
-      window.dispatchEvent(
-        new CustomEvent("bazcut-export-error", { detail: String(e) }),
-      ),
-    );
-    return;
+      const result = await invoke<{ saved: boolean; path?: string | null }>(
+        "plugin:bazcut-share|share",
+        {
+          payload: { id, name: safeName, mime: blob.type || mime },
+        },
+      );
+      outcome = result.saved
+        ? result.path
+          ? "saved"
+          : "share-prepared"
+        : "cancelled";
+    } catch (error) {
+      failed = true;
+      failure = error;
+    }
+    try {
+      await invoke("discard_export", { id });
+    } catch (cleanup) {
+      if (failed)
+        throw new AggregateError(
+          [failure, cleanup],
+          `Export failed: ${String(failure)}. Temporary-file cleanup also failed.`,
+        );
+      throw Error(
+        `${saveNotice(outcome, "File")} Temporary-file cleanup failed: ${String(cleanup)}`,
+      );
+    }
+    if (failed) throw failure;
+    return outcome;
   }
   const url = URL.createObjectURL(blob),
     link = document.createElement("a");
@@ -234,4 +271,5 @@ export function download(
   link.download = name.replace(/[<>:"/\\|?*\u0000-\u001f]/g, "_");
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 30000);
+  return "download-started";
 }

@@ -17,7 +17,7 @@ impl<R: Runtime> BazcutShare<R> {
             .path()
             .app_data_dir()
             .map_err(|e| std::io::Error::other(e.to_string()))?
-            .join("media")
+            .join("exports")
             .join(&payload.id);
         let choice = self
             .0

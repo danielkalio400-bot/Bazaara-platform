@@ -91,6 +91,9 @@ pub fn validate_project(p: &Value) -> Result<()> {
         }
     }
     for a in assets {
+        if text(a, "id")?.starts_with("export-") {
+            return Err("Temporary exports cannot be project originals; import the rendered file first".into());
+        }
         if number(a, "duration")? == 0 || !["video", "audio", "image"].contains(&text(a, "kind")?) {
             return Err("Invalid asset".into());
         }
@@ -178,17 +181,20 @@ pub fn validate_project(p: &Value) -> Result<()> {
 pub struct ProjectStore {
     conn: Connection,
     media: PathBuf,
+    exports: PathBuf,
 }
 impl ProjectStore {
     pub fn open(root: &Path) -> Result<Self> {
         fs::create_dir_all(root).map_err(error)?;
         let media = root.join("media");
         fs::create_dir_all(&media).map_err(error)?;
+        let exports = root.join("exports");
+        fs::create_dir_all(&exports).map_err(error)?;
         let conn = Connection::open(root.join("bazcut.sqlite3")).map_err(error)?;
         conn.busy_timeout(std::time::Duration::from_secs(5))
             .map_err(error)?;
         conn.execute_batch("PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; CREATE TABLE IF NOT EXISTS projects(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, document TEXT NOT NULL); CREATE TABLE IF NOT EXISTS versions(id INTEGER PRIMARY KEY, project_id TEXT NOT NULL, revision INTEGER NOT NULL, label TEXT NOT NULL, document TEXT NOT NULL); CREATE TABLE IF NOT EXISTS journals(project_id TEXT PRIMARY KEY REFERENCES projects(id) ON DELETE CASCADE, document TEXT NOT NULL);").map_err(error)?;
-        Ok(Self { conn, media })
+        Ok(Self { conn, media, exports })
     }
     pub fn save(&mut self, p: &Value, expected: Option<u64>, label: Option<&str>) -> Result<()> {
         self.save_with_history(p, expected, label, None)
@@ -304,7 +310,8 @@ impl ProjectStore {
         if !valid_id(id) {
             return Err("Invalid media ID".into());
         }
-        Ok(self.media.join(if partial {
+        let directory = if id.starts_with("export-") { &self.exports } else { &self.media };
+        Ok(directory.join(if partial {
             format!("{id}.part")
         } else {
             id.to_string()
@@ -375,5 +382,18 @@ impl ProjectStore {
     pub fn media_path(&self, id: &str) -> Result<Option<String>> {
         let p = self.path(id, false)?;
         Ok(p.exists().then(|| p.to_string_lossy().into_owned()))
+    }
+    pub fn discard_export(&self, id: &str) -> Result<()> {
+        if !id.starts_with("export-") || id.len() <= 7 || !valid_id(id) {
+            return Err("Only temporary exports can be discarded".into());
+        }
+        for partial in [true, false] {
+            match fs::remove_file(self.path(id, partial)?) {
+                Ok(()) => {},
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => {},
+                Err(failure) => return Err(error(failure)),
+            }
+        }
+        Ok(())
     }
 }

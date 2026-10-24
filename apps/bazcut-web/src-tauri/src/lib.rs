@@ -72,6 +72,10 @@ fn media_path(store: State<Store>, id: String) -> Result<Option<String>, String>
         .map_err(|_| "Storage lock unavailable")?
         .media_path(&id)
 }
+#[tauri::command]
+fn discard_export(store: State<Store>, id: String) -> Result<(), String> {
+    store.lock().map_err(|_| "Storage lock unavailable")?.discard_export(&id)
+}
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = tauri::Builder::default().plugin(tauri_plugin_bazcut_share::init());
@@ -94,7 +98,8 @@ pub fn run() {
             append_media,
             finish_media,
             cancel_media,
-            media_path
+            media_path,
+            discard_export
         ])
         .run(tauri::generate_context!())
         .expect("BazCut could not start");
