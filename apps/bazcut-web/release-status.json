@@ -45,7 +45,8 @@
       "matte encoded-export agreement and portable-reference roundtrip",
       "save/share waits for native result and distinguishes cancellation, saved file and sharing handoff",
       "native bridge write/save/cleanup failures propagate and temporary export files cannot become project originals",
-      "four color scopes, primary-color/ramp measurement, color-adjustment feedback and uninterrupted playback sampling"
+      "four color scopes, primary-color/ramp measurement, color-adjustment feedback and uninterrupted playback sampling",
+      "color scopes fit a 390px touch viewport; scope selector is at least 44px high"
     ],
     "recoveryTests": 2,
     "sourceEditTests": 3,
@@ -62,8 +63,8 @@
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
+        "commit": "4166e5226cb4bf44ea5608aa4200f87549821edd",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40123216579"
       }
     },
     "iOS": {
@@ -72,10 +73,10 @@
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
+        "commit": "4166e5226cb4bf44ea5608aa4200f87549821edd",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40123216579"
       },
-      "simulatorSmoke": "Install, launch, SQLite integrity/schema and restart check implemented; first CI verification pending"
+      "simulatorSmoke": "Simulator boot passed; app installation exceeded the initial 60-second CI timeout. Install allowance increased to 240 seconds; launch/storage/restart checks remain unverified."
     },
     "Windows": {
       "source": "included",

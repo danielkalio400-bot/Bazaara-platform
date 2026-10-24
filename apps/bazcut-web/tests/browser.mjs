@@ -791,6 +791,10 @@ try {
   });
   await touchScope.scrollIntoViewIfNeeded();
   const scopeBounds = await touchScope.boundingBox();
+  const scopeSelectorBounds = await page
+    .getByLabel("Color scope", { exact: true })
+    .boundingBox();
+  assert.ok(scopeSelectorBounds && scopeSelectorBounds.height >= 44);
   assert.ok(
     scopeBounds &&
       scopeBounds.x >= 0 &&

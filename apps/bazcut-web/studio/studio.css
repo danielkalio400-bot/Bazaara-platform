@@ -2476,6 +2476,7 @@
   }
   .bc-effects-stack button,
   .bc-effects-stack select,
+  .bc-scope select,
   .bc-matte select,
   .bc-effects-stack input[type="number"],
   .bc-time-remap button,

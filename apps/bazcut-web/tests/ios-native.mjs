@@ -16,6 +16,10 @@ function command(
   args,
   { allowFailure = false, timeout = 60_000 } = {},
 ) {
+  const label = [binary, ...args.slice(0, binary === "xcrun" ? 2 : 1)].join(
+    " ",
+  );
+  const started = Date.now();
   const result = spawnSync(binary, args, {
     encoding: "utf8",
     timeout,
@@ -23,12 +27,16 @@ function command(
   });
   if (!allowFailure && (result.error || result.status !== 0))
     throw Error(
-      `${binary} ${args[0]} failed: ${result.error?.message || result.stderr || result.stdout}`,
+      `${label} failed after ${((Date.now() - started) / 1000).toFixed(1)}s: ${result.error?.message || result.stderr || result.stdout}`,
     );
   return result.stdout.trim();
 }
-const simctl = (args, options) =>
-  command("xcrun", ["simctl", ...args], options);
+const simctl = (args, options) => {
+  console.log(
+    `Simulator ${args[0]}${args[1] === "devices" || args[1] === "runtimes" ? ` ${args[1]}` : ""}`,
+  );
+  return command("xcrun", ["simctl", ...args], options);
+};
 const products = path.join(app, "src-tauri/gen/apple/build");
 let bundle;
 for (const item of await readdir(products, { withFileTypes: true })) {
@@ -125,7 +133,7 @@ function launch() {
 try {
   simctl(["boot", device]);
   simctl(["bootstatus", device, "-b"], { timeout: 180_000 });
-  simctl(["install", device, bundle]);
+  simctl(["install", device, bundle], { timeout: 240_000 });
   let pid = launch();
   const container = simctl(["get_app_container", device, bundleId, "data"]);
   let database;
@@ -180,7 +188,7 @@ try {
         "--style",
         "compact",
         "--predicate",
-        'process == "BazCut"',
+        'process == "BazCut" OR process == "installd"',
       ],
       { allowFailure: true, timeout: 15_000 },
     ).slice(-12_000),
