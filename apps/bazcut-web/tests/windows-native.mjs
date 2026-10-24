@@ -28,28 +28,57 @@ await new Promise((resolve, reject) => {
 const port = portServer.address().port;
 await new Promise((resolve) => portServer.close(resolve));
 const profile = await mkdtemp(path.join(tmpdir(), "bazcut-webview-check-"));
-const processHandle = spawn(executable, [], {
-  cwd: app,
-  env: {
-    ...process.env,
-    WEBVIEW2_USER_DATA_FOLDER: profile,
-    WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${port} --remote-debugging-address=127.0.0.1`,
-  },
-  stdio: "pipe",
-});
+// Elevated CI hosts ignore WebView2 environment/HKCU overrides. Apply an
+// app-specific HKLM test policy; never add debugging flags to the app bundle.
+// https://learn.microsoft.com/microsoft-edge/webview2/concepts/security
+const policyRoot = "HKLM\\Software\\Policies\\Microsoft\\Edge\\WebView2";
+const testPolicies = [];
+function installTestPolicy(name, value) {
+  const key = `${policyRoot}\\${name}`;
+  const query = spawnSync(
+    "reg.exe",
+    ["query", key, "/v", "bazcut.exe", "/reg:64"],
+    { encoding: "utf8" },
+  );
+  assert.notEqual(
+    query.status,
+    0,
+    `Refusing to overwrite existing ${name} policy.`,
+  );
+  const result = spawnSync(
+    "reg.exe",
+    ["add", key, "/v", "bazcut.exe", "/t", "REG_SZ", "/d", value, "/reg:64"],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stdout + result.stderr);
+  testPolicies.push(key);
+}
+let processHandle;
 let output = "",
   startError,
   browser;
-processHandle.once("error", (error) => {
-  startError = error;
-});
-processHandle.stdout.on("data", (chunk) => {
-  output += chunk;
-});
-processHandle.stderr.on("data", (chunk) => {
-  output += chunk;
-});
 try {
+  installTestPolicy(
+    "AdditionalBrowserArguments",
+    `--remote-debugging-port=${port} --remote-debugging-address=127.0.0.1`,
+  );
+  installTestPolicy("UserDataFolder", profile);
+  processHandle = spawn(executable, [], {
+    cwd: app,
+    env: {
+      ...process.env,
+    },
+    stdio: "pipe",
+  });
+  processHandle.once("error", (error) => {
+    startError = error;
+  });
+  processHandle.stdout.on("data", (chunk) => {
+    output += chunk;
+  });
+  processHandle.stderr.on("data", (chunk) => {
+    output += chunk;
+  });
   const endpoint = `http://127.0.0.1:${port}`;
   let ready = false;
   for (let i = 0; i < 180; i++) {
@@ -173,8 +202,20 @@ try {
   );
 } finally {
   await browser?.close().catch(() => {});
-  if (processHandle.pid)
+  if (processHandle?.pid)
     spawnSync("taskkill", ["/pid", String(processHandle.pid), "/T", "/F"], {
       stdio: "ignore",
     });
+  for (const key of testPolicies) {
+    const result = spawnSync(
+      "reg.exe",
+      ["delete", key, "/v", "bazcut.exe", "/f", "/reg:64"],
+      { encoding: "utf8" },
+    );
+    assert.equal(
+      result.status,
+      0,
+      `Test policy cleanup failed: ${result.stdout}${result.stderr}`,
+    );
+  }
 }
