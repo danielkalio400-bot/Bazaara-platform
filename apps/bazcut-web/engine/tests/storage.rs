@@ -135,6 +135,40 @@ fn unknown_effect_metadata_roundtrips_without_loss() {
 }
 
 #[test]
+fn export_cleanup_is_isolated_from_original_media() {
+    let dir = root();
+    let db = ProjectStore::open(&dir).unwrap();
+    let hash = format!("{:x}", Sha256::digest(b"original"));
+    for id in ["source", "export-complete"] {
+        db.begin(id).unwrap();
+        db.append(id, 0, b"original").unwrap();
+        db.finish(id, &hash, 8).unwrap();
+    }
+    let export_path = PathBuf::from(db.media_path("export-complete").unwrap().unwrap());
+    assert_eq!(export_path.parent().unwrap(), dir.join("exports"));
+    db.begin("export-partial").unwrap();
+    db.append("export-partial", 0, b"partial").unwrap();
+    assert!(db.discard_export("source").is_err());
+    assert!(db.discard_export("export-../source").is_err());
+    db.discard_export("export-complete").unwrap();
+    db.discard_export("export-partial").unwrap();
+    db.discard_export("export-complete").unwrap();
+    assert!(db.media_path("export-complete").unwrap().is_none());
+    assert!(fs::read_dir(dir.join("exports")).unwrap().next().is_none());
+    assert_eq!(
+        fs::read(db.media_path("source").unwrap().unwrap()).unwrap(),
+        b"original"
+    );
+    let mut project = fixture();
+    project["assets"] = json!([{"id":"export-complete"}]);
+    assert!(validate_project(&project)
+        .unwrap_err()
+        .contains("Temporary exports"));
+    drop(db);
+    fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
 fn graph_and_recovery_history_commit_atomically() {
     let dir = root();
     let initial = fixture();

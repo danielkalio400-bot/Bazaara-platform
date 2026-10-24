@@ -196,9 +196,37 @@ try {
     path.join(path.dirname(path.dirname(saved.path)), "bazcut.sqlite3"),
   );
   assert.equal(database.subarray(0, 16).toString(), "SQLite format 3\0");
+  const temporary = await page.evaluate(
+    async ({ bytes, hash, originalId }) => {
+      const invoke = window.__TAURI_INTERNALS__.invoke;
+      const id = `export-${crypto.randomUUID()}`;
+      await invoke("begin_media", { id });
+      await invoke("append_media", { id, offset: 0, data: bytes });
+      await invoke("finish_media", { id, hash, size: bytes.length });
+      const file = await invoke("media_path", { id });
+      await invoke("discard_export", { id });
+      const removed = (await invoke("media_path", { id })) === null;
+      let originalProtected = false;
+      try {
+        await invoke("discard_export", { id: originalId });
+      } catch {
+        originalProtected = true;
+      }
+      return { file, removed, originalProtected };
+    },
+    {
+      bytes: Array.from(original),
+      hash: saved.project.assets[0].hash,
+      originalId: saved.project.assets[0].id,
+    },
+  );
+  assert.equal(path.basename(path.dirname(temporary.file)), "exports");
+  assert.ok(temporary.removed && temporary.originalProtected);
+  await assert.rejects(readFile(temporary.file), { code: "ENOENT" });
+  assert.deepEqual(await readFile(saved.path), original);
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: packaged Windows WebView2 launch, native SHA-256 media import/preview, SQLite save/reopen, named version and persisted undo",
+    "PASS: packaged Windows WebView2 launch, native SHA-256 media import/preview, SQLite save/reopen, named version, persisted undo and isolated export cleanup",
   );
 } finally {
   await browser?.close().catch(() => {});

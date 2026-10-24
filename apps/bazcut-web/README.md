@@ -30,7 +30,7 @@ The Motion inspector includes ordered, bypassable color/effect stacks, effect ke
 
 Track mattes support alpha, luma and their inverses, transformed/effected source layers, nested dependencies up to eight levels, and source hiding. A hidden matte source remains hidden while assigned, including outside the consumer’s duration; its audio is unaffected. The same compositor evaluates preview and export. Cycles, missing sources and unsupported modes are rejected by both TypeScript and Rust. Matte references survive portable project roundtrips.
 
-Verification on the development host: 31 TypeScript tests, 10 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, remapped audio, coarse-pointer Motion controls, and alpha/luma/nested matte pixel/export agreement. This does not establish native device compatibility.
+Verification on the development host: 32 TypeScript tests, 11 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, remapped audio, coarse-pointer Motion controls, and alpha/luma/nested matte pixel/export agreement. This does not establish native device compatibility.
 
 ## Native targets
 
@@ -49,14 +49,16 @@ npm run build:ios --workspace=@bazaara/bazcut-web
 
 The target doctor reports missing SDKs and toolchains. Windows needs the Visual Studio C++ and Windows SDK toolchain; Android needs Java, Android SDK/NDK and the configured API level; iOS needs macOS/Xcode and an Apple development team for device signing. Development build scripts do not publish to stores.
 
-[Native CI run 40011781320](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320) compiled the Windows x64 development executable and unsigned NSIS installer, and the arm64 iOS simulator app, at commit `6d38b253882cdb74a4b0ac6cc9574f6794a019c0`. Android compiled its Rust shared library. Subsequent compilation exposed a FileProvider manifest collision; a dedicated export provider now separates it from Tauri’s provider. Android verification is being rerun. Android packaging, real-device testing and distribution signing remain unqualified.
+[Native CI run 40093188000](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000) passed all three jobs at commit `a1beeb018c3d989b3887c708585c4cda1c15ae15`: Windows x64 executable and unsigned NSIS installer, Android arm64 development APK, and arm64 iOS simulator app. Windows silent installation, app launch, original import/hash/preview, SQLite save/reopen, named version and persisted undo also passed. Android/iOS runtime behavior, real-device testing and distribution signing remain unqualified.
 
-The Windows CI job also runs `tests/windows-native.mjs` against the compiled WebView2 app to exercise native import, preview, SQLite persistence, named versions and undo recovery. Its initial result is pending; the script is restricted to disposable CI hosts.
+The Windows interaction test is restricted to disposable CI hosts. It applies an app-specific HKLM debugging policy because elevated hosts ignore WebView2 environment overrides, then removes that policy afterward. The application bundle contains no debugging flags. An additional native temporary-export cleanup check is awaiting its first CI run.
 
 ## Data behavior
 
 Originals are kept separately from the editable graph and are not deleted by timeline edits. SHA-256 verifies originals and portable project media. `.bazcut` packages contain the graph and original media; plain JSON contains only graph metadata. Imports use new identities and reset cloud permissions.
 
 Graph revisions use optimistic concurrency checks. Named versions are immutable. The browser and native stores commit bounded undo/redo journals with the corresponding graph, allowing edit history to reopen after a saved revision. A save failure remains visible and blocks silent navigation. Unknown feature metadata is retained, and final export rejects unsupported features instead of dropping them.
+
+Export delivery waits for the native save/share result. A completed save, sharing handoff and cancellation have distinct feedback; write and save errors remain visible. Temporary output uses a separate native export directory and is discarded after delivery, including failures. The cleanup command refuses original-media IDs, and project validation prevents temporary export IDs from becoming originals. Mobile share bridges retain their own cache copy for the receiving app. Browser downloads report that downloading started because the browser does not report final disk completion.
 
 Cloud inference, training, original uploads, and publishing are off by default. No production cloud service is connected in this implementation.

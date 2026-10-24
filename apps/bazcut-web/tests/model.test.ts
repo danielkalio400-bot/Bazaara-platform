@@ -39,6 +39,13 @@ function fixture() {
   p.clips = [c];
   return { p, c, a };
 }
+test("temporary export files cannot become deletable project originals", () => {
+  const { p, c } = fixture();
+  const id = "export-rendered-file";
+  p.assets[0]!.id = id;
+  c.assetId = id;
+  assert.throws(() => validateProject(p), /media manifest/);
+});
 test("timebase represents NTSC frames and both audio sample rates exactly", () => {
   assert.equal(TIMEBASE % 44100, 0);
   assert.equal(TIMEBASE % 48000, 0);

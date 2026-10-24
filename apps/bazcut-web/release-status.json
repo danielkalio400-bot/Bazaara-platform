@@ -1,7 +1,7 @@
 {
   "product": "BazCut",
   "version": "2.0.0-dev.1",
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "completion": "incomplete",
   "productionReady": false,
   "basis": "BazCut_2.0_Complete_Master_Specification_2026.pdf",
@@ -11,13 +11,13 @@
     "interface": "React and TypeScript shared by Next.js and native Tauri entry",
     "nativeStorage": "Rust SQLite WAL transactions and verified media chunk writes",
     "mediaExecution": "Browser/WebView WebCodecs with Mediabunny and Canvas2D; this is not the specification’s complete Rust/wgpu media engine",
-    "nativeShare": "Rust and Swift compiled for iOS simulator; Rust Windows save bridge compiled; Android Kotlin compilation pending",
+    "nativeShare": "Rust desktop save bridge, Android Kotlin/FileProvider and iOS Swift share bridge compile; asynchronous delivery results and isolated temporary-export cleanup implemented",
     "portableProject": "Versioned .bazcut metadata plus original bytes with SHA-256 integrity and isolated import IDs"
   },
   "verified": {
-    "timelineTests": 13,
+    "timelineTests": 14,
     "installerTests": 3,
-    "rustCoreTests": 10,
+    "rustCoreTests": 11,
     "strictStudioTypecheck": "passed",
     "viteBundle": "passed",
     "nextWebpackProductionBuild": "passed on Next 16.4.2",
@@ -42,24 +42,26 @@
       "freeze and reverse time-remap audio",
       "coarse-pointer Motion controls with 44px action targets",
       "alpha/luma/inverted/nested matte pixels and timing",
-      "matte encoded-export agreement and portable-reference roundtrip"
+      "matte encoded-export agreement and portable-reference roundtrip",
+      "save/share waits for native result and distinguishes cancellation, saved file and sharing handoff",
+      "native bridge write/save/cleanup failures propagate and temporary export files cannot become project originals"
     ],
     "recoveryTests": 2,
     "sourceEditTests": 3,
     "motionTests": 3,
     "timeMapTests": 4,
-    "totalTypeScriptTests": 31,
+    "totalTypeScriptTests": 32,
     "matteTests": 3
   },
   "platforms": {
     "Android": {
       "source": "included",
-      "nativeBuild": "Rust shared library passed; Gradle manifest provider collision corrected; packaging verification pending",
+      "nativeBuild": "passed: arm64 development APK, including Rust and Kotlin share bridge",
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "f19832b82c3841ce5428071e4de0f5c80d986ad4",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40012849800"
+        "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
       }
     },
     "iOS": {
@@ -68,8 +70,8 @@
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
+        "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
       }
     },
     "Windows": {
@@ -78,10 +80,11 @@
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "6d38b253882cdb74a4b0ac6cc9574f6794a019c0",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40011781320"
+        "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
       },
-      "nativeAppSmoke": "implemented; pending first CI run"
+      "nativeAppSmoke": "passed: installed app launch, original import/hash/preview, SQLite save/reopen, named version and persisted undo; additional export-cleanup check awaiting CI",
+      "installer": "silent NSIS installation on Windows CI passed"
     }
   },
   "knownLimits": [

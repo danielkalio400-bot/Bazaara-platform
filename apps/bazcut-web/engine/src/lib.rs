@@ -92,7 +92,10 @@ pub fn validate_project(p: &Value) -> Result<()> {
     }
     for a in assets {
         if text(a, "id")?.starts_with("export-") {
-            return Err("Temporary exports cannot be project originals; import the rendered file first".into());
+            return Err(
+                "Temporary exports cannot be project originals; import the rendered file first"
+                    .into(),
+            );
         }
         if number(a, "duration")? == 0 || !["video", "audio", "image"].contains(&text(a, "kind")?) {
             return Err("Invalid asset".into());
@@ -194,7 +197,11 @@ impl ProjectStore {
         conn.busy_timeout(std::time::Duration::from_secs(5))
             .map_err(error)?;
         conn.execute_batch("PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA foreign_keys=ON; CREATE TABLE IF NOT EXISTS projects(id TEXT PRIMARY KEY, revision INTEGER NOT NULL, document TEXT NOT NULL); CREATE TABLE IF NOT EXISTS versions(id INTEGER PRIMARY KEY, project_id TEXT NOT NULL, revision INTEGER NOT NULL, label TEXT NOT NULL, document TEXT NOT NULL); CREATE TABLE IF NOT EXISTS journals(project_id TEXT PRIMARY KEY REFERENCES projects(id) ON DELETE CASCADE, document TEXT NOT NULL);").map_err(error)?;
-        Ok(Self { conn, media, exports })
+        Ok(Self {
+            conn,
+            media,
+            exports,
+        })
     }
     pub fn save(&mut self, p: &Value, expected: Option<u64>, label: Option<&str>) -> Result<()> {
         self.save_with_history(p, expected, label, None)
@@ -310,7 +317,11 @@ impl ProjectStore {
         if !valid_id(id) {
             return Err("Invalid media ID".into());
         }
-        let directory = if id.starts_with("export-") { &self.exports } else { &self.media };
+        let directory = if id.starts_with("export-") {
+            &self.exports
+        } else {
+            &self.media
+        };
         Ok(directory.join(if partial {
             format!("{id}.part")
         } else {
@@ -389,8 +400,8 @@ impl ProjectStore {
         }
         for partial in [true, false] {
             match fs::remove_file(self.path(id, partial)?) {
-                Ok(()) => {},
-                Err(error) if error.kind() == std::io::ErrorKind::NotFound => {},
+                Ok(()) => {}
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
                 Err(failure) => return Err(error(failure)),
             }
         }

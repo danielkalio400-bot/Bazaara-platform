@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { verifyNativeDelivery } from "./native-delivery.mjs";
 import { spawn, execFileSync } from "node:child_process";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -655,6 +656,7 @@ try {
   assert.equal(checks.retainedName, "Concurrent revision");
   assert.ok(checks.unchanged && checks.versions > 0 && checks.mediaSize > 0);
   assert.match(checks.closed, /closed/);
+  await verifyNativeDelivery(page, moduleBase);
   // A separate touch context exercises actual tap input and coarse-pointer CSS.
   page = await browser.newPage({
     viewport: { width: 390, height: 844 },

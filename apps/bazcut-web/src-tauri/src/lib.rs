@@ -15,16 +15,22 @@ fn save_project(
     label: Option<String>,
     history: Option<Value>,
 ) -> Result<(), String> {
-    store.lock().map_err(|_| "Storage lock unavailable")?.save_with_history(
-        &project,
-        expected_revision,
-        label.as_deref(),
-        history.as_ref(),
-    )
+    store
+        .lock()
+        .map_err(|_| "Storage lock unavailable")?
+        .save_with_history(
+            &project,
+            expected_revision,
+            label.as_deref(),
+            history.as_ref(),
+        )
 }
 #[tauri::command]
 fn load_history(store: State<Store>, id: String) -> Result<Option<Value>, String> {
-    store.lock().map_err(|_| "Storage lock unavailable")?.history(&id)
+    store
+        .lock()
+        .map_err(|_| "Storage lock unavailable")?
+        .history(&id)
 }
 #[tauri::command]
 fn list_projects(store: State<Store>) -> Result<Vec<Value>, String> {
@@ -74,7 +80,10 @@ fn media_path(store: State<Store>, id: String) -> Result<Option<String>, String>
 }
 #[tauri::command]
 fn discard_export(store: State<Store>, id: String) -> Result<(), String> {
-    store.lock().map_err(|_| "Storage lock unavailable")?.discard_export(&id)
+    store
+        .lock()
+        .map_err(|_| "Storage lock unavailable")?
+        .discard_export(&id)
 }
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
