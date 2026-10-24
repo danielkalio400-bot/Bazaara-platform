@@ -103,3 +103,6 @@ jobs:
       - name: Exercise the installed Windows app
         if: matrix.platform == 'windows'
         run: node apps/bazcut-web/tests/windows-native.mjs
+      - name: Install and launch the iOS simulator app
+        if: matrix.platform == 'ios-simulator'
+        run: node apps/bazcut-web/tests/ios-native.mjs
