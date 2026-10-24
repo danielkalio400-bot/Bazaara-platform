@@ -113,6 +113,7 @@ import { useProject } from "./controller";
 import { isPortableProject, packageProject, unpackProject } from "./package";
 import { useTransport, shuttleSpeed } from "./transport";
 import { SourceMonitor } from "./SourceMonitor";
+import { ColorScopes } from "./ColorScopes";
 import { insertSourceRange } from "./source-edit";
 import { EffectStack } from "./EffectStack";
 import { TimeRemap } from "./TimeRemap";
@@ -249,6 +250,7 @@ function Slider({
       </span>
       <input
         type="range"
+        aria-label={label}
         min={min}
         max={max}
         step={step}
@@ -2195,15 +2197,7 @@ export default function Studio() {
                               >
                                 Reset color adjustments
                               </button>
-                              <Scope
-                                canvas={canvas}
-                                revision={p.revision}
-                                frame={frame}
-                              />
-                              <p className="bc-help">
-                                Display-referred sRGB preview histogram. HDR and
-                                professional color transforms are not active.
-                              </p>
+                              <ColorScopes canvas={canvas} />
                             </>
                           )}
                           {tab === "Audio" && (
@@ -3111,58 +3105,6 @@ function Keyframes({
           </button>
         </div>
       ))}
-    </div>
-  );
-}
-function Scope({
-  canvas,
-  revision,
-  frame,
-}: {
-  canvas: React.RefObject<HTMLCanvasElement | null>;
-  revision: number;
-  frame: number;
-}) {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!canvas.current || !ref.current) return;
-      const source = canvas.current.getContext("2d"),
-        ctx = ref.current.getContext("2d");
-      if (!source || !ctx) return;
-      try {
-        const pixels = source.getImageData(
-            0,
-            0,
-            canvas.current.width,
-            canvas.current.height,
-          ).data,
-          bins = Array.from({ length: 3 }, () => new Uint32Array(64));
-        for (let i = 0; i < pixels.length; i += 16)
-          for (let ch = 0; ch < 3; ch++) bins[ch]![pixels[i + ch]! >> 2]!++;
-        const max = Math.max(1, ...bins.flatMap((b) => Array.from(b)));
-        ctx.clearRect(0, 0, 240, 100);
-        ctx.globalCompositeOperation = "screen";
-        for (let ch = 0; ch < 3; ch++) {
-          ctx.fillStyle = ["#fc6a72", "#5dd999", "#668cff"][ch]!;
-          for (let i = 0; i < 64; i++) {
-            const h = (bins[ch]![i]! / max) * 90;
-            ctx.fillRect(i * 3.75, 100 - h, 3, h);
-          }
-        }
-      } catch {}
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [revision, frame]);
-  return (
-    <div className="bc-scope">
-      <h3>RGB histogram</h3>
-      <canvas
-        width={240}
-        height={100}
-        ref={ref}
-        aria-label="RGB preview histogram"
-      />
     </div>
   );
 }

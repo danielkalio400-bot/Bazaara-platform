@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { verifyNativeDelivery } from "./native-delivery.mjs";
+import { verifyColorScopes } from "./color-scopes.mjs";
 import { spawn, execFileSync } from "node:child_process";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -115,6 +116,7 @@ try {
     .getByText("Media imported and stored on this device.", { exact: true })
     .waitFor();
   await page.getByLabel("Mask", { exact: true }).selectOption("circle");
+  await verifyColorScopes(page, output);
   await page.getByRole("button", { name: "Captions", exact: true }).click();
   await page.locator('input[accept=".srt,.vtt"]').setInputFiles({
     name: "captions.srt",
@@ -778,6 +780,26 @@ try {
   console.log(
     "PASS: touch effect ordering/bypass/keyframes, time-map editing and persisted parenting",
   );
+  await page
+    .getByRole("button", { name: "Select source.webm", exact: true })
+    .tap();
+  await page.getByRole("button", { name: "Color", exact: true }).tap();
+  await page.getByLabel("Color scope", { exact: true }).selectOption("parade");
+  const touchScope = page.getByRole("img", {
+    name: "RGB parade of the preview",
+    exact: true,
+  });
+  await touchScope.scrollIntoViewIfNeeded();
+  const scopeBounds = await touchScope.boundingBox();
+  assert.ok(
+    scopeBounds &&
+      scopeBounds.x >= 0 &&
+      scopeBounds.x + scopeBounds.width <= 390,
+  );
+  await page.screenshot({
+    path: path.join(output, "color-scopes-touch.png"),
+    fullPage: true,
+  });
   assert.deepEqual(errors, []);
   await writeFile(
     path.join(output, "result.json"),

@@ -44,14 +44,16 @@
       "alpha/luma/inverted/nested matte pixels and timing",
       "matte encoded-export agreement and portable-reference roundtrip",
       "save/share waits for native result and distinguishes cancellation, saved file and sharing handoff",
-      "native bridge write/save/cleanup failures propagate and temporary export files cannot become project originals"
+      "native bridge write/save/cleanup failures propagate and temporary export files cannot become project originals",
+      "four color scopes, primary-color/ramp measurement, color-adjustment feedback and uninterrupted playback sampling"
     ],
     "recoveryTests": 2,
     "sourceEditTests": 3,
     "motionTests": 3,
     "timeMapTests": 4,
-    "totalTypeScriptTests": 32,
-    "matteTests": 3
+    "totalTypeScriptTests": 35,
+    "matteTests": 3,
+    "scopeTests": 3
   },
   "platforms": {
     "Android": {
@@ -72,7 +74,8 @@
       "buildEvidence": {
         "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
         "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
-      }
+      },
+      "simulatorSmoke": "Install, launch, SQLite integrity/schema and restart check implemented; first CI verification pending"
     },
     "Windows": {
       "source": "included",
@@ -80,10 +83,10 @@
       "signedBinary": "not-produced",
       "deviceQualification": "not-run",
       "buildEvidence": {
-        "commit": "a1beeb018c3d989b3887c708585c4cda1c15ae15",
-        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000"
+        "commit": "4166e5226cb4bf44ea5608aa4200f87549821edd",
+        "run": "https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40123216579"
       },
-      "nativeAppSmoke": "passed: installed app launch, original import/hash/preview, SQLite save/reopen, named version and persisted undo; additional export-cleanup check awaiting CI",
+      "nativeAppSmoke": "passed: installed app launch, original import/hash/preview, SQLite save/reopen, named version, persisted undo and isolated temporary-export cleanup",
       "installer": "silent NSIS installation on Windows CI passed"
     }
   },
@@ -229,8 +232,8 @@
     {
       "id": "COL-01",
       "status": "partial",
-      "implemented": "SDR sRGB canvas and encoded color metadata; RGB preview histogram.",
-      "remaining": "Color management, ICC/ACES, HDR, LUTs, curves, qualifiers, scopes and calibrated reference tests.",
+      "implemented": "SDR sRGB canvas and encoded color metadata; live full-range RGB histogram, luma waveform, RGB parade and vectorscope with Rec.709 matrix weights and 75% chroma targets; ramp/primary-color/preview feedback tests.",
+      "remaining": "Color management, ICC/ACES, HDR, LUTs, curves, qualifiers, calibrated monitoring and cross-device color reference tests.",
       "acceptedForProduction": false
     },
     {

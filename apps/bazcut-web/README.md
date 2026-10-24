@@ -30,7 +30,9 @@ The Motion inspector includes ordered, bypassable color/effect stacks, effect ke
 
 Track mattes support alpha, luma and their inverses, transformed/effected source layers, nested dependencies up to eight levels, and source hiding. A hidden matte source remains hidden while assigned, including outside the consumer’s duration; its audio is unaffected. The same compositor evaluates preview and export. Cycles, missing sources and unsupported modes are rejected by both TypeScript and Rust. Matte references survive portable project roundtrips.
 
-Verification on the development host: 32 TypeScript tests, 11 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, remapped audio, coarse-pointer Motion controls, and alpha/luma/nested matte pixel/export agreement. This does not establish native device compatibility.
+The Color inspector provides a live RGB histogram, luma waveform, RGB parade and vectorscope. These analyze the full-range SDR sRGB preview with Rec.709 luma/chroma weights and 75% chroma targets; they are not calibrated HDR/broadcast scopes. Sampling is bounded to 320 × 180 at five updates per second and continues during playback. Transparent hidden RGB is excluded. The scope choice changes monitoring only and does not alter the project or export.
+
+Verification on the development host: 35 TypeScript tests, 11 Rust tests, strict TypeScript, Vite production bundle, Next webpack production build, and the real Chromium/FFmpeg browser suite pass. Browser checks include persisted undo/redo, source insertion, bidirectional shuttle, ordered-effect pixels, parented preview/export agreement, remapped audio, coarse-pointer Motion controls, and alpha/luma/nested matte pixel/export agreement. This does not establish native device compatibility.
 
 ## Native targets
 
@@ -51,7 +53,7 @@ The target doctor reports missing SDKs and toolchains. Windows needs the Visual 
 
 [Native CI run 40093188000](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40093188000) passed all three jobs at commit `a1beeb018c3d989b3887c708585c4cda1c15ae15`: Windows x64 executable and unsigned NSIS installer, Android arm64 development APK, and arm64 iOS simulator app. Windows silent installation, app launch, original import/hash/preview, SQLite save/reopen, named version and persisted undo also passed. Android/iOS runtime behavior, real-device testing and distribution signing remain unqualified.
 
-The Windows interaction test is restricted to disposable CI hosts. It applies an app-specific HKLM debugging policy because elevated hosts ignore WebView2 environment overrides, then removes that policy afterward. The application bundle contains no debugging flags. An additional native temporary-export cleanup check is awaiting its first CI run.
+The Windows interaction test is restricted to disposable CI hosts. It applies an app-specific HKLM debugging policy because elevated hosts ignore WebView2 environment overrides, then removes that policy afterward. The application bundle contains no debugging flags. The native temporary-export cleanup check also passed on Windows in [run 40123216579](https://github.com/danielkalio400-bot/Bazaara-platform/actions/runs/40123216579). The iOS job now creates an isolated simulator, installs and launches the app, checks SQLite schema/WAL/integrity and relaunches it; its first result is pending.
 
 ## Data behavior
 
