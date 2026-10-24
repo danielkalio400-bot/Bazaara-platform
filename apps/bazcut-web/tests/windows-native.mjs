@@ -17,10 +17,9 @@ assert.equal(
   "Run this check only on a disposable CI host.",
 );
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const executable = path.join(
-  app,
-  "src-tauri/target/x86_64-pc-windows-msvc/debug/bazcut.exe",
-);
+const executable =
+  process.env.BAZCUT_TEST_EXECUTABLE ||
+  path.join(app, "src-tauri/target/x86_64-pc-windows-msvc/debug/bazcut.exe");
 const portServer = createServer();
 await new Promise((resolve, reject) => {
   portServer.once("error", reject);
@@ -65,7 +64,26 @@ try {
     } catch {}
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
-  assert.ok(ready, `WebView2 did not open: ${output}`);
+  if (!ready) {
+    const diagnostics = spawnSync(
+      "powershell.exe",
+      [
+        "-NoProfile",
+        "-Command",
+        `
+      Get-CimInstance Win32_Process | Where-Object { $_.Name -in @('bazcut.exe', 'msedgewebview2.exe') } | Select-Object Name, ProcessId, ParentProcessId, CommandLine | Format-List
+      Add-Type -AssemblyName UIAutomationClient
+      Add-Type -AssemblyName UIAutomationTypes
+      $condition = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, ${processHandle.pid})
+      [System.Windows.Automation.AutomationElement]::RootElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $condition) | ForEach-Object { $_.Current.Name }
+    `,
+      ],
+      { encoding: "utf8", timeout: 15000 },
+    );
+    throw Error(
+      `WebView2 did not open. Application output: ${output}\nStartup diagnostics: ${diagnostics.stdout}\n${diagnostics.stderr}`,
+    );
+  }
   browser = await chromium.connectOverCDP(endpoint);
   const context = browser.contexts()[0];
   const page = context.pages()[0] ?? (await context.waitForEvent("page"));
@@ -84,13 +102,11 @@ try {
   const original = await readFile(
     path.join(app, "src-tauri/icons/128x128.png"),
   );
-  await page
-    .locator("input[type=file][multiple]")
-    .setInputFiles({
-      name: "native-source.png",
-      mimeType: "image/png",
-      buffer: original,
-    });
+  await page.locator("input[type=file][multiple]").setInputFiles({
+    name: "native-source.png",
+    mimeType: "image/png",
+    buffer: original,
+  });
   await page
     .getByText("Media imported and stored on this device.", { exact: true })
     .waitFor();

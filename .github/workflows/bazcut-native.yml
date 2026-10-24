@@ -84,6 +84,22 @@ jobs:
         run: node apps/bazcut-web/scripts/native.mjs doctor ${{ matrix.platform }}
       - name: Compile and run core tests
         run: node apps/bazcut-web/scripts/native.mjs build ${{ matrix.platform }}
-      - name: Exercise the packaged Windows app
+      - name: Install the Windows development package
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          $bazcutInstaller = Get-ChildItem 'apps/bazcut-web/src-tauri/target/x86_64-pc-windows-msvc/debug/bundle/nsis/*-setup.exe' | Select-Object -First 1
+          if (!$bazcutInstaller) { throw 'The NSIS installer is missing.' }
+          $bazcutInstallDir = Join-Path $env:RUNNER_TEMP 'bazcut-installed'
+          $bazcutInstall = Start-Process -FilePath $bazcutInstaller.FullName -ArgumentList @('/S', "/D=$bazcutInstallDir") -PassThru
+          if (!$bazcutInstall.WaitForExit(180000)) {
+            Stop-Process -Id $bazcutInstall.Id -Force
+            throw 'The installer timed out.'
+          }
+          if ($bazcutInstall.ExitCode -ne 0) { throw "Installer failed with exit $($bazcutInstall.ExitCode)" }
+          $bazcutExecutable = Join-Path $bazcutInstallDir 'bazcut.exe'
+          if (!(Test-Path -LiteralPath $bazcutExecutable)) { throw 'The installed application is missing.' }
+          "BAZCUT_TEST_EXECUTABLE=$bazcutExecutable" >> $env:GITHUB_ENV
+      - name: Exercise the installed Windows app
         if: matrix.platform == 'windows'
         run: node apps/bazcut-web/tests/windows-native.mjs
